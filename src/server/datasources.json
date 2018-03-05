@@ -1,0 +1,21 @@
+{
+  "db": {
+    "name": "db",
+    "connector": "memory"
+  },
+  "trashout": {
+    "host": "localhost",
+    "port": 5432,
+    "database": "trashout",
+    "password": "kunsepase",
+    "name": "trashout",
+    "user": "trashout",
+    "connector": "postgresql"
+  },
+  "redis": {
+    "host": "localhost",
+    "port": 6379,
+    "name": "redis",
+    "connector": "redis"
+  }
+}
