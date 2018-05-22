@@ -119,20 +119,52 @@ foreignKeysDropped.then(function () {
 
     var userRoles = [
       {
-        code: 'admin',
+        code: 'administrator',
         description: 'Basic administrator role'
       },
       {
-        code: 'reviewer',
-        description: 'Trash reviewer role'
+        code: 'manager',
+        description: 'Trash manager role'
       },
       {
         code: 'authenticated',
         description: 'Basic authenticated user'
+      },
+      {
+        code: 'superAdmin',
+        description: 'superAdmin'
       }
     ];
 
     server.models.UserRole.create(userRoles, function (err, model) {
+      if (err) {
+        console.log(err);
+        throw err;
+      }
+
+      console.log('Created:', model);
+    });
+
+  });
+
+  ds.automigrate('UserAreaRole', function (err) {
+    if (err) {
+      throw err;
+    }
+
+    var userAreaRoles = [
+      {
+        name: 'admin'
+      },
+      {
+        name: 'manager'
+      },
+      {
+        name: 'member'
+      }
+    ];
+
+    server.models.UserAreaRole.create(userAreaRoles, function (err, model) {
       if (err) {
         console.log(err);
         throw err;

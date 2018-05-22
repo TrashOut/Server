@@ -1864,7 +1864,8 @@ module.exports = function (User) {
         'userRole',
         {userHasBadge: 'badge'},
         {userHasArea: 'area'},
-        {userHasOrganization: 'organization'}
+        {userHasOrganization: 'organization'},
+        'devices'
       ]
     };
 
@@ -1884,7 +1885,7 @@ module.exports = function (User) {
           return cb({message: err.detail});
         }
 
-        var payload = toBasicObject(instance);
+        var payload = instance.toJSON();
 
         payload.stats = statsData;
 
@@ -1894,8 +1895,10 @@ module.exports = function (User) {
         // cleanup organizations relation
         payload.organizations = [];
         payload.userHasOrganization.forEach(function (orgRelation) {
-          orgRelation.organization.organizationRoleId = orgRelation.organizationRoleId;
-          payload.organizations.push(orgRelation.organization);
+          if (orgRelation.organization) {            
+            orgRelation.organization.organizationRoleId = orgRelation.organizationRoleId;
+            payload.organizations.push(orgRelation.organization);
+          }
         });
 
         // cleanup badgs relation
@@ -2916,6 +2919,138 @@ module.exports = function (User) {
     });
   };
 
+  /**
+   * 
+   * @param {Function} cb
+   * @returns {Array}
+   */
+  User.getDevices = function (cb) {
+    var filter = {
+      where: {
+        userId: User.app.models.BaseModel.user.id
+      }
+    };
+
+    User.app.models.Device.find(filter, function (err, devices) {
+      if (err) {
+        console.error(err);
+        return cb({message: err.detail});
+      }
+
+      cb(null, devices);
+    });
+  };
+
+  /**
+   * 
+   * @param {String} tokenFCM
+   * @param {String} deviceId
+   * @param {String} language
+   * @param {Function} cb
+   * @returns {void}
+   */
+  User.addDevice = function (tokenFCM, deviceId, language, cb) {
+    var filter = {
+      where: {
+        userId: User.app.models.BaseModel.user.id,
+        tokenFCM: tokenFCM
+      }
+    };
+
+    // Begin transaction
+    User.beginTransaction({isolationLevel: User.Transaction.READ_COMMITTED}, function (err, tx) {
+      if (err) {
+        console.error(err);
+        return cb({message: err.detail});
+      }
+
+      User.app.models.Device.findOne(filter, {transaction: tx}, function (err, device) {
+        if (err) {
+          console.error(err);
+          return cb({message: err.detail});
+        }
+
+        if (device) {
+          return cb({message: 'Token already exists.', status: 404});
+        }
+
+        var data = {
+          userId: User.app.models.BaseModel.user.id,
+          tokenFCM: tokenFCM,
+          deviceId: deviceId,
+          language: language
+        };
+
+        User.app.models.Device.create(data, {transaction: tx}, function (err, device) {
+          if (err) {
+            console.error(err);
+            return cb({message: err.detail});
+          }
+
+          tx.commit(function (err) {
+            if (err) {
+              console.error(err);
+              return cb({message: err.detail});
+            }
+
+            cb(null, device);
+          });
+        });
+      });
+    });
+  };
+
+  /**
+   * 
+   * @param {String} tokenFCM
+   * @param {Function} cb
+   * @returns {void}
+   */
+  User.deleteDevice = function (tokenFCM, cb) {
+    var filter = {
+      where: {
+        userId: User.app.models.BaseModel.user.id,
+        tokenFCM: tokenFCM
+      }
+    };
+
+    // Begin transaction
+    User.beginTransaction({isolationLevel: User.Transaction.READ_COMMITTED}, function (err, tx) {
+      if (err) {
+        console.error(err);
+        return cb({message: err.detail});
+      }
+
+      User.app.models.Device.findOne(filter, {transaction: tx}, function (err, device) {
+        if (err) {
+          console.error(err);
+          return cb({message: err.detail});
+        }
+
+        if (!device) {
+          return cb({message: 'Token not found.', status: 404});
+        }
+
+        User.app.models.Device.destroyAll({tokenFCM: tokenFCM}, {transaction: tx}, function (err) {
+          if (err) {
+            console.error(err);
+            return cb({message: err.detail});
+          }
+
+          tx.commit(function (err) {
+            if (err) {
+              console.error(err);
+              return cb({message: err.detail});
+            }
+
+            cb(null);
+          });
+
+        });
+      });
+    });
+  };
+
   User.testGetParameters = function (number, string, boolean, cb) {
     return cb(null, {
       number: number,
@@ -3330,4 +3465,38 @@ module.exports = function (User) {
       returns: { type: 'object', root: true }
     }
   );
+
+  User.remoteMethod(
+    'addDevice',
+    {
+      http: { path: '/devices', verb: 'post' },
+      accepts: [
+        { arg: 'tokenFCM', type: 'string', required: true },
+        { arg: 'deviceId', type: 'string'},
+        { arg: 'language', type: 'string', required: true }
+      ],
+      returns: { type: 'object', root: true }
+    }
+  );
+
+  User.remoteMethod(
+    'getDevices',
+    {
+      http: { path: '/devices', verb: 'get' },
+      accepts: [],
+      returns: { type: 'object', root: true }
+    }
+  );
+
+  User.remoteMethod(
+    'deleteDevice',
+    {
+      http: { path: '/devices/:tokenFCM', verb: 'delete' },
+      accepts: [
+        { arg: 'tokenFCM', type: 'string', required: true }
+      ],
+      returns: { type: 'object', root: true }
+    }
+  );
+
 };

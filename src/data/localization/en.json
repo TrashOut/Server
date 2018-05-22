@@ -56,5 +56,6 @@
 	"mail.eventFeedback.subject": "TrashOut - how was the event yesterday?",
 	"mail.newsletter.subject": "TrashOut - information about dumps in area you monitor",
 	"mail.newsletter.emptyBlock": "There was no new activity in this category in selected period of time. You can see list of all dumps",
-	"mail.newsletter.trashLink": "Link"
+	"mail.newsletter.trashLink": "Link",
+	"mail.eventCreate.subject": "TrashOut - information about event you have just created"
 }

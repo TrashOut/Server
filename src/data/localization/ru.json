@@ -56,5 +56,6 @@
 	"mail.eventFeedback.subject": "Как прошло вчера мероприятие?",
 	"mail.newsletter.subject": "информация о свалках в области мониторинга вы",
 	"mail.newsletter.emptyBlock": "Никакой новой активности в этой категории не было. Вы можете увидеть список всех дампов",
-	"mail.newsletter.trashLink": "ссылка"
+	"mail.newsletter.trashLink": "ссылка",
+	"mail.eventCreate.subject": ""
 }

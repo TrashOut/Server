@@ -35,3 +35,28 @@ jspm_packages
 
 # Optional REPL history
 .node_repl_history
+/nbproject/private/
+nbproject/
+.idea/*
+
+# Firebase credentials
+/src/server/firebase.service-account-credentials.production.json
+/src/server/firebase.service-account-credentials.stage.json
+/src/server/firebase.service-account-credentials.json
+
+/src/server/firebase.admin-sdk-credentials.production.json
+/src/server/firebase.admin-sdk-credentials.stage.json
+/src/server/firebase.admin-sdk-credentials.json
+
+/src/server/firebase.fcm-credentials.production.json
+/src/server/firebase.fcm-credentials.stage.json
+/src/server/firebase.fcm-credentials.json
+
+# SMTP configs
+/src/server/smtp-credentials.production.json
+/src/server/smtp-credentials.stage.json
+/src/server/smtp-credentials.json
+
+# Database configs
+/src/server/datasources.production.json
+/src/server/datasources.stage.json

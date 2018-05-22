@@ -56,5 +56,6 @@
 	"mail.eventFeedback.subject": "TrashOut - jaká byla včera událost?",
 	"mail.newsletter.subject": "TrashOut - nová aktivita v oblasti, kterou sledujete",
 	"mail.newsletter.emptyBlock": "Žádné nové aktivity ve vybrané kategorii. Prosím zvolte zobrazení všech skládek",
-	"mail.newsletter.trashLink": "Odkaz"
+	"mail.newsletter.trashLink": "Odkaz",
+	"mail.eventCreate.subject": ""
 }

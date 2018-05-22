@@ -426,21 +426,21 @@ function getAliases(continent, country, aa1, aa2, aa3, locality, subLocality, st
   sql += 'LEFT JOIN public.area zip ON a.id = zip.alias_id \n';
 
   sql += 'WHERE  \n';
-  sql += '  (continent.continent = \'' + continent + '\' AND continent.type = \'continent\') \n';
-  sql += '  OR (country.country = \'' + country + '\' AND country.type = \'country\') \n';
-  sql += '  OR (aa1.aa1 = \'' + aa1 + '\' AND aa1.type = \'aa1\') \n';
-  sql += '  OR (aa2.aa2 = \'' + aa2 + '\' AND aa2.type = \'aa2\') \n';
-  sql += '  OR (aa3.aa3 = \'' + aa3 + '\' AND aa3.type = \'aa3\') \n';
-  sql += '  OR (locality.locality = \'' + locality + '\' AND locality.type = \'locality\') \n';
-  sql += '  OR (sublocality.sub_locality = \'' + subLocality + '\' AND sublocality.type = \'subLocality\') \n';
-  sql += '  OR (street.street = \'' + street + '\' AND street.type = \'street\') \n';
-  sql += '  OR (zip.zip = \'' + zip + '\' AND zip.type = \'zip\') \n';
+  sql += '  (continent.continent = $1 AND continent.type = \'continent\') \n';
+  sql += '  OR (country.country = $2 AND country.type = \'country\') \n';
+  sql += '  OR (aa1.aa1 = $3 AND aa1.type = \'aa1\') \n';
+  sql += '  OR (aa2.aa2 = $4 AND aa2.type = \'aa2\') \n';
+  sql += '  OR (aa3.aa3 = $5 AND aa3.type = \'aa3\') \n';
+  sql += '  OR (locality.locality = $6 AND locality.type = \'locality\') \n';
+  sql += '  OR (sublocality.sub_locality = $7 AND sublocality.type = \'subLocality\') \n';
+  sql += '  OR (street.street = $8 AND street.type = \'street\') \n';
+  sql += '  OR (zip.zip = $9 AND zip.type = \'zip\') \n';
 
+  var sqlParameters = [continent, country, aa1, aa2, aa3, locality, subLocality, street, zip];
   var ds = server.dataSources.trashout;
   return new Promise(function (resolve, reject) {
-    ds.connector.execute(sql, function (err, areas) {
+    ds.connector.execute(sql, sqlParameters, function (err, areas) {
       if (err) {
-
         return reject(err);
       }
 
@@ -534,6 +534,7 @@ function processData(gpsId, continent, country, aa1, aa2, aa3, locality, subLoca
       }
 
       console.log('=============== GPS UPDATE ===============');
+      console.log(args);
       console.log(relations);
       server.models.GPS.updateAll({id: gpsId}, relations, function (err) {
         if (err) {
@@ -603,9 +604,9 @@ function fillAreas(gpsId, lat, long) {
   });
 }
 
-module.exports.fillAreasInGpsTable = function () {
-  return new Promise(function (resolve, reject) {
-    server.models.GPS.find({where: {
+module.exports.fillAreasInGpsTable = function (id) {
+  if (typeof id === 'undefined') {
+    var where = {
       countryId: null,
       aa1Id: null,
       aa2Id: null,
@@ -614,7 +615,15 @@ module.exports.fillAreasInGpsTable = function () {
       subLocalityId: null,
       streetId: null,
       zipId: null
-    }}, function (err, instances) {
+    };
+  } else {
+    var where = {
+      id: id
+    };
+  }
+
+  return new Promise(function (resolve, reject) {
+    server.models.GPS.find({where: where}, function (err, instances) {
       if (err) {
         return reject(err);
       }

@@ -23,10 +23,31 @@
 * See the GNU General Public License for more details: <https://www.gnu.org/licenses/>.
 */
 'use strict';
+
 var Promise = require('bluebird');
 var Constants = require('../constants');
 var GeoLocation = require('../geo-location');
 var GeoPoint = require('loopback').GeoPoint;
+//var messageManager = require('../firebase-message-manager');
+
+var emailTranslations = {
+  'cs_CZ': require(__dirname + '/../../data/localization/cs.json'),
+  'de_DE': require(__dirname + '/../../data/localization/de.json'),
+  'en_US': require(__dirname + '/../../data/localization/en.json'),
+  'es_ES': require(__dirname + '/../../data/localization/es.json'),
+  'ru_RU': require(__dirname + '/../../data/localization/ru.json'),
+  'sk_SK': require(__dirname + '/../../data/localization/sk.json')
+};
+
+function checkLanguage(lang) {
+  var languages = ['cs_CZ', 'de_DE', 'en_US', 'es_ES', 'ru_RU', 'sk_SK'];
+
+  if (!lang || languages.indexOf(lang) === -1) {
+    lang = 'en_US';
+  }
+
+  return lang;
+}
 
 /**
  * 
@@ -1498,7 +1519,7 @@ module.exports = function (Event) {
 
                   var headers = {
                     to: Event.app.models.BaseModel.user.email,
-                    subject: 'TrashOut - information about event you have just created'
+                    subject: emailTranslations[checkLanguage(Event.app.models.BaseModel.user.language)]['mail.eventCreate.subject']
                   };
 
                   var params = {

@@ -29,13 +29,24 @@ var EmailTemplate = require('email-templates').EmailTemplate;
 var path = require('path');
 var Promise = require('bluebird');
 
+var smtpCredentials = {};
+
+switch (process.env.NODE_ENV) {
+  case 'production':
+  case 'stage':
+    smtpCredentials = require(__dirname + '/../../server/smtp-credentials.' + process.env.NODE_ENV + '.json');
+    break;
+  default:
+    smtpCredentials = require(__dirname + '/../../server/smtp-credentials.json');
+}
+
 var transporter = nodemailer.createTransport({
-  host: 'email-smtp.eu-west-1.amazonaws.com',
-  port: 465,
-  secure: true,
+  host: smtpCredentials.host,
+  port: smtpCredentials.port,
+  secure: smtpCredentials.secure,
   auth: {
-    user: 'AKIAIUUSTN4IAHQQL2NA',
-    pass: 'AldsfgLb9iyYPEz34E+MsC1s+OwTxVH37WCu5tlhyT0u'
+    user: smtpCredentials.user,
+    pass: smtpCredentials.pass
   }
 });
 

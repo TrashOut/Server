@@ -24,21 +24,58 @@
 */
 'use strict';
 
+var admin = require('firebase-admin');
+const util = require('util');
+
+var serviceAccount = {};
+var fcmAccount = {};
+
+switch (process.env.NODE_ENV) {
+  case 'production':
+  case 'stage':
+    serviceAccount = require(__dirname + '/../../server/firebase.service-account-credentials.' + process.env.NODE_ENV + '.json');
+    fcmAccount = require(__dirname + '/../../server/firebase.admin-sdk-credentials.' + process.env.NODE_ENV + '.json');    
+    break;
+  default:
+    serviceAccount = require(__dirname + '/../../server/firebase.service-account-credentials.json');
+    fcmAccount = require(__dirname + '/../../server/firebase.admin-sdk-credentials.json');
+}
+
 module.exports = {
   firebase: null,
-  create: function () {
-    var firebaseAdmin = require('firebase-admin');
-    var serviceAccount = require(__dirname + "/../firebase.service-account-credentials.json");
+  fcm: null,
+  create: function (account) {
+    var databaseURL = '';
+    var credential = null;
+
+    switch (process.env.NODE_ENV) {
+      case 'production':
+        databaseURL = 'https://trashoutngo-dev.firebaseio.com';
+        break;
+      case 'stage':
+      default:
+        databaseURL = 'https://trashoutngo-stage.firebaseio.com';
+    }
+
+    switch (account) {
+      case 'fcmAccount':
+        credential = admin.credential.cert(fcmAccount);
+        break;
+      case 'serviceAccount':
+      default:
+        credential = admin.credential.cert(serviceAccount);
+    }
 
     var config = {
-      databaseURL: 'https://trashoutngo-dev.firebaseio.com',
-      credential: firebaseAdmin.credential.cert(serviceAccount)
+      databaseURL: databaseURL,
+      credential: credential
     };
 
-    return firebaseAdmin.initializeApp(config);
+    return admin.initializeApp(config, account);
   },
+
   validateToken: function (token, callback) {
-    var firebase = this.firebase = this.firebase || this.create();
+    var firebase = this.firebase = this.firebase || this.create('serviceAccount');
     var firebaseAuth = firebase.auth();
 
     firebaseAuth.verifyIdToken(token).then(function (decodedToken) {
@@ -58,18 +95,24 @@ module.exports = {
     });
   },
   disableUser: function(uid, callback) {
-    var firebaseAdmin = require('firebase-admin');
-    var serviceAccount = require(__dirname + "/../firebase.service-account-credentials.json");
-    firebaseAdmin.credential.cert(serviceAccount); // needed?
+    admin.credential.cert(serviceAccount); // needed?
 
-    firebaseAdmin.auth().updateUser(uid, {
+    admin.auth().updateUser(uid, {
       disabled: true
-    })
-    .then(function(userRecord) {
+    }).then(function(userRecord) {
       callback(userRecord.toJSON());
-    })
-    .catch(function(error) {
+    }).catch(function(error) {
       console.warn("Error updating firebase identity:", error);
+    });
+  },
+  sendMessage(message, callback) {
+    var firebase = this.fcm = this.fcm || this.create('fcmAccount');
+    const messaging = firebase.messaging();
+
+    messaging.send(message).then(function (response) {
+      return callback(null, response);
+    }).catch (function (error) {
+      return callback(error);
     });
   }
 };

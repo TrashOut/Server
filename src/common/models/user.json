@@ -246,6 +246,10 @@
       "type": "belongsTo",
       "model": "Image",
       "foreignKey": "imageId"
+    },
+    "devices": {
+      "type": "hasMany",
+      "model": "Device"
     }
   },
   "acls": [
@@ -261,14 +265,14 @@
       "principalType": "ROLE",
       "principalId": "apiKey",
       "permission": "ALLOW",
-      "property": ["add", "upd", "listActivities", "listActivitiesCount", "listUserActivities", "listUserActivitiesCount", "listReviewActivities", "listReviewActivitiesCount", "getUnreviewedUsersWithActivity", "getUnreviewedUsersWithActivityCount", "testGetParameters", "testPostParameters"]
+      "property": ["add", "upd", "listActivities", "listActivitiesCount", "listUserActivities", "listUserActivitiesCount", "listReviewActivities", "listReviewActivitiesCount", "getUnreviewedUsersWithActivity", "getUnreviewedUsersWithActivityCount", "testGetParameters", "testPostParameters", "addDevice", "deleteDevice", "getDevices"]
     },
     {
       "accessType": "*",
       "principalType": "ROLE",
       "principalId": "common",
       "permission": "ALLOW",
-      "property": ["add", "upd", "listActivities", "listActivitiesCount", "listUserActivities", "listUserActivitiesCount", "listReviewActivities", "listReviewActivitiesCount", "getUnreviewedUsersWithActivity", "getUnreviewedUsersWithActivityCount", "testGetParameters", "testPostParameters", "getIdentityByFirebaseToken", "addArea", "removeArea", "updateArea", "joinOrganization", "leaveOrganization", "disableUser", "getUsersByEmail"]
+      "property": ["add", "upd", "listActivities", "listActivitiesCount", "listUserActivities", "listUserActivitiesCount", "listReviewActivities", "listReviewActivitiesCount", "getUnreviewedUsersWithActivity", "getUnreviewedUsersWithActivityCount", "testGetParameters", "testPostParameters", "getIdentityByFirebaseToken", "addArea", "removeArea", "updateArea", "joinOrganization", "leaveOrganization", "disableUser", "getUsersByEmail", "addDevice", "deleteDevice", "getDevices"]
     },
     {
       "accessType": "*",

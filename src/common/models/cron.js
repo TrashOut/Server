@@ -115,9 +115,9 @@ function formatStartTime(date) {
 }
 
 function formatStartUTC(date) {
-  var utc = date.getTimezoneOffset() / 60;
+  var utc = (date.getTimezoneOffset() / 60) + 3;
 
-  return 'UTC' + (utc >= 0 ? '+' : '') + utc;
+  return 'UTC' + (utc >= 0 ? ' +' : ' -') + (Math.abs(utc) < 10 ? '0': '') + Math.abs(utc) + ':00';
 }
 
 module.exports = function (Cron) {
@@ -441,6 +441,7 @@ module.exports = function (Cron) {
     sql += '  e.id AS event_id, \n';
     sql += '  e.name AS event_name, \n';
     sql += '  e.start AS event_start, \n';
+    sql += '  e.start_with_local_time_zone AS event_start_with_local_time_zone, \n';
 
     sql += '  CASE WHEN gps.zip_id IS NOT NULL THEN \n';
     sql += '    (SELECT array_to_json(array_agg(a)) FROM (SELECT a.continent, a.country, a.aa1, a.aa2, a.aa3, a.locality, a.sub_locality AS "subLocality", a.street, a.zip FROM area a WHERE a.id = gps.zip_id) AS a) \n';
@@ -507,8 +508,8 @@ module.exports = function (Cron) {
             event: {
               id: instance.event_id,
               name: instance.event_name,
-              startDate: formatStartDate(instance.event_start),
-              startTime: formatStartTime(instance.event_start),
+              startDate: formatStartDate(instance.event_start_with_local_time_zone ? new Date(instance.event_start_with_local_time_zone) : instance.event_start),
+              startTime: formatStartTime(instance.event_start_with_local_time_zone ? new Date(instance.event_start_with_local_time_zone) : instance.event_start),
               startUTC: formatStartUTC(instance.event_start),
               address: instance.gps_area && instance.gps_area.length ? buildAddress(instance.gps_area[0]) : null
             }

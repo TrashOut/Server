@@ -329,3 +329,7 @@ module.exports.ORGANIZATION_ORDER_BY_NAME = 'name';
 module.exports.ORGANIZATION_ORDER_BY_CREATED = 'created';
 
 module.exports.ADMIN_WEB_BASE_URL = 'https://admin.trashout.ngo';
+
+module.exports.ACTIVITY_TYPE_TRASH_POINT = 'trashPoint';
+module.exports.ACTIVITY_TYPE_COLLECTION_POINT = 'collectionPoint';
+module.exports.ACTIVITY_TYPE_EVENT = 'event';

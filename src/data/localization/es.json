@@ -56,5 +56,6 @@
 	"mail.eventFeedback.subject": "¿Cómo estuvo el evento ayer?",
 	"mail.newsletter.subject": "TrashOut: información sobre vertederos en el área que supervisa\n",
 	"mail.newsletter.emptyBlock": "No hubo actividad nueva en esta categoría. Puedes ver la lista de todos los vertederos",
-	"mail.newsletter.trashLink": "enlazar"
+	"mail.newsletter.trashLink": "enlazar",
+	"mail.eventCreate.subject": ""
 }

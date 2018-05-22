@@ -56,5 +56,6 @@
 	"mail.eventFeedback.subject": "Wie war die Veranstaltung gestern?",
 	"mail.newsletter.subject": "TrashOut - Informationen über Speicherauszüge in dem von Ihnen überwachten Bereich",
 	"mail.newsletter.emptyBlock": "In dieser Kategorie gab es keine neuen Aktivitäten. Sie können eine Liste aller Sicherungen anzeigen",
-	"mail.newsletter.trashLink": "Link"
+	"mail.newsletter.trashLink": "Link",
+	"mail.eventCreate.subject": ""
 }
