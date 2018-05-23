@@ -30,7 +30,7 @@ var Constants = require('../constants');
 var GeoLocation = require('../geo-location');
 var GeoPoint = require('loopback').GeoPoint;
 var AreaAccessControl = require('../area-access-control');
-var messageManager = require('../firebase-message-manager');
+//var messageManager = require('../firebase-message-manager');
 
 function dateDiffInDays(a, b) {
   // Discard the time and time-zone information.

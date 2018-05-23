@@ -29,7 +29,7 @@ var Constants = require('../constants');
 var GeoLocation = require('../geo-location');
 var GeoPoint = require('loopback').GeoPoint;
 var AreaAccessControl = require('../area-access-control');
-//var messageManager = require('../firebase-message-manager');
+var messageManager = require('../firebase-message-manager');
 
 /**
  * Returns changes between current trash and new trash
@@ -2043,9 +2043,9 @@ module.exports = function (TrashPoint) {
 
       performUpdate(id, response).then(function (response) {
 
-//        messageManager.sendRecentActivity(Constants.ACTIVITY_TYPE_TRASH_POINT, id, TrashPoint.app.models.BaseModel.user.id).catch(function (err) {
-//          console.error(err);
-//        });
+        messageManager.sendRecentActivity(Constants.ACTIVITY_TYPE_TRASH_POINT, id, TrashPoint.app.models.BaseModel.user.id).catch(function (err) {
+          console.error(err);
+        });
 
         cb(null, response.id, response.activityId, response.statusCode);
 
@@ -2083,11 +2083,11 @@ module.exports = function (TrashPoint) {
       message.android.data.trash_id = message.android.data.trash_id.toString();
     }
 
-//    messageManager.sendRaw(message).then(function (response) {
-//      cb(null, response);
-//    }).catch(function (error) {
-//      cb(error);
-//    });
+    messageManager.sendRaw(message).then(function (response) {
+      cb(null, response);
+    }).catch(function (error) {
+      cb(error);
+    });
   };
 
   TrashPoint.disableRemoteMethod('create', true); // Removes (POST) /trash
