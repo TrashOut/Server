@@ -49,7 +49,6 @@ var geocoder = NodeGeocoder({
   formatter: null
 });
 
-console.log(geocoder);
 /**
  * Returns TrashPoint identifiers that are in given GPS radius
  * 
