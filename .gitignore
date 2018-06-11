@@ -60,3 +60,8 @@ nbproject/
 # Database configs
 /src/server/datasources.production.json
 /src/server/datasources.stage.json
+
+# Google API configs
+/src/server/google-api-credentials.production.json
+/src/server/google-api-credentials.stage.json
+/src/server/google-api-credentials.json
