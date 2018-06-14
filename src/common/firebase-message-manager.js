@@ -58,8 +58,8 @@ module.exports.send = function (type, token, data) {
     payload: {
       aps: {
         alert: {
-          title: 'notification.' + type + '.header',
-          body: 'notification.' + type + '.text'
+          'title-loc-key': 'notification.' + type + '.header',
+          'loc-key': 'notification.' + type + '.text'
         },
         badge: 42
       },
