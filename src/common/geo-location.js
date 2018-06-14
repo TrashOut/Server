@@ -29,16 +29,24 @@ var Constants = require('./constants');
 var Promise = require('bluebird');
 var Geomodel = require('geomodel').create_geomodel();
 var NodeGeocoder = require('node-geocoder');
-//var gg = require('./googlegeocoder');
 var async = require('async');
 
-//var geocoder = new gg.GoogleGeocoder({apiKey: 'AIzaSyC47t7HVhFpoZ1OFsxqx9OIFF7-2XqNBvQ'});
+var googleApiCredentials = {};
+
+switch (process.env.NODE_ENV) {
+  case 'production':
+  case 'stage':
+    googleApiCredentials = require(__dirname + '/../server/google-api-credentials.' + process.env.NODE_ENV + '.json');
+    break;
+  default:
+    googleApiCredentials = require(__dirname + '/../server/google-api-credentials.json');
+}
 
 var geocoder = NodeGeocoder({
   provider: 'google',
-  httpAdapter: 'https', // Default
-  apiKey: 'AIzaSyC47t7HVhFpoZ1OFsxqx9OIFF7-2XqNBvQ',
-  formatter: null // 'gpx', 'string', ...
+  httpAdapter: 'https',
+  apiKey: googleApiCredentials.apiKey,
+  formatter: null
 });
 
 /**
@@ -90,9 +98,8 @@ module.exports.upsertGps = function (lat, long, accuracy, gpsSourceId) {
     };
 
     server.models.GPS.findOne(filter, function (err, instance) {
-
       if (err) {
-        reject(err);
+        return reject(err);
       }
 
       if (instance) {
@@ -100,12 +107,11 @@ module.exports.upsertGps = function (lat, long, accuracy, gpsSourceId) {
         resolve(instance.id);
 
       } else {
-
         var geocell = '';
         try {
           geocell = Geomodel.compute(Geomodel.create_point(lat, long));
         } catch (e) {
-          reject(e);
+          return reject(e);
         }
 
         var data = {
@@ -117,23 +123,66 @@ module.exports.upsertGps = function (lat, long, accuracy, gpsSourceId) {
         };
 
         server.models.GPS.create(data, function (err, instance) {
-
           if (err) {
-            reject(err);
+            return reject(err);
           }
 
+          // fill areas async
           fillAreas(instance.id, lat, long).catch(function (error) {
             console.error(error);
           });
 
           resolve(instance.id);
-
         });
-
       }
 
     });
 
+  });
+};
+
+/**
+ * 
+ * @param {Number} id
+ * @returns {void}
+ */
+module.exports.fillAreasInGpsTable = function (id) {
+  if (typeof id === 'undefined') {
+    var where = {
+      countryId: null,
+      aa1Id: null,
+      aa2Id: null,
+      aa3Id: null,
+      localityId: null,
+      subLocalityId: null,
+      streetId: null,
+      zipId: null
+    };
+  } else {
+    var where = {
+      id: id
+    };
+  }
+
+  return new Promise(function (resolve, reject) {
+    server.models.GPS.find({where: where}, function (err, instances) {
+      if (err) {
+        return reject(err);
+      }
+
+      async.eachSeries(instances, function (instance, callback) {
+        fillAreas(instance.id, instance.lat, instance.long).then(function () {
+          async.setImmediate(callback);
+        });
+      }, function (err) {
+        if (err) {
+          return reject();
+        }
+
+        resolve();
+      });
+
+    });
   });
 };
 
@@ -483,71 +532,76 @@ function getAliases(continent, country, aa1, aa2, aa3, locality, subLocality, st
  * @returns {undefined}
  */
 function processData(gpsId, continent, country, aa1, aa2, aa3, locality, subLocality, street, zip, zoomLevel) {
-  getAliases(continent, country, aa1, aa2, aa3, locality, subLocality, street, zip).then(function (args) {
-    var areaTypes = ['continent', 'country', 'aa1', 'aa2', 'aa3', 'locality', 'subLocality', 'street', 'zip'];
+  return new Promise(function (resolve, reject) {
 
-    var i;
-    var j;
+    getAliases(continent, country, aa1, aa2, aa3, locality, subLocality, street, zip).then(function (args) {
+      var areaTypes = ['continent', 'country', 'aa1', 'aa2', 'aa3', 'locality', 'subLocality', 'street', 'zip'];
 
-    var data;
-    var result = [];
-    for (i = 0; i < args.length; i++) {
-      if (!areaTypes[i] || !args[i]) {
-        continue;
-      }
+      var i;
+      var j;
 
-      data = {
-        type: areaTypes[i],
-        zoomLevel: zoomLevel
-      };
-
-      for (j = 0; j <= i; j++) {
-        if (args[j]) {
-          data[areaTypes[j]] = args[j];
+      var data;
+      var result = [];
+      for (i = 0; i < args.length; i++) {
+        if (!areaTypes[i] || !args[i]) {
+          continue;
         }
+
+        data = {
+          type: areaTypes[i],
+          zoomLevel: zoomLevel
+        };
+
+        for (j = 0; j <= i; j++) {
+          if (args[j]) {
+            data[areaTypes[j]] = args[j];
+          }
+        }
+
+        result.push(data);
       }
 
-      result.push(data);
-    }
+      var relations = {};
 
-    var relations = {};
+      async.eachSeries(result, function (data, callback) {
+        var filter = {
+          where: data
+        };
 
-    async.eachSeries(result, function (data, callback) {
-      var filter = {
-        where: data
-      };
+        delete filter.where.zoomLevel;
 
-      delete filter.where.zoomLevel;
+        server.models.Area.findOrCreate(filter, data, function (err, instance) {
+          if (err) {
+            return reject(err);
+          }
 
-      server.models.Area.findOrCreate(filter, data, function (err, instance) {
+          relations[instance.type + 'Id'] = instance.id;
+
+          async.setImmediate(callback);
+        });
+      }, function (err) {
         if (err) {
-          throw err;
+          return reject(err);
         }
 
-        relations[instance.type + 'Id'] = instance.id;
+        console.log('=============== GPS UPDATE ===============');
+        console.log(args);
+        console.log(relations);
+        server.models.GPS.updateAll({id: gpsId}, relations, function (err) {
+          if (err) {
+            return reject(err);
+          }
 
-        callback();
+          console.log('=============== GPS UPDATE DONE ===============');
+
+          resolve();
+        });
       });
-    }, function (err) {
-      if (err) {
-        throw err;
-      }
-
-      console.log('=============== GPS UPDATE ===============');
-      console.log(args);
-      console.log(relations);
-      server.models.GPS.updateAll({id: gpsId}, relations, function (err) {
-        if (err) {
-          throw err;
-        }
-
-        console.log('=============== GPS UPDATE DONE ===============');
-      });
+    }).catch(function (error) {
+      return reject(error);
     });
-  }).catch(function (error) {
-    console.error(error);
-  });
 
+  });
 }
 
 /**
@@ -572,73 +626,30 @@ function fillAreas(gpsId, lat, long) {
 
   return new Promise(function (resolve, reject) {
     geocoder.reverse({lat: lat, lon: long, result_type: resultTypes.join('|')}, function (err, res) {
-
-      if (err) {
-        console.error(err);
-        return resolve(err);
-      }
-
-      try {
-
-        processData(
-          gpsId,
-          getContinentByCountryCode(res[0].countryCode),
-          res[0].country,
-          res[0].administrativeLevels.level1long,
-          res[0].administrativeLevels.level2long,
-          res[0].administrativeLevels.level3long,
-          res[0].city,
-          res[0].extra.neighborhood,
-          res[0].streetName,
-          res[0].zipcode,
-          null
-        );
-
-      } catch (e) {
-        return reject(e);
-      }
-
-      resolve();
-
-    });
-  });
-}
-
-module.exports.fillAreasInGpsTable = function (id) {
-  if (typeof id === 'undefined') {
-    var where = {
-      countryId: null,
-      aa1Id: null,
-      aa2Id: null,
-      aa3Id: null,
-      localityId: null,
-      subLocalityId: null,
-      streetId: null,
-      zipId: null
-    };
-  } else {
-    var where = {
-      id: id
-    };
-  }
-
-  return new Promise(function (resolve, reject) {
-    server.models.GPS.find({where: where}, function (err, instances) {
       if (err) {
         return reject(err);
       }
 
-      async.eachSeries(instances, function (instance, callback) {
-        fillAreas(instance.id, instance.lat, instance.long).then(function () {
-          callback();
-        });
-      }, function (err) {
-        if (err) {
-          reject();
-        }
+      processData(
+              gpsId,
+              getContinentByCountryCode(res[0].countryCode),
+              res[0].country,
+              res[0].administrativeLevels.level1long,
+              res[0].administrativeLevels.level2long,
+              res[0].administrativeLevels.level3long,
+              res[0].city,
+              res[0].extra.neighborhood,
+              res[0].streetName,
+              res[0].zipcode,
+              null
+              ).then(function () {
+
         resolve();
+
+      }).catch(function (err) {
+        return reject(err);
       });
 
     });
   });
-};
+}

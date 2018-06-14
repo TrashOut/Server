@@ -108,6 +108,7 @@ module.exports = {
   sendMessage(message, callback) {
     var firebase = this.fcm = this.fcm || this.create('fcmAccount');
     const messaging = firebase.messaging();
+    console.log(util.inspect(message, false, null));
 
     messaging.send(message).then(function (response) {
       return callback(null, response);

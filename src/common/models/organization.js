@@ -573,7 +573,7 @@ module.exports = function (Organization) {
       async.eachSeries(emails, function (email, callback) {
         emailHeaders.to = email;
         Organization.app.models.BaseModel.sendEmail('organization-invitation', emailHeaders, {html: emailHtml, organization: organization}, Organization.app.models.BaseModel.user.language).then(function () {
-          callback();
+          async.setImmediate(callback);
         }).catch (function (error) {
           return cb(error);
         });
