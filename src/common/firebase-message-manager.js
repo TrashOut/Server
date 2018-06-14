@@ -98,16 +98,16 @@ module.exports.sendRecentActivity = function (type, id, userId) {
     devices.then(function (tokens) {
       async.eachSeries(tokens, function (token, callback) {
         module.exports.send('recentActivity', token, {type: 'trash', trash_id: id.toString()}).then(function (response) {
-          callback(null, response);
+          async.setImmediate(callback);
         }).catch(function(error) {
-          callback(null);
+          async.setImmediate(callback);
         });
-      }, function (err, results) {
+      }, function (err) {
         if (err) {
           return reject(err);
         }
 
-        resolve(results);
+        resolve();
       });
 
     }).catch(function (err) {
@@ -173,12 +173,3 @@ function getEventTokens(id, userId) {
     resolve([]);
   });
 }
-
-// server key 
-// AAAAh_pQYYw:APA91bFWcjmeTCB__4Tk0MY3tAJfSBvxK6iLuSsFNZIHM0_Wn8CtXD5_iWFKecUy6m-_x41aVPgKSsMPPslZgmnZkI0eNLiUsqsyAjzLTbR6fsVfa7s_oXkh0FM7ho8hCELdFZmdSHAdU24v7EVeMnp1eal0Qq8_MQ
-
-// legacy server key
-// AIzaSyDqlg8QbjoPnzXJ89AVdve6SU3QSQbPPek
- 
-// server id
-// 584020156812

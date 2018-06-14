@@ -382,7 +382,7 @@ module.exports = function (Cron) {
           // Send newsletter to each user
           sendNewsletterToUser(temp).then(function () {
             lastSentCondition.or.push({and: [{areaId: temp.area.id}, {userId: temp.user.id}]});
-            callback();
+            async.setImmediate(callback);
           }).catch(function (error) {
             if (lastSentCondition.or.length) {
               Cron.app.models.UserHasArea.updateAll(lastSentCondition, {notificationLastSent: (new Date()).toISOString()}, function (err) {
@@ -525,7 +525,7 @@ module.exports = function (Cron) {
           }
 
           Cron.app.models.BaseModel.sendEmail('event-confirm', headers, params, instance.language).then(function () {
-            callback();
+            async.setImmediate(callback);
           }).catch(function (err) {
             return reject(err);
           });
@@ -611,7 +611,7 @@ module.exports = function (Cron) {
           }
 
           Cron.app.models.BaseModel.sendEmail('event-feedback', headers, params, instance.language).then(function () {
-            callback();
+            async.setImmediate(callback);
           }).catch(function (err) {
             return reject(err);
           });
