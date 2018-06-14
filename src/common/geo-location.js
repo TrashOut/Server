@@ -172,7 +172,7 @@ module.exports.fillAreasInGpsTable = function (id) {
 
       async.eachSeries(instances, function (instance, callback) {
         fillAreas(instance.id, instance.lat, instance.long).then(function () {
-          callback();
+          async.setImmediate(callback);
         });
       }, function (err) {
         if (err) {
@@ -577,7 +577,7 @@ function processData(gpsId, continent, country, aa1, aa2, aa3, locality, subLoca
 
           relations[instance.type + 'Id'] = instance.id;
 
-          callback();
+          async.setImmediate(callback);
         });
       }, function (err) {
         if (err) {
