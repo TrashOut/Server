@@ -67,6 +67,24 @@
         "dataType": "bigint",
         "nullable": "YES"
       }
+    },
+    "confirmationNotificationSent": {
+      "type": "string",
+      "required": false,
+      "postgresql": {
+        "columnName": "confirmation_notification_sent",
+        "dataType": "timestamp with time zone",
+        "nullable": "YES"
+      }
+    },
+    "feedbackNotificationSent": {
+      "type": "string",
+      "required": false,
+      "postgresql": {
+        "columnName": "feedback_notification_sent",
+        "dataType": "timestamp with time zone",
+        "nullable": "YES"
+      }
     }
   },
   "validations": [],
