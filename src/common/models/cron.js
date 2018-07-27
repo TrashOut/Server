@@ -483,9 +483,11 @@ module.exports = function (Cron) {
     sql += 'LEFT JOIN public.area street ON street.id = gps.street_id \n';
     sql += 'LEFT JOIN public.area zip ON zip.id = gps.zip_id \n';
 
-    sql += 'WHERE e.start <= (CURRENT_DATE + INTERVAL \'2 days\') AND e.start >= (CURRENT_DATE + INTERVAL \'1 days\') AND u.email IS NOT NULL';
+    sql += 'WHERE e.start <= (CURRENT_DATE + INTERVAL \'2 days\') AND e.start >= (CURRENT_DATE + INTERVAL \'1 days\') AND u.email IS NOT NULL AND uhe.confirmation_notification_sent IS NULL';
 
     return new Promise(function (resolve, reject) {
+
+      var lastSentCondition = {or: []};
       ds.connector.execute(sql, Cron.app.models.BaseModel.sqlParameters, function (err, instances) {
         if (err) {
           return reject(err);
@@ -525,6 +527,7 @@ module.exports = function (Cron) {
           }
 
           Cron.app.models.BaseModel.sendEmail('event-confirm', headers, params, instance.language).then(function () {
+            lastSentCondition.or.push({and: [{eventId: params.event.id}, {userId: params.user.id}]});
             async.setImmediate(callback);
           }).catch(function (err) {
             return reject(err);
@@ -534,7 +537,16 @@ module.exports = function (Cron) {
           if (err) {
             reject(err);
           }
-          resolve();
+
+          if (lastSentCondition.or.length) {
+            Cron.app.models.UserHasEvent.updateAll(lastSentCondition, {confirmationNotificationSent: (new Date()).toISOString()}, function (err) {
+              if (err) {
+                return reject(err);
+              }
+
+              resolve();
+            });
+          }
         });
       });
     });
@@ -573,9 +585,11 @@ module.exports = function (Cron) {
     sql += 'JOIN public.user u ON u.id = uhe.user_id \n';
     sql += 'LEFT JOIN public.user o ON o.id = e.user_id \n';
 
-    sql += 'WHERE e.start >= (CURRENT_DATE - INTERVAL \'2 days\') AND e.start <= (CURRENT_DATE - INTERVAL \'1 days\') AND u.email IS NOT NULL';
+    sql += 'WHERE e.start >= (CURRENT_DATE - INTERVAL \'2 days\') AND e.start <= (CURRENT_DATE - INTERVAL \'1 days\') AND u.email IS NOT NULL AND uhe.feedback_notification_sent IS NULL';
 
     return new Promise(function (resolve, reject) {
+
+      var lastSentCondition = {or: []};
       ds.connector.execute(sql, Cron.app.models.BaseModel.sqlParameters, function (err, instances) {
         if (err) {
           return reject(err);
@@ -611,6 +625,7 @@ module.exports = function (Cron) {
           }
 
           Cron.app.models.BaseModel.sendEmail('event-feedback', headers, params, instance.language).then(function () {
+            lastSentCondition.or.push({and: [{eventId: params.event.id}, {userId: params.user.id}]});
             async.setImmediate(callback);
           }).catch(function (err) {
             return reject(err);
@@ -620,7 +635,16 @@ module.exports = function (Cron) {
           if (err) {
             reject(err);
           }
-          resolve();
+
+          if (lastSentCondition.or.length) {
+            Cron.app.models.UserHasEvent.updateAll(lastSentCondition, {feedbackNotificationSent: (new Date()).toISOString()}, function (err) {
+              if (err) {
+                return reject(err);
+              }
+
+              resolve();
+            });
+          }
         });
       });
     });

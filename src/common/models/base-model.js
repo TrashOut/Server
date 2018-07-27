@@ -167,7 +167,7 @@ module.exports = function (BaseModel) {
           if (err) {
             return reject(err);
           }
-
+          console.log('email sent to: ' + message.to + ' - ' + type);
           resolve(info);
         });
       });

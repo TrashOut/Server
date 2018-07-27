@@ -822,8 +822,10 @@ module.exports = function (User) {
 
           item.organizations = [];
           item.userHasOrganization.forEach(function (orgRelation) {
-            orgRelation.organization.organizationRoleId = orgRelation.organizationRoleId;
-            item.organizations.push(orgRelation.organization);
+            if (orgRelation.organization) {              
+              orgRelation.organization.organizationRoleId = orgRelation.organizationRoleId;
+              item.organizations.push(orgRelation.organization);
+            }
           });
 
           item.badges = [];
