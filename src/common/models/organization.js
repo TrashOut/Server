@@ -472,7 +472,7 @@ module.exports = function (Organization) {
   };
 
   /**
-   * 
+   *
    * @param {Number} id
    * @param {Function} cb
    */
@@ -730,7 +730,7 @@ module.exports = function (Organization) {
       var payload = [];
       instances.forEach(function(instance) {
         var temp = instance.toJSON();
-        
+
         var user = temp.user;
         user.organizationRoleId = temp.organizationRoleId;
 
@@ -743,7 +743,7 @@ module.exports = function (Organization) {
 
   /**
    * List users associated with an organization
-   * 
+   *
    * @param {Number} id Organization ID
    * @param {Number} organizationRoleIds (optional)
    * @param {Function} cb
@@ -774,7 +774,7 @@ module.exports = function (Organization) {
 
   /**
    * Activities of organization's users
-   * 
+   *
    * @param {Number} id
    * @param {String} type
    * @param {Number} page
@@ -864,6 +864,103 @@ module.exports = function (Organization) {
       });
     });
   };
+
+
+
+  /**
+   * Get organization stats
+   *
+   * @param {Number} id Organization ID
+   * @param {Number} organizationRoleIds (optional)
+   * @param {Function} cb
+   * @returns {Object}
+   */
+  Organization.stats = function (id, organizationRoleIds, cb) {
+    var filter = {
+          where: {
+            organizationId: id
+          },
+          include: [
+            'user',
+            {
+              user: 'image'
+            }
+          ]
+        };
+
+        if (organizationRoleIds) {
+          filter.where.organizationRoleId = {
+            inq: organizationRoleIds.split(',').map(Number).filter(Boolean)
+          };
+        }
+
+        Organization.app.models.UserHasOrganization.find(filter, function (err, instances) {
+          if (err) {
+            console.error(err);
+            return cb({message: err.detail});
+          }
+
+          var payload = [];
+          instances.forEach(function(instance) {
+            var temp = instance.toJSON();
+
+            var user = temp.user;
+            user.organizationRoleId = temp.organizationRoleId;
+
+            payload.push(user.id);
+          });
+
+          Organization.getStats(payload, true, function (err, statsData) {
+            cb(null, statsData);
+          });
+
+        });
+    };
+
+
+  /**
+   * Get user stats (trashpoint counts by action type)
+   * @param {Number} userId
+   * @param {Boolean} nonAnonymousOnly
+   * @param {Function} callback
+   * @returns {Object}
+   */
+  Organization.getStats = function (userIds, nonAnonymousOnly, callback) {
+    var ds = Organization.app.dataSources.trashout;
+
+    var sqlIds = '(';
+    userIds.forEach(function(id) {
+      sqlIds += id + ', ';
+    });
+    sqlIds = sqlIds.substring(0, sqlIds.length - 2);
+    sqlIds += ')';
+
+    var sql = '';
+    sql += 'SELECT \n';
+
+    // Select all the reported trashes
+    sql += '  (SELECT count(*) FROM public.trash_point_activity tpa WHERE tpa.user_id in ' + sqlIds + ' AND tpa.status IN(\'stillHere\', \'more\', \'less\') ' + (nonAnonymousOnly ? ' AND tpa.anonymous IS FALSE': '') + ' AND tpa.is_first IS TRUE) AS reported, \n';
+
+    // Select all the updated trashes without first reported ones
+    sql += '  (SELECT count(*) FROM public.trash_point_activity tpa WHERE tpa.user_id in ' + sqlIds + ' AND tpa.status IN(\'stillHere\', \'more\', \'less\') ' + (nonAnonymousOnly ? ' AND tpa.anonymous IS FALSE': '') + ' AND tpa.is_first IS NOT TRUE) AS updated, \n';
+
+    // Select all the cleaned trashes
+    sql += '  (SELECT count(*) FROM public.trash_point_activity tpa WHERE tpa.user_id in ' + sqlIds + ' AND tpa.cleaned_by_me = TRUE AND tpa.status = \'cleaned\'' + (nonAnonymousOnly ? ' AND tpa.anonymous IS FALSE': '') + ') AS cleaned \n';
+
+
+    ds.connector.execute(sql, Organization.app.models.BaseModel.sqlParameters, function (err, dataset) {
+      if (err) {
+        return callback(err);
+      }
+
+      if (dataset && dataset.length) {
+        callback(null, dataset.pop());
+      } else {
+        callback(null);
+      }
+    });
+  };
+
 
   Organization.disableRemoteMethod('create', true); // Removes (POST) /organization
   Organization.disableRemoteMethod('find', true); // Removes (GET) /organization
@@ -1004,7 +1101,7 @@ module.exports = function (Organization) {
         {arg: 'id', type: 'number', required: true},
         {arg: 'emails', type: 'object', required: true},
         {arg: 'headers', type: 'object'},
-        {arg: 'body', type: 'string'}        
+        {arg: 'body', type: 'string'}
       ],
       returns: {type: 'object', root: true}
     }
@@ -1072,6 +1169,19 @@ module.exports = function (Organization) {
         {arg: 'limit', type: 'number'}
       ],
       returns: {type: 'object', root: true}
+    }
+  );
+
+
+  Organization.remoteMethod(
+    'stats',
+    {
+      http: {path: '/:id/stats', verb: 'get'},
+      accepts: [
+        {arg: 'id', type: 'number', required: true},
+        {arg: 'organizationRoleIds', type: 'string'}
+      ],
+      returns: {arg: 'stats', type: 'number'}
     }
   );
 
