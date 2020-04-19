@@ -37,10 +37,7 @@
     "dataSource": "db",
     "public": true
   },
-  "Redis": {
-    "dataSource": "redis",
-    "public": true
-  },
+
   "ApiKey": {
     "dataSource": "trashout",
     "public": true

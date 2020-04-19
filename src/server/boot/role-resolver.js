@@ -33,7 +33,7 @@ module.exports = function (app) {
 
   /**
    * Authenticates user via Firebase and saves its instance for further usage
-   * 
+   *
    * @param {String} token
    * @param {String} role
    * @returns {Object}
@@ -111,7 +111,7 @@ module.exports = function (app) {
 
   /**
    * Checks whether ApiKey is valid and whether doesn't reached the request count limit
-   * 
+   *
    * @param {String} apiKey
    * @returns {Object}
    */
@@ -190,12 +190,14 @@ module.exports = function (app) {
    * @param {Object} context
    * @param {Function} cb Callback
    */
+
+
   Role.registerResolver(Constants.USER_ROLE_SUPER_ADMIN, function (role, context, cb) {
     function reject(e) {
       process.nextTick(function () {
         if (e && e.status === 440) {
           cb(e, false);
-        } else {          
+        } else {
           cb(null, false);
         }
       });
@@ -220,7 +222,7 @@ module.exports = function (app) {
       process.nextTick(function () {
         if (e && e.status === 440) {
           cb(e, false);
-        } else {          
+        } else {
           cb(null, false);
         }
       });
@@ -245,7 +247,7 @@ module.exports = function (app) {
       process.nextTick(function () {
         if (e && e.status === 440) {
           cb(e, false);
-        } else {          
+        } else {
           cb(null, false);
         }
       });
@@ -270,7 +272,7 @@ module.exports = function (app) {
       process.nextTick(function () {
         if (e && e.status === 440) {
           cb(e, false);
-        } else {          
+        } else {
           cb(null, false);
         }
       });
@@ -286,7 +288,7 @@ module.exports = function (app) {
   /**
    * Common role resolver - virtual role for authorization purposes only (user will obtain his real role)
    * This role is used for checking area based privileges
-   * 
+   *
    * @param {String} role
    * @param {Object} context
    * @param {Function} cb Callback
@@ -296,7 +298,7 @@ module.exports = function (app) {
       process.nextTick(function () {
         if (e && e.status === 440) {
           cb(e, false);
-        } else {          
+        } else {
           cb(null, false);
         }
       });
@@ -310,7 +312,7 @@ module.exports = function (app) {
 
   /**
    * API role resolver
-   * 
+   *
    * @param {String} role
    * @param {Object} context
    * @param {Function} cb Callback
@@ -331,7 +333,7 @@ module.exports = function (app) {
 
   /**
    * API role resolver
-   * 
+   *
    * @param {String} role
    * @param {Object} context
    * @param {Function} cb Callback
