@@ -4,18 +4,12 @@
     "connector": "memory"
   },
   "trashout": {
-    "host": "localhost",
+    "host": "dev.cexkztwhm7co.eu-west-1.rds.amazonaws.com",
     "port": 5432,
     "database": "trashout",
-    "password": "kunsepase",
+    "password": "4GnwRCRFDURuAKLPNQoo",
     "name": "trashout",
     "user": "trashout",
     "connector": "postgresql"
-  },
-  "redis": {
-    "host": "localhost",
-    "port": 6379,
-    "name": "redis",
-    "connector": "redis"
   }
 }
