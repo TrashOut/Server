@@ -220,15 +220,15 @@
       "principalType": "ROLE",
       "principalId": "apiKey",
       "permission": "ALLOW",
-      "property": ["list", "listCount", "detail", "listUsers", "listUsersCount", "activities"]
+      "property": ["list", "listCount", "detail", "listUsers", "listUsersCount", "activities", "stats"]
     },
     {
       "accessType": "*",
       "principalType": "ROLE",
       "principalId": "common",
       "permission": "ALLOW",
-      "property": ["list", "listCount", "detail", "listUsers", "listUsersCount", "activities", "ins", "upd", "del", "removeUser", "addUser", "sendInvitations"]
-    }    
+      "property": ["list", "listCount", "detail", "listUsers", "listUsersCount", "activities", "ins", "upd", "del", "removeUser", "addUser", "sendInvitations", "stats"]
+    }
   ],
   "methods": {}
 }

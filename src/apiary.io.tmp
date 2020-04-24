@@ -128,11 +128,11 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
                             "userId": 2,
                             "firstName": "John",
                             "lastName": "Doe"
-                        },                        
+                        },
                         "updateTime": "2016-04-12T08:38:33.000Z",
                         "changed": {
                             "types": [
-                            "liquid", 
+                            "liquid",
                             "plastic"
                             ],
                             "status": "more"
@@ -164,7 +164,7 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
                         "description": "Lorem ipsum",
                         "start": "2017-05-15T08:00:00.000Z",
                         "duration": 120
-                    }                
+                    }
                 ]
             }
 
@@ -173,10 +173,10 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
     + Body
 
             {
-                "todo":"todo"    
+                "todo":"todo"
             }
 
-+ Response 403 
++ Response 403
 
 + Response 500
 
@@ -201,7 +201,7 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
             X-Token: e64as3dw53a5w1daw5d3sdasdaskdasd5sad2
 
     + Body
-    
+
             {
                 "images": [
                     {
@@ -229,12 +229,12 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
                 },
                 "size": "bag",
                 "types": [
-                    "plastic", 
-                    "domestic", 
-                    "automotive", 
-                    "liquid", 
+                    "plastic",
+                    "domestic",
+                    "automotive",
+                    "liquid",
                     "dangerous"
-                ],            
+                ],
                 "note": "Lorem ipsum",
                 "anonymous": true,
                 "status": "less",
@@ -250,13 +250,13 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
 + Response 201 (application/json)
 
     + Body
-    
+
             {
                 "id": 2,
                 "activityId": 10,
                 "statusCode": 200
             }
-            
+
 + Response 404
 
 + Response 403
@@ -300,7 +300,7 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
     + timeBoundaryTo (optional, string) - Timestamp format "2016-04-12T07:38:33.000Z" - required when timeBoundaryFrom is set
     + trashStatus (optional, string) - Comma separated states - "stillHere", "less", "more", "cleaned"
     + trashSize (optional, string) - Comma separated sizes - car, bag, wheelbarrow
-    + trashType (optional, string) - Comma separated types - plastic, domestic, automotive, liquid, dangerous, metal, electronic, deadAnimals, organic, construction 
+    + trashType (optional, string) - Comma separated types - plastic, domestic, automotive, liquid, dangerous, metal, electronic, deadAnimals, organic, construction
     + trashAccessibility (optional, string) - Comma separated accesibility types with prefix "-" for negative filter (e.g. trashAccessibility=byCar,-inCave) - "byCar", "inCave", "underWater", "notForGeneralCleanup"
     + trashNote (optional, string) - Text
     + trashIds (optional, string) - Comma separated trash identifiers
@@ -310,7 +310,7 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
     + userPosition (optional, string) - Comma separated latitude and longitude of current user position. Required when attribute "orderBy=gps" is used.
     + page (optional, integer) - Page
     + limit (optional, integer) - Limit
-        
+
 + Response 200 (application/json)
 
         [
@@ -332,10 +332,10 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
                         "subLocality": "Praha 1",
                         "street": "Vodičkova",
                         "zip": 22
-                    }                    
+                    }
                 },
                 "types": [
-                    "liquid", 
+                    "liquid",
                     "plastic"
                 ],
                 "size": "car",
@@ -357,8 +357,8 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
                         "thumbRetinaStorageLocation": null,
                         "thumbRetinaDownloadUrl": "03-01-updated.jpg",
                         "id": 4
-                    }                    
-                ], 
+                    }
+                ],
                 "created": "2016-01-12T07:38:33.000Z",
                 "updateTime": "2016-03-12T07:38:33.000Z",
                 "updateHistory": [
@@ -368,7 +368,7 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
                             "userId": 2,
                             "firstName": "John",
                             "lastName": "Doe"
-                        },                        
+                        },
                         "updateTime": "2016-01-12T07:38:33.000Z",
                         "changed": {
                             "images": [
@@ -381,7 +381,7 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
                                     "thumbRetinaStorageLocation": null,
                                     "thumbRetinaDownloadUrl": "01-01-created.jpg",
                                     "id": 4
-                                }                                  
+                                }
                             ],
                             "status": "stillHere"
                         }
@@ -392,7 +392,7 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
                             "userId": 2,
                             "firstName": "John",
                             "lastName": "Doe"
-                        },                        
+                        },
                         "updateTime": "2016-02-12T08:38:33.000Z",
                         "changed": {
                             "images": [
@@ -405,10 +405,10 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
                                     "thumbRetinaStorageLocation": null,
                                     "thumbRetinaDownloadUrl": "02-01-created.jpg",
                                     "id": 4
-                                }                                   
+                                }
                             ],
                             "types": [
-                                "liquid", 
+                                "liquid",
                                 "plastic"
                             ],
                             "status": "more",
@@ -436,7 +436,7 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
                         "subLocality": "Praha 1",
                         "street": "Vodičkova",
                         "zip": 22
-                    }                    
+                    }
                 },
                 "types": [
                     "domestic"
@@ -449,7 +449,7 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
                     "id": 5,
                     "firstName": "Láďa",
                     "lastName": "Hruška"
-                },                
+                },
                 "images": [
                     {
                         "created": "2016-11-23T14:01:15.237Z",
@@ -460,16 +460,16 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
                         "thumbRetinaStorageLocation": null,
                         "thumbRetinaDownloadUrl": "02-01-created.jpg",
                         "id": 4
-                    }                    
-                ],                 
+                    }
+                ],
                 "created": "2015-01-12T07:38:33.000Z",
                 "updateTime": null,
                 "updateHistory": [],
                 "url": "https://www.trashout.ngo/illegal-trash/4606923655610368",
                 "updateNeeded": false
-            }            
+            }
         ]
-        
+
 + Response 404
 
 + Response 403
@@ -523,12 +523,12 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
                 },
                 "size": "bag",
                 "types": [
-                    "plastic", 
-                    "domestic", 
-                    "automotive", 
-                    "liquid", 
+                    "plastic",
+                    "domestic",
+                    "automotive",
+                    "liquid",
                     "dangerous"
-                ],            
+                ],
                 "note": "Lorem ipsum",
                 "anonymous": true,
                 "accessibility": {
@@ -548,7 +548,7 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
                 "activityId": 6,
                 "statusCode": 200
             }
-            
+
 + Response 403 (application/json)
 
     + Body
@@ -556,8 +556,8 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
             {
                 "message": "error"
             }
-   
-+ Response 500 
+
++ Response 500
 
 ## Trash List Count [/trash/count/{?area,geocells,geoAreaStreet,geoAreaZip,geoAreaCity,geoAreaAa3,geoAreaAa2,geoAreaAa1,geoAreaCountry,geoAreaContinent,spam,unreviewed,timeBoundaryFrom,timeBoundaryTo,trashStatus,trashSize,trashType,trashAccessibility,trashNote,trashIds,userIds}]
 
@@ -580,7 +580,7 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
     + timeBoundaryTo (optional, string) - Timestamp format "2016-04-12T07:38:33.000Z" - required when timeBoundaryFrom is set
     + trashStatus (optional, string) - Comma separated states - stillHere, less, more, cleaned
     + trashSize (optional, string) - Comma separated sizes - car, bag, wheelbarrow
-    + trashType (optional, string) - Comma separated types - plastic, domestic, automotive, liquid, dangerous, metal, electronic, deadAnimals, organic, construction 
+    + trashType (optional, string) - Comma separated types - plastic, domestic, automotive, liquid, dangerous, metal, electronic, deadAnimals, organic, construction
     + trashAccessibility (optional, string) - Comma separated accesibility types with prefix "-" for negative filter (e.g. trashAccessibility=byCar,-inCave) - "byCar", "inCave", "underWater", "notForGeneralCleanup"
     + trashNote (optional, string) - Text
     + trashIds (optional, string) - Comma separated trash identifiers
@@ -592,8 +592,8 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
 
             {
                 "count": 666
-            } 
-            
+            }
+
 + Response 404
 
 + Response 403
@@ -608,13 +608,13 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
 
     + zoomLevel (integer) - Zoom level
     + geocells (string) - Comma separated geocells
-    + spam (optional, boolean) - Whether one (or more) of trash activities are marked as spam    
+    + spam (optional, boolean) - Whether one (or more) of trash activities are marked as spam
     + unreviewed (optional, boolean) - Whether trash (first activity) is marked as unreviewed
     + timeBoundaryFrom (optional, string) - Timestamp format "2016-04-12T07:38:33.000Z"
     + timeBoundaryTo (optional, string) - Timestamp format "2016-04-12T07:38:33.000Z" - required when timeBoundaryFrom is set
-    + trashStatus (optional, string) - Comma separated states - stillHere, less, more, cleaned    
+    + trashStatus (optional, string) - Comma separated states - stillHere, less, more, cleaned
     + trashSize (optional, string) - Comma separated sizes - car, bag, wheelbarrow
-    + trashType (optional, string) - Comma separated types - plastic, domestic, automotive, liquid, dangerous, metal, electronic, deadAnimals, organic, construction 
+    + trashType (optional, string) - Comma separated types - plastic, domestic, automotive, liquid, dangerous, metal, electronic, deadAnimals, organic, construction
     + trashAccessibility (optional, string) - Comma separated accesibility types with prefix "-" for negative filter (e.g. trashAccessibility=byCar,-inCave) - "byCar", "inCave", "underWater", "notForGeneralCleanup"
     + trashNote (optional, string) - Text
     + trashIds (optional, string) - Comma separated trash identifiers
@@ -645,7 +645,7 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
                         "cleaned" : 10,
                         "less": 0,
                         "more": 0
-                    }                    
+                    }
                 },
                 {
                     "geocell" : "e06b6",
@@ -656,8 +656,8 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
                         "cleaned" : 10,
                         "less": 0,
                         "more": 0
-                    }                    
-                }                  
+                    }
+                }
             ]
 
 + Response 404
@@ -709,7 +709,7 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
 + Parameters
 
     + id (number) - ID of the user in the form of an integer
-    
+
 + Response 200 (application/json)
 
     + Body
@@ -759,7 +759,7 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
             {
                 "message": "error"
             }
-    
+
 + Response 404 (application/json)
 
     + Body
@@ -782,7 +782,7 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
     + newsletter (boolean, optional) - Whether user confirmed newsletter
     + image (object, optional) - Image object containing at least two properties "fullStorageLocation" and "fullDownloadUrl"
     + uid (string, required) - Firebase uid
-    + tokenFCM (string, optional) - Token 
+    + tokenFCM (string, optional) - Token
     + facebookUrl (string, optional) - Facebook URL
     + twitterUrl (string, optional) - Twitter URL
     + googlePlusUrl (string, optional) - Google+ Url
@@ -843,16 +843,16 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
 + Response 201 (application/json)
 
     + Body
-    
+
             {
                 "id": 2,
                 "statusCode": 200
             }
-            
+
 + Response 403 (application/json)
 
     + Body
-    
+
             {
                 "message": "error"
             }
@@ -862,7 +862,7 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
 + Response 201 (application/json)
 
     + Body
-    
+
             {
                 "id": 2
             }
@@ -886,17 +886,17 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
     + Headers
 
             X-Token: 1a2b3c4d ## Logged user's Firebase token
-    
+
 + Response 200 (application/json)
 
     + Body
-    
+
             2 # userId
-        
+
 + Response 403 (application/json)
 
     + Body
-    
+
             {
                 "error": {
                     "status": 403,
@@ -905,11 +905,11 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
                     "fbData": {}
                 }
             }
-    
+
 + Response 404 (application/json)
 
     + Body
-    
+
             {
                 "error": {
                     "status": 404,
@@ -918,7 +918,7 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
                     "fbData": {}
                 }
             }
-            
+
 ## Invite Users to Organization by e-mail [/organization/{id}/sendInvitations]
 
 ### Send e-mail invites [POST]
@@ -942,7 +942,7 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
                  "messagesSent": 2
             }
 
-## Add User to Organization [/user/joinOrganization/{id}] 
+## Add User to Organization [/user/joinOrganization/{id}]
 
 + Parameters
 
@@ -959,7 +959,7 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
     + Headers
 
             X-Token: 1a2b3c4d ## Logged user's Firebase token
-    
+
     + Body
 
             {
@@ -969,7 +969,7 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
 + Response 201 (application/json)
 
     + Body
-    
+
             {
                 "success": true
             }
@@ -985,7 +985,7 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
 + Response 200 (application/json)
 
     + Body
-    
+
             [
                 {
                     "type": "trashPoint",
@@ -1054,8 +1054,8 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
                         "long": 15.7497604,
                         "accuracy": 65,
                         "source": "wifi"
-                    }                    
-                } 
+                    }
+                }
             ]
 
 ## User Collection [/user{?emails,userIds,minPoints,maxPoints,areaIds,organizationIds,includeInCleanup,reviewed,orderBy,page,limit}]
@@ -1074,7 +1074,7 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
     + orderBy (optional, integer) - Comma separated ordering with prefix "-" for descending order (id, created, reviewed, email, fistName, lastName)
     + page (optional, integer) - Page
     + limit (optional, integer) - Limit
-    
+
 + Response 200 (application/json)
 
         [
@@ -1153,7 +1153,7 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
     + newsletter (boolean, optional) - Whether user confirmed newsletter
     + image (object, optional) - Image object containing at least two properties "fullStorageLocation" and "fullDownloadUrl"
     + uid (string, required) - Firebase uid
-    + tokenFCM (string, optional) - Token 
+    + tokenFCM (string, optional) - Token
     + facebookUrl (string, optional) - Facebook URL
     + twitterUrl (string, optional) - Twitter URL
     + googlePlusUrl (string, optional) - Google+ Url
@@ -1187,7 +1187,7 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
             "reviewed": false,
             "areaId": null
         }
-        
+
 + Response 201 (application/json)
 
     + Body
@@ -1234,7 +1234,7 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
                 "updated": 8,
                 "cleaned": 2
             }
-            
+
 + Response 404 (application/json)
 
     + Body
@@ -1302,7 +1302,7 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
             ]
 
 ## User role Collection [/user-role]
-            
+
 ### List [GET]
 
 + Response 200 (application/json)
@@ -1320,7 +1320,7 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
                 },
             ]
 
-### Create [POST]    
+### Create [POST]
 
 + Request (application/json)
 
@@ -1332,7 +1332,7 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
                     "title": "Authenticated user"
                 }
             ]
-            
+
 + Response 201 (application/json)
 
     + Body
@@ -1347,7 +1347,7 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
 
 ## User role [/user-role/{id}]
 
-### Update [PUT]   
+### Update [PUT]
 
 + Request (application/json)
 
@@ -1369,7 +1369,7 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
                     "title": "Authenticated user"
                 }
             ]
-            
+
 ### Delete [DELETE]
 
 + Response 204
@@ -1393,7 +1393,7 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
 
 ## Badge [/badge/{id}]
 
-### Find [GET]   
+### Find [GET]
 
 + Request (application/json)
 
@@ -1409,7 +1409,7 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
                 "points": 10
             }
 
-### Create [POST]   
+### Create [POST]
 
 + Request (application/json)
 
@@ -1436,7 +1436,7 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
                 }
             ]
 
-### Update [PUT]   
+### Update [PUT]
 
 + Request (application/json)
 
@@ -1473,13 +1473,13 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
 + Parameters
 
     + id (number) - ID of the Organization in the form of an integer
-    
+
 ### Get an Existing Organization [GET]
 
 + Response 201 (application/json)
 
     + Body
-    
+
             {
                 "name": "Green Peace",
                 "description": "Treehugging freaks",
@@ -1504,7 +1504,7 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
     + mailSubject (string, required) - Mail subject
     + mailBody (string, required) - Mail body
     + parentId (number, optional) - ID of parent organization
-    
+
 + Request (application/json)
 
         {
@@ -1554,12 +1554,12 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
 + Parameters
 
     + id (number) - ID of the organization in the form of an integer
-    
+
 
 + Response 200 (application/json)
 
     + Body
-    
+
             [
                 {
                     "userId": 5,
@@ -1567,7 +1567,7 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
                     "updateTime": "2016-04-12T07:38:33.000Z",
                     "changed": {
                         "types": ["plastic"]
-                    }                
+                    }
                 },
                 {
                     "userId": 5,
@@ -1586,12 +1586,12 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
 + Parameters
 
     + id (number) - ID of the organization in the form of an integer
-    
+
 
 + Response 200 (application/json)
 
     + Body
-    
+
             [
                 {
                     "id": 2,
@@ -1643,7 +1643,32 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
                     "deviceId": "1c234e5r6",
                     "points": 123
                 }
-            ]            
+            ]
+
+
+
+
+## Organization Statistics [/organization/{id}/stats]
+
+### Organization Statistics [GET]
+
++ Parameters
+
+    + id (number) - ID of the organization in the form of an integer
+
+
++ Response 200 (application/json)
+
+    + Body
+            {
+              "stats": {
+                "reported": "1792",
+                "updated": "314",
+                "cleaned": "14"
+              }
+            }
+
+
 
 ## Organizations Collection [/organization/{?name,description,organizationTypeId,gpsId,mailSubject,mailBody,contactEmail,contactPhone,contactTwitter,contactFacebook,contactUrl,imageId,parentId,sort,page,limit}]
 
@@ -1704,7 +1729,7 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
                 "imageId": "3",
                 "gpsId": "2",
                 "id": 2
-            }      
+            }
         ]
 
 ### Create a New Organization [POST]
@@ -1714,7 +1739,7 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
     + mailSubject (string, required) - Mail subject
     + mailBody (string, required) - Mail body
     + parentId (number, optional) - ID of parent organization
-    
+
 + Request (application/json)
 
         {
@@ -1736,15 +1761,15 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
 + Response 201 (application/json)
 
     + Body
-    
+
             {
                 "id": 3
             }
-            
+
 + Response 403 (application/json)
 
     + Body
-    
+
             {
                 "message": "error"
             }
@@ -1822,7 +1847,7 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
                 "userId": 2,
                 "reported": "2016-04-12T07:38:33.000Z",
                 "resolved": ""
-            }            
+            }
         ]
 
 ### Create a New Spam [POST]
@@ -1852,15 +1877,15 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
             Location: /spam/3
 
     + Body
-    
+
             {
                 "id": 3
             }
-            
+
 + Response 403 (application/json)
 
     + Body
-    
+
             {
                 "message": "error"
             }
@@ -1890,7 +1915,7 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
                 "userId": 2,
                 "reported": "2016-04-12T07:38:33.000Z",
                 "resolved": ""
-            }            
+            }
         ]
 
 ### Create a New Spam [POST]
@@ -1918,15 +1943,15 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
             Location: /spam/3
 
     + Body
-    
+
             {
                 "id": 3
             }
-            
+
 + Response 403 (application/json)
 
     + Body
-    
+
             {
                 "message": "error"
             }
@@ -1957,7 +1982,7 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
                 "userId": 2,
                 "reported": "2016-04-12T07:38:33.000Z",
                 "resolved": ""
-            }            
+            }
         ]
 
 ### Create a New Spam [POST]
@@ -1985,15 +2010,15 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
             Location: /spam/3
 
     + Body
-    
+
             {
                 "id": 3
             }
-            
+
 + Response 403 (application/json)
 
     + Body
-    
+
             {
                 "message": "error"
             }
@@ -2024,7 +2049,7 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
                 "userId": 2,
                 "reported": "2016-04-12T07:38:33.000Z",
                 "resolved": ""
-            }            
+            }
         ]
 
 ### Create a New Spam [POST]
@@ -2052,15 +2077,15 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
             Location: /spam/3
 
     + Body
-    
+
             {
                 "id": 3
             }
-            
+
 + Response 403 (application/json)
 
     + Body
-    
+
             {
                 "message": "error"
             }
@@ -2070,14 +2095,14 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
 + Parameters
 
     + id (number) - ID of the Event in the form of an integer
-    
+
 ### Get an Existing Event [GET]
 
 + Response 201 (application/json)
 
 
     + Body
-    
+
             {
                 "images": [
                     {
@@ -2089,8 +2114,8 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
                         "thumbRetinaStorageLocation": null,
                         "thumbRetinaDownloadUrl": null,
                         "id": 3
-                    }            
-                ],            
+                    }
+                ],
                 "name": "Cleaning",
                 "gps": {
                     "lat": 54.123456,
@@ -2104,13 +2129,13 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
                         "lat": 50.083677,
                         "long": 14.426023,
                         "accuracy": 10,
-                        "source": "network"                        
+                        "source": "network"
                     },
                     "bottomRight": {
                         "lat": 50.052761,
                         "long": 14.513095,
                         "accuracy": 10,
-                        "source": "network"                    
+                        "source": "network"
                     }
                 },
                 "description": "Lorem ipsum",
@@ -2143,7 +2168,7 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
                                 "thumbRetinaStorageLocation": null,
                                 "thumbRetinaDownloadUrl": null,
                                 "id": 3
-                            } 
+                            }
                         ],
                         "types": [
                             "metal",
@@ -2174,13 +2199,13 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
     + description (array, optional) - Event description
     + start (string, required) - Timestamp
     + duration (number, optional) - Event duration from start in minutes
-    + bring (string, optional) - What you have to bring with you to this event 
+    + bring (string, optional) - What you have to bring with you to this event
     + have (string, optional) - What event organizators already have
     + childFriendly (boolean, optional) - Whether the event is child friendly
     + contact (object, required) - Object with properties email and phone
     + trashPointIds (array, required) - Array of TrashPoint ids that belongs to this event
     + collectionPointIds (array, required) - Array of CollectionPoint ids that belongs to this event
- 
+
 + Request (application/json)
 
     + Headers
@@ -2196,19 +2221,19 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
                     "long": 54.123456,
                     "accuracy": 0,
                     "source": "gps"
-                }, 
+                },
                 "cleaningArea": {
                     "upperLeft": {
                         "lat": 50.083677,
                         "long": 14.426023,
                         "accuracy": 10,
-                        "source": "network"                    
+                        "source": "network"
                     },
                     "bottomRight": {
                         "lat": 50.052761,
                         "long": 14.513095,
                         "accuracy": 10,
-                        "source": "network"                    
+                        "source": "network"
                     }
                 },
                 "description": "Lorem ipsum",
@@ -2232,11 +2257,11 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
             Location: /event/2
 
     + Body
-    
+
             {
                 "id": 2
             }
-            
+
 + Response 404
 
 + Response 403
@@ -2245,7 +2270,7 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
 
 ### Delete an Existing Event [DELETE]
 
-+ Response 204  
++ Response 204
 
 + Response 404
 
@@ -2271,11 +2296,11 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
             X-Token: e64as3dw53a5w1daw5d3sdasdaskdasd5sad2
 
     + Body
-    
+
             {
                 "userIds": [1, 2 ,3]
             }
-        
+
 + Response 200 (application/json)
 
         {
@@ -2355,7 +2380,7 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
     + userPosition (optional, string) - Comma separated latitude and longitude of current user position. Required when attribute "orderBy" is used.
     + page (optional, integer) - Page
     + limit (optional, integer) - Limit
-        
+
 + Response 200 (application/json)
 
         [
@@ -2366,13 +2391,13 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
                     "long": 54.123456,
                     "accuracy": 0,
                     "source": "gps"
-                }, 
+                },
                 "cleaningArea": {
                     "upperLeft": {
                         "lat": 50.083677,
                         "long": 14.426023,
                         "accuracy": 10,
-                        "source": "network"                    
+                        "source": "network"
                     },
                     "bottomRight": {
                         "lat": 50.052761,
@@ -2408,13 +2433,13 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
                         "lat": 50.083677,
                         "long": 14.426023,
                         "accuracy": 10,
-                        "source": "network"                    
+                        "source": "network"
                     },
                     "bottomRight": {
                         "lat": 50.052761,
                         "long": 14.513095,
                         "accuracy": 10,
-                        "source": "network"                        
+                        "source": "network"
                     }
                 },
                 "description": "Lorem ipsum",
@@ -2430,7 +2455,7 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
                 ,
                 "trashIds": [4],
                 "collectionPointIds": [3,4]
-            }           
+            }
         ]
 
 ### Create a New Event [POST]
@@ -2443,7 +2468,7 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
     + description (array, optional) - Event description
     + start (string, required) - Timestamp
     + duration (number, optional) - Event duration from start in minutes
-    + bring (string, optional) - What you have to bring with you to this event 
+    + bring (string, optional) - What you have to bring with you to this event
     + have (string, optional) - What event organizators already have
     + childFriendly (boolean, optional) - Whether the event is child friendly
     + contact (object, required) - Object with properties email and phone
@@ -2461,7 +2486,7 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
                     "thumbStorageLocation": null,
                     "thumbRetinaStorageLocation": null,
                     "thumbRetinaDownloadUrl": null
-                }            
+                }
             ],
             "name": "New cleaning",
             "gps": {
@@ -2505,16 +2530,16 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
             Location: /event/2
 
     + Body
-    
+
             {
                 "id": 1,
                 "statusCode": 200
             }
-            
+
 + Response 403 (application/json)
 
     + Body
-    
+
             {
                 "message": "error"
             }
@@ -2524,13 +2549,13 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
 + Parameters
 
     + id (number) - ID of the Collection Point in the form of an integer
-    
+
 ### Get an Existing Collection Point [GET]
 
 + Response 201 (application/json)
 
     + Body
-    
+
             {
                 "id": 1,
                 "activityId": 1,
@@ -2579,8 +2604,8 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
                     "firstName": "Brambor",
                     "lastName": "Vomáčka"
                 },
-                "openingHours": [ 
-                    { "Monday": 
+                "openingHours": [
+                    { "Monday":
                         [
                             { "Start": "0900", "Finish": "1300" },
                             { "Start": "1400", "Finish": "1800" }
@@ -2620,11 +2645,11 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
                 "url": "https://www.trashout.ngo/collection-point/4606923655610368",
                 "size": "scrapyard",
                 "types": [
-                    "plastic", 
+                    "plastic",
                     "metal",
                     "organic"
                 ],
-                "created": "2016-01-12T07:38:33.000Z",                
+                "created": "2016-01-12T07:38:33.000Z",
                 "updateTime": null,
                 "updateHistory": [],
                 "events": [
@@ -2651,7 +2676,7 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
                         "description": "Lorem ipsum",
                         "start": "2017-05-15T08:00:00.000Z",
                         "duration": 120
-                    }                
+                    }
                 ]
             }
 
@@ -2707,7 +2732,7 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
                     "long": 54.123456,
                     "accuracy": 0,
                     "source": "gps"
-                },           
+                },
                 "note": "Lorem ipsum"
             }
 
@@ -2718,13 +2743,13 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
             Location: /collection-point/2
 
     + Body
-    
+
             {
                 "id": 2,
                 "activityId": 3,
                 "statusCode": 200
             }
-            
+
 + Response 404
 
 + Response 403
@@ -2739,7 +2764,7 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
 
             X-Token: e64as3dw53a5w1daw5d3sdasdaskdasd5sad2
 
-+ Response 204  
++ Response 204
 
 + Response 404
 
@@ -2766,7 +2791,7 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
     + timeBoundaryFrom (optional, string) - Timestamp format "2016-04-12T07:38:33.000Z"
     + timeBoundaryTo (optional, string) - Timestamp format "2016-04-12T07:38:33.000Z" - required when timeBoundaryFrom is set
     + collectionPointSize (optional, string) - Comma separated sizes - "dustbin", "scrapyard"
-    + collectionPointType (optional, string) - Comma separated types - "plastic", "metal", "electronic", "deadAnimals", "organic" 
+    + collectionPointType (optional, string) - Comma separated types - "plastic", "metal", "electronic", "deadAnimals", "organic"
     + collectionPointNote (optional, string) - Text
     + collectionPointIds (optional, string) - Comma separated collection point identifiers
     + userIds (optional, string) - Comma separated user identifiers (users who created report or made actualization)
@@ -2775,7 +2800,7 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
     + userPosition (optional, string) - Comma separated latitude and longitude of current user position. Required when attribute "orderBy=gps" is used.
     + page (optional, integer) - Page
     + limit (optional, integer) - Limit
-        
+
 + Response 200 (application/json)
 
         [
@@ -2806,17 +2831,17 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
                         "thumbRetinaStorageLocation": null,
                         "thumbRetinaDownloadUrl": "01-01-created.jpg",
                         "id": 4
-                    }                                  
-                ],               
+                    }
+                ],
                 "updateTime": "",
                 "updateHistory": [],
                 "url": "https://www.trashout.ngo/collection-point/4606923655610368",
                 "size": "dustbin",
                 "types": [
-                    "plastic", 
+                    "plastic",
                     "metal",
                     "organic"
-                ]                
+                ]
             },
             {
                 "id": 2,
@@ -2835,8 +2860,8 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
                     "firstName": "John",
                     "firstName": "Doe"
                 },
-                "openingHours": [ 
-                    { "Monday": 
+                "openingHours": [
+                    { "Monday":
                         [
                             { "Start": "0900", "Finish": "1300" },
                             { "Start": "1400", "Finish": "1800" }
@@ -2872,8 +2897,8 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
                     { "Sunday":
                         []
                     }
-                ],                
-                "images": [],                
+                ],
+                "images": [],
                 "updateTime": "2016-04-12T07:38:33.000Z",
                 "updateHistory": [
                     {
@@ -2887,11 +2912,11 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
                 "url": "https://www.trashout.ngo/collection-point/4606923655610368",
                 "size": "scrapyard",
                 "types": [
-                    "plastic", 
+                    "plastic",
                     "metal",
                     "organic"
-                ]                 
-            }            
+                ]
+            }
         ]
 
 ### Create a New Collection Point [POST]
@@ -2941,8 +2966,8 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
                     "accuracy": 0,
                     "source": "network"
                 },
-                "openingHours": [ 
-                    { "Monday": 
+                "openingHours": [
+                    { "Monday":
                         [
                             { "Start": "0900", "Finish": "1300" },
                             { "Start": "1400", "Finish": "1800" }
@@ -2985,7 +3010,7 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
                 "email": "bum@bum.com",
                 "size": "scrapyard",
                 "types": [
-                    "plastic", 
+                    "plastic",
                     "metal",
                     "organic"
                 ]
@@ -2998,21 +3023,21 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
             Location: /collection-point/2
 
     + Body
-    
+
             {
                 "id": 1,
                 "activityId": 3,
                 "statusCode": 200
             }
-            
+
 + Response 403 (application/json)
 
     + Body
-    
+
             {
                 "message": "error"
             }
-            
+
 + Response 500
 
 ## Area [/area/{id}]
@@ -3020,14 +3045,14 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
 + Parameters
 
     + id (number) - ID of the Area in the form of an integer
- 
+
 ### Get an Existing Area [GET]
 
 + Response 201 (application/json)
 
 
     + Body
-    
+
             {
                 "id": 1,
                 "centerLat": 54.123456,
@@ -3045,16 +3070,16 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
                 "zoomLevel": 1
                 "aliasId": null
             }
-            
+
 + Response 404 (application/json)
-    
+
     + Body
-    
+
             {
-                "todo":"todo"    
+                "todo":"todo"
             }
 
-+ Response 403 
++ Response 403
 
 + Response 500
 
@@ -3073,16 +3098,16 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
 + Response 201 (application/json)
 
     + Body
-    
+
             {
                 "id": 2
             }
-            
+
 + Response 404
 
 + Response 403
 
-+ Response 500    
++ Response 500
 
 ## Area Collection [/area/{?continent,country,aa1,aa2,aa3,locality,subLocality,street,zip,alias,type,page,limit}]
 
@@ -3102,7 +3127,7 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
     + type (optional, string) - Area type (continent, country, aa1, aa2, locality, subLocality, street, zip)
     + page (optional, integer) - Page
     + limit (optional, integer) - Limit
-    
+
 + Response 200 (application/json)
 
         [
@@ -3142,7 +3167,7 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
                 "street": "Vodičkova",
                 "zip": null,
                 "zoomLevel": 1
-                "aliasId": null 
+                "aliasId": null
                 "stillHere": 3,
                 "less": 0,
                 "more": 0,
@@ -3169,19 +3194,19 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
                 "more": 0,
                 "cleaned": 0
         ]
-        
+
 + Response 404
 
 + Response 403
 
-+ Response 500   
++ Response 500
 
 ## Area Aliases [/area/aliases/{id}]
 
 + Parameters
 
     + id (number) - ID of the Area in the form of an integer
-    
+
 ### Get an Existing Aliases for given Area [GET]
 
 + Response 200 (application/json)
@@ -3205,12 +3230,12 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
                 "aliasId": 2
             }
         ]
-        
+
 + Response 404
 
 + Response 403
 
-+ Response 500           
++ Response 500
 
 ## PR content - article collection [/prContent/{?language,page,limit,order}]
 
@@ -3269,7 +3294,7 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
                 ]
             }
         ]
-        
+
 + Response 404
 
 ## PR content - article [/prContent/{id}]
@@ -3324,5 +3349,5 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
               }
             ]
         }
-        
+
 + Response 404
