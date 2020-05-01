@@ -201,5 +201,9 @@
   "Device": {
     "dataSource": "trashout",
     "public": false
+  },
+  "Comment": {
+    "dataSource": "trashout",
+    "public": false
   }
 }

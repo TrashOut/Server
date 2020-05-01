@@ -72,6 +72,10 @@
         "dataType": "bigint",
         "nullable": "NO"
       }
+    },
+    "comments": {
+      "type": "hasMany",
+      "model": "Comments"
     }
   },
   "acls": [
@@ -80,14 +84,14 @@
       "principalType": "ROLE",
       "principalId": "apiKey",
       "permission": "ALLOW",
-      "property": ["getTrash", "list", "listCount", "zoomPoints", "notificationTest"]
+      "property": ["getTrash", "list", "listCount", "zoomPoints", "notificationTest", "getComments", "getComment", "addComment", "deleteComment"]
     },
     {
       "accessType": "EXECUTE",
       "principalType": "ROLE",
       "principalId": "common",
       "permission": "ALLOW",
-      "property": ["getTrash", "list", "listCount", "zoomPoints", "reportTrash", "updateTrash", "deleteTrash", "deleteActivity", "deleteActivityImage", "notificationTest"]
+      "property": ["getTrash", "list", "listCount", "zoomPoints", "reportTrash", "updateTrash", "deleteTrash", "deleteActivity", "deleteActivityImage", "notificationTest", "getComments", "getComment", "addComment", "deleteComment"]
     },
     {
       "accessType": "*",
