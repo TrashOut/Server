@@ -702,6 +702,115 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
 
 + Response 500
 
+## Trash Comment [/trash/{id}/comment/{commentId}]
+
++ Parameters
+
+    + id (number) - ID of the Trash in the form of an integer
+    + commentId (number) - ID of the Comment in the form of an integer
+
+### Get Trash Comment detail [GET]
+
++ Request (application/json)
+
+    + Headers
+
+            X-Token: e64as3dw53a5w1daw5d3sdasdaskdasd5sad2
+
++ Response 200 (application/json)
+
+    + Body
+
+        {
+            "created": "2020-04-30T14:52:29.639Z",
+            "userId": 25374,
+            "organizationId": null,
+            "trashPointId": 50899,
+            "body": "This is an Trash comment.",
+            "id": 3
+        }
+
++ Response 404
+
+### Delete an Comment from Trash [DELETE]
+
++ Request (application/json)
+
+    + Headers
+
+            X-Token: e64as3dw53a5w1daw5d3sdasdaskdasd5sad2
+
++ Response 204
+
++ Response 404
+
++ Response 403
+
+## Trash Comment Collection [/trash/{id}/comment]
+
++ Parameters
+
+    + id (number) - ID of the Trash in the form of an integer
+
+### Get Trash Comment List [GET]
+
++ Request (application/json)
+
+    + Headers
+
+            X-Token: e64as3dw53a5w1daw5d3sdasdaskdasd5sad2
+
++ Response 200 (application/json)
+
+    + Body
+
+        [
+            {
+                "created": "2020-04-30T14:52:29.639Z",
+                "userId": 25374,
+                "organizationId": null,
+                "trashPointId": 50899,
+                "body": "aaa",
+                "id": 3
+            },
+            {
+                "created": "2020-04-30T19:47:53.697Z",
+                "userId": 25374,
+                "organizationId": null,
+                "trashPointId": 50899,
+                "body": "bbbbbbbb",
+                "id": 4
+            }
+        ]
+
+### Create a New Trash Comment [POST]
+
++ Request (application/json)
+
+    + Headers
+
+            X-Token: e64as3dw53a5w1daw5d3sdasdaskdasd5sad2
+
+    + Body
+
+        {
+            "body": "next comment 7",
+            "organizationId": 3
+        }
+
++ Response 200 (application/json)
+
+    + Body
+
+        {
+            "created": "$now",
+            "userId": null,
+            "organizationId": 3,
+            "trashPointId": 50899,
+            "body": "next comment 11",
+            "id": 16
+        }
+
 ## User [/user/{id}]
 
 ### Find a user [GET]
