@@ -33,7 +33,7 @@ var messageManager = require('../firebase-message-manager');
 
 /**
  * Returns changes between current trash and new trash
- * 
+ *
  * @param {Object} current
  * @param {Object} update
  * @returns {Object}
@@ -97,7 +97,7 @@ module.exports = function (TrashPoint) {
 
   /**
    * Stores parameters for parametrized queries and returns parameter number
-   * 
+   *
    * @param {type} parameter
    * @returns {String}
    */
@@ -106,10 +106,10 @@ module.exports = function (TrashPoint) {
   }
 
   /**
-   * Update TrashPoint 
-   * 
+   * Update TrashPoint
+   *
    * @param {Number} id TrashPoint identifier
-   * @param {Object} response 
+   * @param {Object} response
    * @returns {Object}
    */
   function performUpdate(id, response) {
@@ -261,7 +261,7 @@ module.exports = function (TrashPoint) {
 
   /**
    * Returns ids of given TrashPointTypes
-   * 
+   *
    * @param {Array} types
    * @param {Boolean} checkIfExists
    * @returns {Array} result
@@ -300,7 +300,7 @@ module.exports = function (TrashPoint) {
 
   /**
    * Check input parameter
-   * 
+   *
    * @param {String} method
    * @param {Array} images
    * @param {String} gps
@@ -342,7 +342,7 @@ module.exports = function (TrashPoint) {
           return reject({message: err.detail, status: 403});
         }
 
-        // Check source existence    
+        // Check source existence
         if (!responseGPSSource) {
           return reject({message: 'GPSSource is not valid', status: 404});
         }
@@ -429,7 +429,7 @@ module.exports = function (TrashPoint) {
 
   /**
    * Creates SQL [where] clause for SQL query in TrashPoint list
-   * 
+   *
    * @param {String} area
    * @param {String} geocells
    * @param {String} geoAreaStreet
@@ -598,7 +598,7 @@ module.exports = function (TrashPoint) {
     if (userIds) {
       sql += '  AND tpa.trash_point_id IN (SELECT DISTINCT(tpa3.trash_point_id) FROM public.trash_point_activity tpa3 WHERE tpa3.anonymous IS FALSE AND tpa3.user_id IN (' + sanitize(userIds.split(',').map(Number).filter(Boolean)) + ')) \n';
     }
-    
+
     switch (updateNeeded) {
     case 'true':
     case '1':
@@ -615,7 +615,7 @@ module.exports = function (TrashPoint) {
 
   /**
    * Creates SQL query for TrashPoint list
-   * 
+   *
    * @param {Array} attributes
    * @param {String} area
    * @param {String} geocells
@@ -865,7 +865,7 @@ module.exports = function (TrashPoint) {
 
   /**
    * Creates SQL query for TrashPoint count
-   * 
+   *
    * @param {String} area
    * @param {String} geocells
    * @param {String} geoAreaStreet
@@ -914,7 +914,7 @@ module.exports = function (TrashPoint) {
 
   /**
    * Returns TrashPoint detail
-   * 
+   *
    * @param {Number} id
    * @param {Function} cb
    * @returns {Object}
@@ -1031,7 +1031,7 @@ module.exports = function (TrashPoint) {
       }
 
       var updateNeeded = 0;
-      if (current.status !== Constants.TRASH_STATUS_CLEANED) {        
+      if (current.status !== Constants.TRASH_STATUS_CLEANED) {
         var date = new Date();
         updateNeeded = (((date.getTime() - current.created.getTime()) / (24 * 60 * 60 * 1000)) > Constants.TRASH_UPDATE_NEEDED_DAYS) ? 1 : 0;
       }
@@ -1068,10 +1068,10 @@ module.exports = function (TrashPoint) {
 
   /**
    * Deletes TrashPoint
-   * 
-   * User can delete TrashPoint only when creator is unreviewed user 
+   *
+   * User can delete TrashPoint only when creator is unreviewed user
    * or one of TrashPointActivity is marked as spam
-   * 
+   *
    * @param {Number} id
    * @param {Function} cb
    */
@@ -1166,7 +1166,7 @@ module.exports = function (TrashPoint) {
 
   /**
    * Deletes TrashPointActivity
-   * 
+   *
    * @param {Number} id
    * @param {Function} cb
    */
@@ -1285,7 +1285,7 @@ module.exports = function (TrashPoint) {
           }
         }).catch(function (e) {
           cb({message: e.message, status: 403});
-        });        
+        });
 
       });
 
@@ -1295,7 +1295,7 @@ module.exports = function (TrashPoint) {
 
   /**
    * Deletes Image from TrashPointActivity
-   * 
+   *
    * @param {Number} id
    * @param {Number} imageId
    * @param {Function} cb
@@ -1382,7 +1382,7 @@ module.exports = function (TrashPoint) {
 
   /**
    * Returns count of TrashPoints that matches given conditions
-   * 
+   *
    * @param {String} area
    * @param {String} geocells
    * @param {String} geoAreaStreet
@@ -1426,7 +1426,7 @@ module.exports = function (TrashPoint) {
 
   /**
    * Returns array of TrashPoints matching given conditions
-   * 
+   *
    * @param {String} area
    * @param {String} geocells
    * @param {String} geoAreaStreet
@@ -1608,10 +1608,10 @@ module.exports = function (TrashPoint) {
   /**
    * Returns geocells with TrashPoints that belongs into it.
    * Marker is set in the average value of all TrashPoint GPS coordinates.
-   * 
+   *
    * If TrashPoint has connection to Area (country), then it is clustered
-   * by the country. 
-   * 
+   * by the country.
+   *
    * @param {String} zoomLevel
    * @param {String} geocells
    * @param {String} spam Boolean GET method fix
@@ -1854,7 +1854,7 @@ module.exports = function (TrashPoint) {
 
   /**
    * Creates TrashPoint (or updates existing if needed - check comments inside the method)
-   * 
+   *
    * @param {Array} images
    * @param {Object} gps
    * @param {String} size
@@ -1988,7 +1988,7 @@ module.exports = function (TrashPoint) {
                       if(responseTrashPoint.userId) {
                         TrashPoint.app.models.User.refreshPoints(responseTrashPoint.userId);
                       }
-                      
+
                       cb(null, responseTrashPoint.id, responseTrashPointActivity.id, 200);
               });
 
@@ -2023,7 +2023,7 @@ module.exports = function (TrashPoint) {
 
   /**
    * Updates TrashPoint
-   * 
+   *
    * @param {Number} id
    * @param {Array} images
    * @param {Object} gps
@@ -2061,7 +2061,7 @@ module.exports = function (TrashPoint) {
 
   /**
    * Approve all trashes by user id
-   * 
+   *
    * @param {Number} userId
    */
   TrashPoint.approveAllUsersTrashes = function(userId) {
@@ -2087,6 +2087,189 @@ module.exports = function (TrashPoint) {
       cb(null, response);
     }).catch(function (error) {
       cb(error);
+    });
+  };
+
+  /**
+   * Get list of comment by Trash point ID
+   *
+   * @param {integer} id
+   * @param {Function} cb
+   * @returns {Array}
+   */
+  TrashPoint.getComments = function (id, cb) {
+    var filter = {
+      where: {
+        trashPointId: id
+      }
+    };
+
+    TrashPoint.app.models.Comment.find(filter, function (err, data) {
+      if (err) {
+        console.error(err);
+        return cb({message: err.detail});
+      }
+
+      cb(null, data);
+    });
+  };
+
+  /**
+   * Get one specific comment by Trash point ID and Comment ID
+   *
+   * @param {integer} id
+   * @param {integer} idComment
+   * @param {Function} cb
+   * @returns {Array}
+   */
+  TrashPoint.getComment = function (id, idComment, cb) {
+    var filter = {
+      where: {
+        trashPointId: id,
+        id: idComment
+      }
+    };
+
+    TrashPoint.app.models.Comment.findOne(filter, function (err, data) {
+      if (err) {
+        console.error(err);
+        return cb({message: err.detail});
+      }
+
+      if (!data) {
+        return cb({message: 'Comment does not exist', status: 404});
+      }
+
+      cb(null, data);
+    });
+  };
+
+  /**
+   * Check if is the user manager of organization defined by Organization ID
+   *
+   * @param {integer} userId
+   * @param {integer} organizationId
+   * @returns {Promise}
+   */
+  function isUserManagerOfOrganization (userId, organizationId) {
+    return new Promise(function (resolve, reject) {
+      if (!organizationId) {
+        return resolve(true);
+      }
+
+      var filter = {
+        where: {
+          userId: userId,
+          organizationId: organizationId,
+          organizationRoleId: 1
+        }
+      };
+
+      TrashPoint.app.models.UserHasOrganization.findOne(filter, function (err, data) {
+        if (err) {
+          return reject(err);
+        }
+
+        if (data) {
+          return resolve(true);
+        } else {
+          return resolve(false);
+        }
+      });
+    });
+  }
+
+  /**
+   * Add comment to Trash point
+   *
+   * @param {integer} id
+   * @param {integer} organizationId
+   * @param {string} body
+   * @param {Function} cb
+   * @returns {Array}
+   */
+  TrashPoint.addComment = function (id, organizationId, body, cb) {
+    var userId = TrashPoint.app.models.BaseModel.user.id;
+
+    // check if user is allowed to publish as this organization
+    isUserManagerOfOrganization(userId, organizationId).then(function (ok) {
+      if (!ok) {
+        return cb({message: 'You are not allowed to publish comment as this organization.', status: 403});
+      }
+
+      var inputData = {
+        trashPointId: id,
+        userId: organizationId ? null: userId,
+        organizationId: organizationId,
+        body: body
+      };
+
+      TrashPoint.app.models.Comment.create(inputData, function (err, data) {
+        if (err) {
+          console.error(err);
+          return cb({message: err.detail});
+        }
+
+        cb(null, data);
+      });
+    }).catch(function (err) {
+      console.error(err);
+      return cb(err);
+    });
+  };
+
+  /**
+   * Delete comment of Trash point
+   *
+   * @param {integer} id
+   * @param {integer} idComment
+   * @param {Function} cb
+   */
+  TrashPoint.deleteComment = function (id, idComment, cb) {
+    var filter = {
+      where: {
+        trashPointId: id,
+        id: idComment
+      }
+    };
+
+    // find comment by Trash point ID and Comment ID
+    TrashPoint.app.models.Comment.findOne(filter, function (err, data) {
+      if (err) {
+        console.error(err);
+        return cb({ message: err.detail });
+      }
+
+      if (!data) {
+        return cb({ message: 'Comment not found.', status: 404 });
+      }
+
+      var user = TrashPoint.app.models.BaseModel.user;
+
+      // get list of organizations where is the user manager
+      var manageOrganizations = user.userHasOrganization.filter(function (org) {
+        return org.organizationRoleId == 1; // filter only manager role
+      }).map(function (org) {
+        return parseInt(org.organizationId); // return only organization id (in integer format)
+      });
+
+      // check permissions
+      if ( user.userRoleId != 1 // user is not admin
+        && user.userRoleId != 4 // and user is not superAdmin
+        && user.id != data.userId // and user is not author
+        && manageOrganizations.indexOf(data.organizationId) === -1 // and user is manager of author organization
+      ) {
+        return cb({ message: 'You are not allowed to remove this comment.', status: 403 });
+      }
+
+      TrashPoint.app.models.Comment.deleteById(idComment, function (err) {
+        if (err) {
+          console.error(err);
+          return cb({ message: err.detail });
+        }
+
+        cb({ status: 204 });
+      });
     });
   };
 
@@ -2191,7 +2374,7 @@ module.exports = function (TrashPoint) {
         {arg: 'geoAreaStreet', type: 'string', description: 'Street'},
         {arg: 'geoAreaZip', type: 'string', description: 'Zip'},
         {arg: 'geoAreaSubLocality', type: 'string', description: 'Sub locality'},
-        {arg: 'geoAreaLocality', type: 'string', description: 'Locality'},        
+        {arg: 'geoAreaLocality', type: 'string', description: 'Locality'},
         {arg: 'geoAreaAa3', type: 'string', description: 'Administrative Area 3'},
         {arg: 'geoAreaAa2', type: 'string', description: 'Administrative Area 2'},
         {arg: 'geoAreaAa1', type: 'string', description: 'Administrative Area 1'},
@@ -2229,7 +2412,7 @@ module.exports = function (TrashPoint) {
         {arg: 'geoAreaStreet', type: 'string', description: 'Street'},
         {arg: 'geoAreaZip', type: 'string', description: 'Zip'},
         {arg: 'geoAreaSubLocality', type: 'string', description: 'Sub locality'},
-        {arg: 'geoAreaLocality', type: 'string', description: 'Locality'},      
+        {arg: 'geoAreaLocality', type: 'string', description: 'Locality'},
         {arg: 'geoAreaAa3', type: 'string', description: 'Administrative Area 3'},
         {arg: 'geoAreaAa2', type: 'string', description: 'Administrative Area 2'},
         {arg: 'geoAreaAa1', type: 'string', description: 'Administrative Area 1'},
@@ -2284,6 +2467,69 @@ module.exports = function (TrashPoint) {
         {arg: 'message', type: 'object', required: true}
       ],
       returns: {type: 'object', root: true}
+    }
+  );
+
+  /**
+   * Enable remote invocation for getComments
+   */
+  TrashPoint.remoteMethod(
+    'getComments',
+    {
+      description: 'Get all comments of this TrashPoint',
+      http: {path: '/:id/comment', verb: 'get'},
+      accepts: [
+        {arg: 'id', type: 'integer', required: true, description: 'TrashPoint ID'}
+      ],
+      returns: {type: 'object', root: true}
+    }
+  );
+
+  /**
+   * Enable remote invocation for getComment
+   */
+  TrashPoint.remoteMethod(
+    'getComment',
+    {
+      description: 'Get detail of TrashPoint comment',
+      http: {path: '/:id/comment/:idComment', verb: 'get'},
+      accepts: [
+        {arg: 'id', type: 'integer', required: true, description: 'TrashPoint ID'},
+        {arg: 'idComment', type: 'integer', required: true, description: 'Comment ID'}
+      ],
+      returns: {type: 'object', root: true}
+    }
+  );
+
+  /**
+   * Enable remote invocation for addComment
+   */
+  TrashPoint.remoteMethod(
+    'addComment',
+    {
+      description: 'Create new TrashPoint comment',
+      http: {path: '/:id/comment', verb: 'post'},
+      accepts: [
+        {arg: 'id', type: 'integer', required: true, description: 'TrashPoint ID'},
+        {arg: 'organizationId', type: 'integer', description: 'Organization ID'},
+        {arg: 'body', type: 'string', description: 'Comment'},
+      ],
+      returns: {type: 'object', root: true}
+    }
+  );
+
+  /**
+   * Enable remote invocation for deleteComment
+   */
+  TrashPoint.remoteMethod(
+    'deleteComment',
+    {
+      description: 'Remove TrashPoint comment',
+      http: {path: '/:id/comment/:idComment', verb: 'delete'},
+      accepts: [
+        {arg: 'id', type: 'integer', required: true, description: 'TrashPoint ID'},
+        {arg: 'idComment', type: 'integer', required: true, description: 'Comment ID'}
+      ]
     }
   );
 };
