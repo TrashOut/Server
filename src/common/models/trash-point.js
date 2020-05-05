@@ -2524,7 +2524,7 @@ module.exports = function (TrashPoint) {
   TrashPoint.remoteMethod(
     'deleteComment',
     {
-      description: 'Remove TrashPoint comment',
+      description: 'Remove TrashPoint comment by TrashPoint ID and Comment ID',
       http: {path: '/:id/comment/:idComment', verb: 'delete'},
       accepts: [
         {arg: 'id', type: 'integer', required: true, description: 'TrashPoint ID'},
