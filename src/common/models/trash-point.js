@@ -2129,6 +2129,10 @@ module.exports = function (TrashPoint) {
         return cb({message: err.detail});
       }
 
+      data.forEach(function(comment) {
+        comment.canIDelete = canIDeleteComment(comment);
+      });
+
       cb(null, data);
     });
   };
@@ -2168,6 +2172,8 @@ module.exports = function (TrashPoint) {
       if (!data) {
         return cb({message: 'Comment does not exist', status: 404});
       }
+
+      data.canIDelete = canIDeleteComment(data);
 
       cb(null, data);
     });
@@ -2248,6 +2254,34 @@ module.exports = function (TrashPoint) {
   };
 
   /**
+   * Can I (logged user) delete the comment?
+   *
+   * @param {object} comment
+   * @returns {boolean}
+   */
+  function canIDeleteComment (comment) {
+    var user = TrashPoint.app.models.BaseModel.user;
+
+    // get list of organizations where is the user manager
+    var manageOrganizations = user.userHasOrganization.filter(function (org) {
+      return org.organizationRoleId == 1; // filter only manager role
+    }).map(function (org) {
+      return parseInt(org.organizationId); // return only organization id (in integer format)
+    });
+
+    // check permissions
+    if ( user.userRoleId != 1 // user is not admin
+      && user.userRoleId != 4 // and user is not superAdmin
+      && user.id != comment.userId // and user is not author
+      && manageOrganizations.indexOf(comment.organizationId) === -1 // and user is manager of author organization
+    ) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  /**
    * Delete comment of Trash point
    *
    * @param {integer} id
@@ -2273,21 +2307,8 @@ module.exports = function (TrashPoint) {
         return cb({ message: 'Comment not found.', status: 404 });
       }
 
-      var user = TrashPoint.app.models.BaseModel.user;
-
-      // get list of organizations where is the user manager
-      var manageOrganizations = user.userHasOrganization.filter(function (org) {
-        return org.organizationRoleId == 1; // filter only manager role
-      }).map(function (org) {
-        return parseInt(org.organizationId); // return only organization id (in integer format)
-      });
-
       // check permissions
-      if ( user.userRoleId != 1 // user is not admin
-        && user.userRoleId != 4 // and user is not superAdmin
-        && user.id != data.userId // and user is not author
-        && manageOrganizations.indexOf(data.organizationId) === -1 // and user is manager of author organization
-      ) {
+      if (!canIDeleteComment(data)) {
         return cb({ message: 'You are not allowed to remove this comment.', status: 403 });
       }
 

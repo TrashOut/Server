@@ -746,6 +746,7 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
             "trashPointId": 50899,
             "body": "This is an Trash comment.",
             "id": 3,
+            "canIDelete": false,
             "user": {
                 "firstName": "Jan",
                 "lastName": "Novak",
@@ -814,6 +815,7 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
                 "trashPointId": 50899,
                 "body": "This is another Trash comment",
                 "id": 4,
+                "canIDelete": true,
                 "user": {
                    "firstName": "Jan",
                    "lastName": "Novak",
@@ -846,6 +848,7 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
                 "trashPointId": 50899,
                 "body": "This is an Trash comment",
                 "id": 3,
+                "canIDelete": true,
                 "user": {
                   "firstName": "Jan",
                   "lastName": "Novak",
