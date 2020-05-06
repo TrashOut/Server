@@ -2112,7 +2112,13 @@ module.exports = function (TrashPoint) {
       },
       include: [
         'user',
+        {
+          user: 'image'
+        },
         'organization',
+        {
+          organization: 'image'
+        },
       ],
       order: 'created DESC'
     };
@@ -2143,7 +2149,13 @@ module.exports = function (TrashPoint) {
       },
       include: [
         'user',
+        {
+          user: 'image'
+        },
         'organization',
+        {
+          organization: 'image'
+        },
       ]
     };
 
