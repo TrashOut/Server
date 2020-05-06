@@ -165,6 +165,24 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
                         "start": "2017-05-15T08:00:00.000Z",
                         "duration": 120
                     }
+                ],
+                comments: [
+                    {
+                        "created": "2020-04-30T19:47:53.697Z",
+                        "userId": 25374,
+                        "organizationId": null,
+                        "trashPointId": 1,
+                        "body": "This is another Trash comment",
+                        "id": 4
+                    },
+                    {
+                        "created": "2020-04-30T14:52:29.639Z",
+                        "userId": 25374,
+                        "organizationId": null,
+                        "trashPointId": 1,
+                        "body": "This is an Trash comment",
+                        "id": 3
+                    }
                 ]
             }
 
@@ -752,7 +770,7 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
 
     + id (number) - ID of the Trash in the form of an integer
 
-### Get Trash Comment List [GET]
+### Get Trash Comment List (sorted from newest to oldest) [GET]
 
 + Request (application/json)
 
@@ -766,20 +784,20 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
 
         [
             {
-                "created": "2020-04-30T14:52:29.639Z",
-                "userId": 25374,
-                "organizationId": null,
-                "trashPointId": 50899,
-                "body": "This is an Trash comment",
-                "id": 3
-            },
-            {
                 "created": "2020-04-30T19:47:53.697Z",
                 "userId": 25374,
                 "organizationId": null,
                 "trashPointId": 50899,
                 "body": "This is another Trash comment",
                 "id": 4
+            },
+            {
+                "created": "2020-04-30T14:52:29.639Z",
+                "userId": 25374,
+                "organizationId": null,
+                "trashPointId": 50899,
+                "body": "This is an Trash comment",
+                "id": 3
             }
         ]
 

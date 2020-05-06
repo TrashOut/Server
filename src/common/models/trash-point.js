@@ -1036,33 +1036,41 @@ module.exports = function (TrashPoint) {
         updateNeeded = (((date.getTime() - current.created.getTime()) / (24 * 60 * 60 * 1000)) > Constants.TRASH_UPDATE_NEEDED_DAYS) ? 1 : 0;
       }
 
-      var result = {
-        id: current.trashPointId,
-        activityId: current.id,
-        images: images,
-        gps: gps,
-        size: current.size.name,
-        types: types,
-        userInfo: {
-          userId: current.user.id,
-          firstName: current.user.firstName,
-          lastName: current.user.lastName,
-          image: current.user.image || null
-        },
-        anonymous: current.user.email ? current.anonymous : true, // Check if this activity is created by Firebase anonymous user
-        note: current.note,
-        status: current.status,
-        cleanedByMe: current.cleanedByMe,
-        accessibility: accessibility,
-        created: current.trashPoint.created,
-        updateTime: current.created,
-        updateHistory: history,
-        url: 'https://admin.trashout.ngo/trash-management/detail/' + current.trashPointId,
-        updateNeeded: updateNeeded,
-        events: events
-      };
+      TrashPoint.getComments(current.trashPointId, function (err, comments) {
+        if (err) {
+          console.error(err);
+          return cb({message: err.detail});
+        }
 
-      cb(null, result);
+        var result = {
+          id: current.trashPointId,
+          activityId: current.id,
+          images: images,
+          gps: gps,
+          size: current.size.name,
+          types: types,
+          userInfo: {
+            userId: current.user.id,
+            firstName: current.user.firstName,
+            lastName: current.user.lastName,
+            image: current.user.image || null
+          },
+          anonymous: current.user.email ? current.anonymous : true, // Check if this activity is created by Firebase anonymous user
+          note: current.note,
+          status: current.status,
+          cleanedByMe: current.cleanedByMe,
+          accessibility: accessibility,
+          created: current.trashPoint.created,
+          updateTime: current.created,
+          updateHistory: history,
+          url: 'https://admin.trashout.ngo/trash-management/detail/' + current.trashPointId,
+          updateNeeded: updateNeeded,
+          events: events,
+          comments: comments
+        };
+
+        cb(null, result);
+      });
     });
   };
 
@@ -2091,7 +2099,7 @@ module.exports = function (TrashPoint) {
   };
 
   /**
-   * Get list of comment by Trash point ID
+   * Get list of comment by Trash point ID (sorted from newest to oldest)
    *
    * @param {integer} id
    * @param {Function} cb
@@ -2101,7 +2109,8 @@ module.exports = function (TrashPoint) {
     var filter = {
       where: {
         trashPointId: id
-      }
+      },
+      order: 'created DESC'
     };
 
     TrashPoint.app.models.Comment.find(filter, function (err, data) {
