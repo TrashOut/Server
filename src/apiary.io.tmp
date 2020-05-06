@@ -745,7 +745,31 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
             "organizationId": null,
             "trashPointId": 50899,
             "body": "This is an Trash comment.",
-            "id": 3
+            "id": 3,
+            "user": {
+                "firstName": "Jan",
+                "lastName": "Novak",
+                "email": "jan@novak.com",
+                "info": null,
+                "birthdate": null,
+                "created": "2020-04-30T03:42:56.097Z",
+                "active": false,
+                "newsletter": false,
+                "imageId": null,
+                "uid": "NZAIbmM2ssVo4s1fN42sDo0AG6b2",
+                "facebookUID": null,
+                "facebookUrl": null,
+                "twitterUrl": null,
+                "googlePlusUrl": null,
+                "phoneNumber": null,
+                "points": "0",
+                "reviewed": null,
+                "eventOrganizer": false,
+                "volunteerCleanup": false,
+                "userRoleId": "3",
+                "language": "sk_SK",
+                "id": 25374
+            }
         }
 
 + Response 404
@@ -789,7 +813,31 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
                 "organizationId": null,
                 "trashPointId": 50899,
                 "body": "This is another Trash comment",
-                "id": 4
+                "id": 4,
+                "user": {
+                   "firstName": "Jan",
+                   "lastName": "Novak",
+                   "email": "jan@novak.com",
+                   "info": null,
+                   "birthdate": null,
+                   "created": "2020-04-30T03:42:56.097Z",
+                   "active": false,
+                   "newsletter": false,
+                   "imageId": null,
+                   "uid": "NZAIbmM2ssVo4s1fN42sDo0AG6b2",
+                   "facebookUID": null,
+                   "facebookUrl": null,
+                   "twitterUrl": null,
+                   "googlePlusUrl": null,
+                   "phoneNumber": null,
+                   "points": "0",
+                   "reviewed": null,
+                   "eventOrganizer": false,
+                   "volunteerCleanup": false,
+                   "userRoleId": "3",
+                   "language": "sk_SK",
+                   "id": 25374
+                }
             },
             {
                 "created": "2020-04-30T14:52:29.639Z",
@@ -797,7 +845,31 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
                 "organizationId": null,
                 "trashPointId": 50899,
                 "body": "This is an Trash comment",
-                "id": 3
+                "id": 3,
+                "user": {
+                  "firstName": "Jan",
+                  "lastName": "Novak",
+                  "email": "jan@novak.com",
+                  "info": null,
+                  "birthdate": null,
+                  "created": "2020-04-30T03:42:56.097Z",
+                  "active": false,
+                  "newsletter": false,
+                  "imageId": null,
+                  "uid": "NZAIbmM2ssVo4s1fN42sDo0AG6b2",
+                  "facebookUID": null,
+                  "facebookUrl": null,
+                  "twitterUrl": null,
+                  "googlePlusUrl": null,
+                  "phoneNumber": null,
+                  "points": "0",
+                  "reviewed": null,
+                  "eventOrganizer": false,
+                  "volunteerCleanup": false,
+                  "userRoleId": "3",
+                  "language": "sk_SK",
+                  "id": 25374
+                }
             }
         ]
 

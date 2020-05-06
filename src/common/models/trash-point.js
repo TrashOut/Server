@@ -2110,6 +2110,10 @@ module.exports = function (TrashPoint) {
       where: {
         trashPointId: id
       },
+      include: [
+        'user',
+        'organization',
+      ],
       order: 'created DESC'
     };
 
@@ -2136,7 +2140,11 @@ module.exports = function (TrashPoint) {
       where: {
         trashPointId: id,
         id: idComment
-      }
+      },
+      include: [
+        'user',
+        'organization',
+      ]
     };
 
     TrashPoint.app.models.Comment.findOne(filter, function (err, data) {
