@@ -2098,6 +2098,13 @@ module.exports = function (TrashPoint) {
     });
   };
 
+  /**
+   * Ugly hack for fix 3-level data (comment.user.image + comment.organization.image)
+   * TODO: solve root case and refactor this
+   *
+   * @param data
+   * @param callback
+   */
   function fixCommentImages (data, callback) {
     var promises = [];
 
