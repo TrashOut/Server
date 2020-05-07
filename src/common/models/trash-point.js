@@ -2098,6 +2098,44 @@ module.exports = function (TrashPoint) {
     });
   };
 
+  function fixCommentImages (data, callback) {
+    var promises = [];
+
+    data.forEach(function(comment) {
+      var commentData = comment.toJSON();
+
+      // user
+      if (commentData.user && commentData.user.imageId) {
+        promises.push(TrashPoint.app.models.Image.findById(commentData.user.imageId));
+      }
+
+      // organization
+      if (commentData.organization && commentData.organization.imageId) {
+        promises.push(TrashPoint.app.models.Image.findById(commentData.organization.imageId));
+      }
+    });
+
+    Promise.all(promises).then(function (images) {
+      images.forEach(function (image) {
+        data.forEach(function(comment) {
+          var commentData = comment.toJSON();
+
+          if (commentData.user && image.id == commentData.user.imageId) {
+            comment.user_image = image;
+            return;
+          }
+
+          if (commentData.organization && image.id == commentData.organization.imageId) {
+            comment.organization_image = image;
+            return;
+          }
+        });
+      });
+
+      callback();
+    });
+  }
+
   /**
    * Get list of comment by Trash point ID (sorted from newest to oldest)
    *
@@ -2112,13 +2150,14 @@ module.exports = function (TrashPoint) {
       },
       include: [
         'user',
-        {
-          user: 'image'
-        },
         'organization',
-        {
-          organization: 'image'
-        },
+        // temp replaced by fixCommentImages()
+        // {
+        //   user: 'image'
+        // },
+        // {
+        //   organization: 'image'
+        // },
       ],
       order: 'created DESC'
     };
@@ -2133,7 +2172,9 @@ module.exports = function (TrashPoint) {
         comment.canIDelete = canIDeleteComment(comment);
       });
 
-      cb(null, data);
+      fixCommentImages(data, function () {
+        cb(null, data);
+      });
     });
   };
 
@@ -2562,7 +2603,7 @@ module.exports = function (TrashPoint) {
       accepts: [
         {arg: 'id', type: 'integer', required: true, description: 'TrashPoint ID'},
         {arg: 'organizationId', type: 'integer', description: 'Organization ID'},
-        {arg: 'body', type: 'string', description: 'Comment'},
+        {arg: 'body', type: 'string', required: true, description: 'Comment'},
       ],
       returns: {type: 'object', root: true}
     }
