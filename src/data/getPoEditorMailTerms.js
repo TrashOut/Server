@@ -5,18 +5,21 @@ var querystring = require('querystring');
 
 program.version('1.0.0')
     .option('-p, --projectId [type]', 'projectId', "97547")
+    .option('-t, --token [type]', 'token')
     .parse(process.argv);
 
-downloadData(program.projectId, program.language);
+downloadData(program.projectId, program.language, program.token);
 
 
-function downloadData(projectId, language) {
+function downloadData(projectId, language, token) {
 
     var data_tokenId = {
-        api_token: 'fcf881851eace6b5015371bda2babe11',
+        api_token: token,
         id: projectId,
     }
     var postData_languages = querystring.stringify(data_tokenId);
+
+    var languagesWhitelist = ['cs', 'de', 'en', 'es', 'ru', 'sk'];
 
     console.log("get languages...");
 
@@ -25,8 +28,12 @@ function downloadData(projectId, language) {
 
             var lang_code = languages[id].code;
 
+            if (languagesWhitelist.indexOf(lang_code) === -1) {
+              continue;
+            }
+
             var data_tokenIdLanguage = {
-                api_token: 'fcf881851eace6b5015371bda2babe11',
+                api_token: token,
                 id: projectId,
                 language: lang_code
             }
@@ -112,16 +119,16 @@ function getTerms(token_data, languageCode) {
             translation = translation.replace('%s', '{string}');
 
             var mail_prefix = "mail.";
-            
+
             if(term.startsWith(mail_prefix))
-            {                
+            {
                 term_obj[term] = translation;
                 console.log(term_obj['term'] + " -- " + translation);
 
                 //export_data.push(term_obj);
             }
 
-            
+
 
             //console.log(term + " --- " + translation);
         }
@@ -132,7 +139,7 @@ function getTerms(token_data, languageCode) {
         var exportString = "";
         exportString += JSON.stringify(term_obj, null, '\t');
 
-        fs.writeFile("localization/" + languageCode + ".json", exportString, function(err) {
+        fs.writeFile("data/localization/" + languageCode + ".json", exportString, function(err) {
             if (err) {
                 return console.log(err);
             }
