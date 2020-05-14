@@ -31,6 +31,27 @@ var GeoPoint = require('loopback').GeoPoint;
 var AreaAccessControl = require('../area-access-control');
 var messageManager = require('../firebase-message-manager');
 
+// TODO: refactoring this for using one common source
+var emailTranslations = {
+  'cs_CZ': require(__dirname + '/../../data/localization/cs.json'),
+  'de_DE': require(__dirname + '/../../data/localization/de.json'),
+  'en_US': require(__dirname + '/../../data/localization/en.json'),
+  'es_ES': require(__dirname + '/../../data/localization/es.json'),
+  'ru_RU': require(__dirname + '/../../data/localization/ru.json'),
+  'sk_SK': require(__dirname + '/../../data/localization/sk.json')
+};
+
+// TODO: refactoring this for using one common source
+function checkLanguage(lang) {
+  var languages = ['cs_CZ', 'de_DE', 'en_US', 'es_ES', 'ru_RU', 'sk_SK'];
+
+  if (!lang || languages.indexOf(lang) === -1) {
+    lang = 'en_US';
+  }
+
+  return lang;
+}
+
 /**
  * Returns changes between current trash and new trash
  *
@@ -2055,6 +2076,9 @@ module.exports = function (TrashPoint) {
           console.error(err);
         });
 
+        // async sending emails about activity
+        TrashPoint.sendActivityEmail(id);
+
         cb(null, response.id, response.activityId, response.statusCode);
 
       }).catch(function (error) {
@@ -2293,6 +2317,9 @@ module.exports = function (TrashPoint) {
           return cb({message: err.detail});
         }
 
+        // async sending emails about activity
+        TrashPoint.sendActivityEmail(id);
+
         cb(null, data);
       });
     }).catch(function (err) {
@@ -2367,6 +2394,60 @@ module.exports = function (TrashPoint) {
         }
 
         cb({ status: 204 });
+      });
+    });
+  };
+
+  TrashPoint.sendActivityEmail = function (trashPointId) {
+    TrashPoint.getUsersForNotify(trashPointId).then(function (users) {
+      users.forEach(function (user) {
+        var headers = {
+          to: user.email,
+          subject: emailTranslations[checkLanguage(user.language)]['mail.activity.subject']
+        };
+
+        var params = {
+          user: user,
+          trashPointId: trashPointId,
+        };
+
+        TrashPoint.app.models.BaseModel.sendEmail('activity', headers, params, user.language);
+      });
+    });
+  };
+
+  TrashPoint.getUsersForNotify = function (trashPointId) {
+    trashPointId = parseInt(trashPointId);
+
+    var sql = 'SELECT user_id FROM trash_point WHERE id = ' + trashPointId;
+    sql += ' UNION SELECT user_id FROM trash_point_activity WHERE trash_point_id = ' + trashPointId;
+    sql += ' UNION SELECT user_id FROM comment WHERE user_id IS NOT NULL AND trash_point_id = ' + trashPointId;
+
+    var ds = TrashPoint.app.dataSources.trashout;
+
+    return new Promise(function (resolve, reject) {
+      ds.connector.execute(sql, function (err, result) {
+        if (err) {
+          return reject(err);
+        }
+
+        var userIds = result.map(function (item) {
+          return parseInt(item.user_id);
+        });
+
+        // TODO: add where condition for user has allowed this emails
+        TrashPoint.app.models.User.find({
+            where: {
+              id: {inq: userIds},
+              email: {neq: null},
+            }
+          }, function(err, users) {
+          if (err) {
+            return reject(err);
+          }
+
+          resolve(users);
+        });
       });
     });
   };
