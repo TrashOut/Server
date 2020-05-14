@@ -2077,7 +2077,7 @@ module.exports = function (TrashPoint) {
         });
 
         // async sending emails about activity
-        TrashPoint.sendActivityEmail(id);
+        TrashPoint.sendActivityEmail(id, TrashPoint.app.models.BaseModel.user.id);
 
         cb(null, response.id, response.activityId, response.statusCode);
 
@@ -2318,7 +2318,7 @@ module.exports = function (TrashPoint) {
         }
 
         // async sending emails about activity
-        TrashPoint.sendActivityEmail(id);
+        TrashPoint.sendActivityEmail(id, userId);
 
         cb(null, data);
       });
@@ -2398,8 +2398,8 @@ module.exports = function (TrashPoint) {
     });
   };
 
-  TrashPoint.sendActivityEmail = function (trashPointId) {
-    TrashPoint.getUsersForNotify(trashPointId).then(function (users) {
+  TrashPoint.sendActivityEmail = function (trashPointId, skipForUser) {
+    TrashPoint.getUsersForNotify(trashPointId, skipForUser).then(function (users) {
       users.forEach(function (user) {
         var headers = {
           to: user.email,
@@ -2416,7 +2416,7 @@ module.exports = function (TrashPoint) {
     });
   };
 
-  TrashPoint.getUsersForNotify = function (trashPointId) {
+  TrashPoint.getUsersForNotify = function (trashPointId, skipForUser) {
     trashPointId = parseInt(trashPointId);
 
     var sql = 'SELECT user_id FROM trash_point WHERE id = ' + trashPointId;
@@ -2434,6 +2434,12 @@ module.exports = function (TrashPoint) {
         var userIds = result.map(function (item) {
           return parseInt(item.user_id);
         });
+
+        // skip user
+        var removeIndex = userIds.indexOf(skipForUser);
+        if (removeIndex !== -1) {
+          userIds.splice(removeIndex, 1); // remove item from array
+        }
 
         TrashPoint.app.models.User.find({
             where: {
