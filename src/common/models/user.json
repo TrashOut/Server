@@ -58,7 +58,7 @@
     "created": {
       "type": "string",
       "required": true,
-      "default": "$now", 
+      "default": "$now",
       "postgresql": {
         "columnName": "created",
         "dataType": "timestamp",
@@ -191,6 +191,16 @@
       "default": false,
       "postgresql": {
         "columnName": "volunteer_cleanup",
+        "dataType": "boolean",
+        "nullable": "NO"
+      }
+    },
+    "trashActivityEmailNotification": {
+      "type": "boolean",
+      "required": true,
+      "default": true,
+      "postgresql": {
+        "columnName": "trash_activity_email_notification",
         "dataType": "boolean",
         "nullable": "NO"
       }
