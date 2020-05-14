@@ -114,10 +114,6 @@ function getTerms(token_data, languageCode) {
             var term = result_term.term;
             var translation = result_term.translation.content;
 
-
-            translation = translation.replace('%d', '{number}');
-            translation = translation.replace('%s', '{string}');
-
             var mail_prefix = "mail.";
 
             if(term.startsWith(mail_prefix))
