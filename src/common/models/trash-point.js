@@ -2435,11 +2435,11 @@ module.exports = function (TrashPoint) {
           return parseInt(item.user_id);
         });
 
-        // TODO: add where condition for user has allowed this emails
         TrashPoint.app.models.User.find({
             where: {
               id: {inq: userIds},
               email: {neq: null},
+              trashActivityEmailNotification: true,
             }
           }, function(err, users) {
           if (err) {
