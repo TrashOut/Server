@@ -2077,7 +2077,7 @@ module.exports = function (TrashPoint) {
         });
 
         // async sending emails about activity
-        TrashPoint.sendActivityEmail(id, TrashPoint.app.models.BaseModel.user.id);
+        TrashPoint.sendActivityEmail(id);
 
         cb(null, response.id, response.activityId, response.statusCode);
 
@@ -2318,7 +2318,7 @@ module.exports = function (TrashPoint) {
         }
 
         // async sending emails about activity
-        TrashPoint.sendActivityEmail(id, userId);
+        TrashPoint.sendActivityEmail(id);
 
         cb(null, data);
       });
@@ -2398,8 +2398,12 @@ module.exports = function (TrashPoint) {
     });
   };
 
-  TrashPoint.sendActivityEmail = function (trashPointId, skipForUser) {
-    TrashPoint.getUsersForNotify(trashPointId, skipForUser).then(function (users) {
+  /**
+   *
+   * @param {integer} trashPointId
+   */
+  TrashPoint.sendActivityEmail = function (trashPointId) {
+    TrashPoint.getUsersForNotify(trashPointId).then(function (users) {
       users.forEach(function (user) {
         var headers = {
           to: user.email,
@@ -2416,12 +2420,23 @@ module.exports = function (TrashPoint) {
     });
   };
 
-  TrashPoint.getUsersForNotify = function (trashPointId, skipForUser) {
+  /**
+   *
+   * @param {integer} trashPointId
+   * @returns {Promise}
+   */
+  TrashPoint.getUsersForNotify = function (trashPointId) {
     trashPointId = parseInt(trashPointId);
 
+    // get author of trash point
     var sql = 'SELECT user_id FROM trash_point WHERE id = ' + trashPointId;
+    // get authors of activities (updates)
     sql += ' UNION SELECT user_id FROM trash_point_activity WHERE trash_point_id = ' + trashPointId;
+    // get authors of comments
     sql += ' UNION SELECT user_id FROM comment WHERE user_id IS NOT NULL AND trash_point_id = ' + trashPointId;
+    // get managers of commented organizations
+    var sqlOrg = 'SELECT organization_id FROM comment WHERE organization_id IS NOT NULL AND trash_point_id = ' + trashPointId;
+    sql += ' UNION SELECT user_id FROM user_has_organization WHERE organization_role_id = 1 AND organization_id IN (' + sqlOrg + ')';
 
     var ds = TrashPoint.app.dataSources.trashout;
 
@@ -2435,19 +2450,19 @@ module.exports = function (TrashPoint) {
           return parseInt(item.user_id);
         });
 
-        // skip user
-        var removeIndex = userIds.indexOf(skipForUser);
+        // skip this user
+        var removeIndex = userIds.indexOf(TrashPoint.app.models.BaseModel.user.id);
         if (removeIndex !== -1) {
           userIds.splice(removeIndex, 1); // remove item from array
         }
 
         TrashPoint.app.models.User.find({
-            where: {
-              id: {inq: userIds},
-              email: {neq: null},
-              trashActivityEmailNotification: true,
-            }
-          }, function(err, users) {
+          where: {
+            id: {inq: userIds},
+            email: {neq: null},
+            trashActivityEmailNotification: true,
+          }
+        }, function(err, users) {
           if (err) {
             return reject(err);
           }
