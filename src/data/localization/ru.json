@@ -57,5 +57,11 @@
 	"mail.newsletter.subject": "информация о свалках в области мониторинга вы",
 	"mail.newsletter.emptyBlock": "Никакой новой активности в этой категории не было. Вы можете увидеть список всех дампов",
 	"mail.newsletter.trashLink": "ссылка",
-	"mail.eventCreate.subject": ""
+	"mail.eventCreate.subject": "TrashOut - важная информация о событии, которое вы создали",
+	"mail.activity.greeting": "",
+	"mail.activity.p1": "",
+	"mail.activity.p2": "",
+	"mail.activity.footer": "",
+	"mail.activity.subject": "",
+	"mail.activity.button": ""
 }

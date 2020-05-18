@@ -57,5 +57,11 @@
 	"mail.newsletter.subject": "TrashOut - information about dumps in area you monitor",
 	"mail.newsletter.emptyBlock": "There was no new activity in this category in selected period of time. You can see list of all dumps",
 	"mail.newsletter.trashLink": "Link",
-	"mail.eventCreate.subject": "TrashOut - information about event you have just created"
+	"mail.eventCreate.subject": "TrashOut - important information about the event you created",
+	"mail.activity.greeting": "Dear",
+	"mail.activity.p1": "there was a new activity on the <a href=\"%s\">report</a> you follow. Find out whether it was updated or a new comment was added.",
+	"mail.activity.p2": "",
+	"mail.activity.footer": "",
+	"mail.activity.subject": "",
+	"mail.activity.button": ""
 }

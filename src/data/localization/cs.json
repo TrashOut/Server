@@ -12,7 +12,7 @@
 	"mail.eventConfirm.thanks": "Děkujeme, že jste udělali naši čisticí prostředek pro všechny.",
 	"mail.eventConfirm.organizer": "Pořadatel akce je",
 	"mail.eventConfirm.footer": "Tento e-mail jste obdrželi, protože jste se do této události připojili v aplikaci TrashOut a souhlasili s podmínkami aplikace TrashOut.",
-	"mail.eventCreate.greeting": "Milý",
+	"mail.eventCreate.greeting": "Milý/á",
 	"mail.eventCreate.eventInfo1": "Všimli jsme si, že jste vytvořili událost nazvanou",
 	"mail.eventCreate.eventInfo2": "v aplikaci TrashOut. Děkujeme za péči o životní prostředí.",
 	"mail.eventCreate.eventEdit": "V případě, že chcete upravit nebo zrušit událost.",
@@ -23,7 +23,7 @@
 	"mail.eventCreate.footer": "Tento e-mail jste obdrželi, protože jste vytvořili událost v aplikaci TrashOut a souhlasili s podmínkami aplikace TrashOut.",
 	"mail.eventFeedback.greeting": "Milý",
 	"mail.eventFeedback.eventFeedback1": "děkujeme Vám za účast na čisticí akci",
-	"mail.eventFeedback.eventFeedback2": "která se konala včera. Jsi úžasný! Díky vašemu úsilí je toto místo nyní čistší.",
+	"mail.eventFeedback.eventFeedback2": "která se konala včera. Jste úžasný/á! Díky vašemu úsilí je toto místo nyní čistší.",
 	"mail.eventFeedback.eventFeedback3": "Dejte ostatním vědět, jak jste byli úspěšní. Vyplňte počet účastníků.",
 	"mail.eventFeedback.feedbackButton": "Ano",
 	"mail.eventFeedback.team": "& TrashOut tým.",
@@ -57,5 +57,11 @@
 	"mail.newsletter.subject": "TrashOut - nová aktivita v oblasti, kterou sledujete",
 	"mail.newsletter.emptyBlock": "Žádné nové aktivity ve vybrané kategorii. Prosím zvolte zobrazení všech skládek",
 	"mail.newsletter.trashLink": "Odkaz",
-	"mail.eventCreate.subject": ""
+	"mail.eventCreate.subject": "TrashOut - informace o vašem podujetí",
+	"mail.activity.greeting": "",
+	"mail.activity.p1": "",
+	"mail.activity.p2": "",
+	"mail.activity.footer": "",
+	"mail.activity.subject": "",
+	"mail.activity.button": ""
 }
