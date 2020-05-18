@@ -26,7 +26,7 @@
 
 /**
  * Replace all the occurences
- * 
+ *
  * @param {String} search
  * @param {String} replacement
  * @returns {String}
@@ -38,7 +38,7 @@ String.prototype.replaceAll = function (search, replacement) {
 
 /**
  * Make a string's first character uppercase
- * 
+ *
  * @returns {String}
  */
 String.prototype.upperCaseFirst = function () {
@@ -47,7 +47,7 @@ String.prototype.upperCaseFirst = function () {
 
 /**
  * Computes the intersection of arrays
- * 
+ *
  * @param {Array} arr2
  * @returns {Array}
  */
@@ -63,7 +63,7 @@ Array.prototype.intersect = function (arr2) {
 
 /**
  * Computes the difference of arrays
- * 
+ *
  * @param {Array} a
  * @returns {Array}
  */
@@ -75,7 +75,7 @@ Array.prototype.diff = function (a) {
 
 /**
  * Compares two arrays
- * 
+ *
  * @param {Array} testArr
  * @returns {Boolean}
  */
@@ -95,7 +95,7 @@ Array.prototype.compare = function (testArr) {
 /*eslint-disable */
 /**
  * Returns date in "2014-07-06T16:00:00+02:00" Format
- * 
+ *
  * @returns {String}
  */
 /*eslint-enable */
@@ -116,6 +116,28 @@ Date.prototype.toIsoString = function () {
           dif + pad(tzo / 60) +
           ':' + pad(tzo % 60);
 };
+
+
+// Setup Sentry error tracking
+var sentryConfig = require(__dirname + '/sentry.json');
+if (sentryConfig && sentryConfig.dsn) {
+  var Sentry = require('@sentry/node');
+
+  // Capture console.error with Sentry
+  Sentry.init({
+    environment: process.env.NODE_ENV || '_other',
+    dsn: sentryConfig.dsn,
+    release: sentryConfig.release
+  });
+
+  // inject Sentry capture to error.log (not used CaptureConsole integration, because it not showing issue in code preview)
+  console.errorOriginal = console.error;
+  console.error = function (message, optionalParams) {
+    Sentry.captureException(message);
+    console.errorOriginal(message, optionalParams);
+  };
+}
+
 
 var loopback = require('loopback');
 var boot = require('loopback-boot');
