@@ -47,7 +47,7 @@ function getImages() {
   return new Promise(function (resolve, reject) {
     server.models.Image.find({where: {_oldImageKey: {neq: null}, fullStorageLocation: null, fullDownloadUrl: null}, limit: 10000}, function (err, instances) {
       if (err) {
-        return console.log(err);
+        return console.error(err);
       }
 
       var imageKeys = [];
@@ -57,7 +57,7 @@ function getImages() {
       imageKeys.forEach(function (key) {
         dataset.get(dataset.key(['Image', Number(key)]), function (err, entity) {
           if (err) {
-            return console.log(err);
+            return console.error(err);
           } else if(typeof entity === "undefined"){
             return console.log('entity is undefined');
           } else if(typeof entity.base64 === "undefined"){
@@ -67,7 +67,7 @@ function getImages() {
             var name = key + '.jpg';
             fs.writeFile(name, entity.base64, 'base64', function (err, data) {
               if (err) {
-                return console.log(err);
+                return console.error(err);
 
               } else {
                 console.log(name);
@@ -78,18 +78,18 @@ function getImages() {
                 };
                 bucket.upload(name, options, function (err, newFile) {
                   if (err) {
-                    return console.log(err);
+                    return console.error(err);
 
                   } else {
                     fs.unlink(name, function (err) {
                       if (err) {
-                        console.log(err);
+                        console.error(err);
                       }
                       var location = 'gs://' + bucketName + '/images/' + name;
                       var publicUrl = 'https://storage.googleapis.com/' + bucketName + '/images/' + name;
                       server.models.Image.updateAll({_oldImageKey: key}, {fullStorageLocation: location, fullDownloadUrl: publicUrl}, function (err) {
                         if (err) {
-                          console.log(err);
+                          console.error(err);
                         } else {
                           console.log(location);
                           console.log(publicUrl);

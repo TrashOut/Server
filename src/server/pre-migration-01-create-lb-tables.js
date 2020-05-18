@@ -138,7 +138,7 @@ foreignKeysDropped.then(function () {
 
     server.models.UserRole.create(userRoles, function (err, model) {
       if (err) {
-        console.log(err);
+        console.error(err);
         throw err;
       }
 
@@ -166,7 +166,7 @@ foreignKeysDropped.then(function () {
 
     server.models.UserAreaRole.create(userAreaRoles, function (err, model) {
       if (err) {
-        console.log(err);
+        console.error(err);
         throw err;
       }
 
@@ -437,7 +437,7 @@ foreignKeysDropped.then(function () {
 
     server.models.Badge.create(badges, function (err, model) {
       if (err) {
-        console.log(err);
+        console.error(err);
         throw err;
       }
 
