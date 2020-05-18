@@ -122,12 +122,14 @@ Date.prototype.toIsoString = function () {
 var sentryConfig = require(__dirname + '/sentry.json');
 if (sentryConfig && sentryConfig.dsn) {
   var Sentry = require('@sentry/node');
+  var os = require("os");
 
   // Capture console.error with Sentry
   Sentry.init({
     environment: process.env.NODE_ENV || '_other',
     dsn: sentryConfig.dsn,
-    release: sentryConfig.release
+    release: sentryConfig.release,
+    serverName: os.hostname()
   });
 
   // inject Sentry capture to error.log (not used CaptureConsole integration, because it not showing issue in code preview)
