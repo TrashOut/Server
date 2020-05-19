@@ -58,10 +58,10 @@
 	"mail.newsletter.emptyBlock": "Žádné nové aktivity ve vybrané kategorii. Prosím zvolte zobrazení všech skládek",
 	"mail.newsletter.trashLink": "Odkaz",
 	"mail.eventCreate.subject": "TrashOut - informace o vašem podujetí",
-	"mail.activity.greeting": "",
-	"mail.activity.p1": "",
-	"mail.activity.p2": "",
-	"mail.activity.footer": "",
-	"mail.activity.subject": "",
-	"mail.activity.button": ""
+	"mail.activity.greeting": "Vážený/á",
+	"mail.activity.p1": "Na <a href=\"%s\"> hlášení nelegální skládky </a>, které sledujete, došlo k nové aktivitě. Zjistěte, zda byol aktualizováno nebo přibyl nový komentář.",
+	"mail.activity.p2": "Děkujeme vám, že se staráte o životní prostředí! Nezapomeňte pomocí mobilní aplikace TrashOut nahlásit a aktualizovat nelegální skládky ve vaší oblasti, najít nejbližší sběrné místo nebo se zúčastnit čistící akce.",
+	"mail.activity.footer": "Tento e-mail jste obdrželi, protože jste souhlasili se smluvními podmínkami TrashOut. Chcete-li vypnout e-mailová upozornění o aktualizacích na sledovaných skládkach, můžete tak učinit ve svém <a href=\"%s\"> profilu </a> cez webovou aplikaci TrashOut. Pokud chcete změnit periodicitu emailovcých přehledů o konkrétní oblast, můžete ji změnit <a href=\"%s\"> zde </a>. ",
+	"mail.activity.subject": "TrashOut - na skládke, kterou sledujete, došlo k nové aktivitě",
+	"mail.activity.button": "Zobrazit hlášení"
 }

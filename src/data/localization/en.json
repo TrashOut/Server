@@ -47,7 +47,7 @@
 	"mail.newsletter.p2": "If you want to change frequency of this email notification",
 	"mail.newsletter.p3": "profile",
 	"mail.newsletter.p4": "in TrashOut application.",
-	"mail.newsletter.p5": "Thank you for making our World cleaner for everyone. Don't forget to use TrashOut mobile application to find and update illegal dumps and learn about environment.",
+	"mail.newsletter.p5": "Thank you for making our environment cleaner! Do not forget to use TrashOut mobile application to report and update illegal dumps in your area, find the nearest collection point, or take part in a cleaning event.",
 	"mail.newsletter.footer": "You received this e-mail because you subscribed to monitor this area in TrashOut application and agreed to terms and conditions of TrashOut app. You can change your preferences any time",
 	"mail.newsletter.footerLink": "here",
 	"mail.report.subject": "Illegal dump report!",
@@ -59,9 +59,9 @@
 	"mail.newsletter.trashLink": "Link",
 	"mail.eventCreate.subject": "TrashOut - important information about the event you created",
 	"mail.activity.greeting": "Dear",
-	"mail.activity.p1": "there was a new activity on the <a href=\"%s\">report</a> you follow. Find out whether it was updated or a new comment was added.",
-	"mail.activity.p2": "",
-	"mail.activity.footer": "",
-	"mail.activity.subject": "",
-	"mail.activity.button": ""
+	"mail.activity.p1": "There was a new activity on the <a href=\"%s\">report of the illegal dump</a> you follow. Find out whether it was updated or if there is a new comment.",
+	"mail.activity.p2": "Thank you for making our environment cleaner! Do not forget to use TrashOut mobile application to report and update illegal dumps in your area, find the nearest collection point, or take part in a cleaning event.",
+	"mail.activity.footer": "You are receiving this email because you have agreed to the Terms and Conditions of TrashOut. To turn off email notifications of updates on your reports, visit your <a href=\"%s\"> profile </a> via the TrashOut web app. If you would like to change the periodicity of reports monitoring specific area, you can change them at <a href=\"%s\"> here </a>. ",
+	"mail.activity.subject": "TrashOut - there was a new activity on the report you follow",
+	"mail.activity.button": "View report"
 }
