@@ -1127,7 +1127,7 @@ module.exports = function (Event) {
           return cb({message: 'Event does not exist', status: 404});
         }
 
-        if (instance.userId !== Event.app.models.BaseModel.user.id && Event.app.models.BaseModel.user.userRole.code !== Constants.USER_ROLE_SUPER_ADMIN && Event.app.models.BaseModel.user.userRole.code !== Constants.USER_ROLE_ADMIN) {
+        if (instance.userId != Event.app.models.BaseModel.user.id && Event.app.models.BaseModel.user.userRole.code !== Constants.USER_ROLE_SUPER_ADMIN && Event.app.models.BaseModel.user.userRole.code !== Constants.USER_ROLE_ADMIN) {
           return cb({message: 'Only admin or owner is allowed to edit event.', status: 403});
         }
 
