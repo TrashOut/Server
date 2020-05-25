@@ -65,3 +65,9 @@ nbproject/
 /src/server/google-api-credentials.production.json
 /src/server/google-api-credentials.stage.json
 /src/server/google-api-credentials.json
+
+# Sentry configs
+/src/server/sentry.json
+
+# datasources configs
+/src/server/datasources.json

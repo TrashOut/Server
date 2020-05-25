@@ -35,7 +35,7 @@ var toBasicObject = function(obj) {
 
 
 /**
- * 
+ *
  * @param {Mixed} param
  * @returns {Mixed}
  */
@@ -47,7 +47,7 @@ module.exports = function (User) {
 
   /**
    * Stores parameters for parametrized queries and returns parameter number
-   * 
+   *
    * @param {type} parameter
    * @returns {String}
    */
@@ -56,7 +56,7 @@ module.exports = function (User) {
   }
 
   /**
-   * 
+   *
    * @param {String} areaIds Comma separated area identifiers
    * @returns {Array}
    */
@@ -83,11 +83,11 @@ module.exports = function (User) {
 
         resolve(userIds);
       });
-    });    
+    });
   }
 
   /**
-   * 
+   *
    * @param {Object} data
    * @param {Array} areas
    * @param {Array} organizations
@@ -173,7 +173,7 @@ module.exports = function (User) {
   }
 
   /**
-   * 
+   *
    * @param {Number} id
    * @param {Object} data
    * @param {Object} tx
@@ -229,7 +229,7 @@ module.exports = function (User) {
     var sql = 'SELECT ARRAY(SELECT u.id FROM public.user u LEFT JOIN public.user_has_area uha ON u.id = uha.user_id WHERE ' + where + ')';
 
     return new Promise(function (resolve, reject) {
-      
+
       ds.connector.execute(sql, function (err, result) {
         if (err) {
           return reject(err);
@@ -241,7 +241,7 @@ module.exports = function (User) {
   }
 
   /**
-   * 
+   *
    * @param {String} organizationIds Comma separated organization identifiers
    * @returns {Array}
    */
@@ -272,7 +272,7 @@ module.exports = function (User) {
   }
 
   /**
-   * 
+   *
    * @param {String} emails
    * @param {String} userIds
    * @param {Number} minPoints
@@ -361,8 +361,8 @@ module.exports = function (User) {
           var trend = order.substr(0, 1) === '-' ? 'DESC' : 'ASC';
 
           if (Constants.USER_ALLOWED_ORDERING.indexOf(column) > -1) {
-            column = (column === 'lastName') ? 'last_name' : column; 
-            column = (column === 'firstName') ? 'first_name' : column; 
+            column = (column === 'lastName') ? 'last_name' : column;
+            column = (column === 'firstName') ? 'first_name' : column;
             orders.push(column + ' ' + trend);
           }
         });
@@ -404,7 +404,7 @@ module.exports = function (User) {
 
   /**
    * Create new user
-   * 
+   *
    * @param {String} firstName
    * @param {String} lastName
    * @param {String} email
@@ -436,7 +436,7 @@ module.exports = function (User) {
   User.add = function (firstName, lastName, email, created, info, birthdate, active, newsletter, uid, tokenFCM, facebookUrl, facebookUID, twitterUrl, googlePlusUrl,
        phoneNumber, points, reviewed, eventOrganizer, volunteerCleanup, userRoleId, areas, organizations, badges, image, language, cb) {
 
-    // Check whether Firebase UID from POST request match real Firebase account  
+    // Check whether Firebase UID from POST request match real Firebase account
 //    if (User.app.models.BaseModel.user.uid === uid) {
 //      return cb({
 //        message: "Uid does not match the Firebase account uid.",
@@ -576,7 +576,7 @@ module.exports = function (User) {
 
   /**
    * Delete user
-   * 
+   *
    * @param {Number} id
    * @param {Function} cb
    */
@@ -608,7 +608,7 @@ module.exports = function (User) {
 
   /**
    * Update user
-   * 
+   *
    * @param {Number} id
    * @param {String} firstName
    * @param {String} lastName
@@ -628,6 +628,7 @@ module.exports = function (User) {
    * @param {Boolean} reviewed
    * @param {Boolean} eventOrganizer
    * @param {Boolean} volunteerCleanup
+   * @param {Boolean} trashActivityEmailNotification
    * @param {Number} userRoleId
    * @param {Object} areas
    * @param {Object} organizations
@@ -637,10 +638,10 @@ module.exports = function (User) {
    * @param {Function} cb
    * @returns {Object}
    */
-  User.upd = function (id, firstName, lastName, email, info, birthdate, active, newsletter, uid, tokenFCM, facebookUrl, facebookUID, twitterUrl, googlePlusUrl, 
-    phoneNumber, points, reviewed, eventOrganizer, volunteerCleanup, userRoleId,
+  User.upd = function (id, firstName, lastName, email, info, birthdate, active, newsletter, uid, tokenFCM, facebookUrl, facebookUID, twitterUrl, googlePlusUrl,
+    phoneNumber, points, reviewed, eventOrganizer, volunteerCleanup, trashActivityEmailNotification, userRoleId,
     areas, organizations, badges, image, language, cb) {
-    
+
     if (User.app.models.BaseModel.user.id === id) {
       // ok
     } else {
@@ -650,7 +651,7 @@ module.exports = function (User) {
         return cb({message: 'Only admin or superAdmin is allowed to update other users.', status: 403});
       }
     }
-    
+
     User.findById(id, function (err, instance) {
       if (err) {
         console.error(err);
@@ -679,6 +680,7 @@ module.exports = function (User) {
         points: checkNull(points),
         eventOrganizer: eventOrganizer,
         volunteerCleanup: volunteerCleanup,
+        trashActivityEmailNotification: trashActivityEmailNotification,
         language: checkNull(language)
       };
 
@@ -792,7 +794,7 @@ module.exports = function (User) {
 
   /**
    * UserPoints list
-   * 
+   *
    * @param {String} emails
    * @param {String} userIds
    * @param {String} minPoints
@@ -822,7 +824,7 @@ module.exports = function (User) {
 
           item.organizations = [];
           item.userHasOrganization.forEach(function (orgRelation) {
-            if (orgRelation.organization) {              
+            if (orgRelation.organization) {
               orgRelation.organization.organizationRoleId = orgRelation.organizationRoleId;
               item.organizations.push(orgRelation.organization);
             }
@@ -868,7 +870,7 @@ module.exports = function (User) {
 
   /**
    * UserPoints count
-   * 
+   *
    * @param {String} emails
    * @param {String} userIds
    * @param {String} minPoints
@@ -984,7 +986,7 @@ module.exports = function (User) {
         sql += '  WHERE (tpa.trash_point_id IN(SELECT DISTINCT(tpa3.trash_point_id) FROM public.trash_point_activity tpa3 WHERE tpa3.user_id IN(' + sanitize(ids) + ')) \n';
         sql += '    AND tpa.created > (SELECT tpa4.created FROM public.trash_point_activity tpa4 WHERE tpa4.user_id IN(' + sanitize(ids) + ') ORDER BY tpa4.created ASC LIMIT 1)) OR tpa.user_id IN(' + sanitize(ids) + ') \n';
       }
-      
+
       sql += ') AS result \n';
     }
 
@@ -1066,9 +1068,9 @@ module.exports = function (User) {
       sql += '  JOIN public.user u ON u.id = cpa.user_id \n';
       sql += '  JOIN public.gps ON gps.id = cpa.gps_id \n';
       sql += '  JOIN public.gps_source ON gps_source.id = gps.gps_source_id \n';
-      
+
       if (ownActivitiesOnly === true) {
-        sql += '  WHERE cpa.user_id IN(' + sanitize(ids) + ') \n';      
+        sql += '  WHERE cpa.user_id IN(' + sanitize(ids) + ') \n';
       } else {
         sql += '  WHERE cpa.collection_point_id IN(SELECT DISTINCT(cpa3.collection_point_id) FROM public.collection_point_activity cpa3 WHERE cpa3.user_id IN(' + sanitize(ids) + ')) \n';
         sql += '    AND cpa.created > (SELECT cpa4.created FROM public.collection_point_activity cpa4 WHERE cpa4.user_id IN(' + sanitize(ids) + ') ORDER BY cpa4.created ASC LIMIT 1) \n';
@@ -1208,7 +1210,7 @@ module.exports = function (User) {
 
   /**
    * Returns activities for given user
-   * 
+   *
    * @param {Number} id
    * @param {String} type
    * @param {Number} page
@@ -1279,7 +1281,7 @@ module.exports = function (User) {
 
   /**
    * Returns activities for given user
-   * 
+   *
    * @param {Number} id
    * @param {String} type
    * @param {Function} cb
@@ -1292,7 +1294,7 @@ module.exports = function (User) {
     var types = (type && type.split(',')) || ['trashPoint'];
 
     var sql = User.getUserActivitiesSQL([id], types, null, null, null, true);
-    
+
     ds.connector.execute(sql, User.app.models.BaseModel.sqlParameters, function (err, instances) {
       if (err) {
         console.error(err);
@@ -1308,7 +1310,7 @@ module.exports = function (User) {
    * Returns SQL for review activity
    * - superAdmin can view all the activities
    * - admin of area can view the activities belonging into his area
-   * 
+   *
    * @param {Number} id
    * @param {String} types
    * @param {Boolean} anonymous
@@ -1655,7 +1657,7 @@ module.exports = function (User) {
    * Returns activities made by given user only
    * - "canDelete" - whether current user has permissions to delete this activity
    * - "action" - create/update/join
-   * 
+   *
    * @param {Number} id
    * @param {String} type
    * @param {Boolean} anonymous
@@ -1750,7 +1752,7 @@ module.exports = function (User) {
    * Returns activities made by given user only
    * - "canDelete" - whether current user has permissions to delete this activity
    * - "action" - create/update/join
-   * 
+   *
    * @param {Number} id
    * @param {String} type
    * @param {Boolean} anonymous
@@ -1852,7 +1854,7 @@ module.exports = function (User) {
 
   /**
    * Returns UserPoints object by Firebase token (x-token) in header
-   * 
+   *
    * @param {Function} cb
    * @returns {Object}
    */
@@ -1897,7 +1899,7 @@ module.exports = function (User) {
         // cleanup organizations relation
         payload.organizations = [];
         payload.userHasOrganization.forEach(function (orgRelation) {
-          if (orgRelation.organization) {            
+          if (orgRelation.organization) {
             orgRelation.organization.organizationRoleId = orgRelation.organizationRoleId;
             payload.organizations.push(orgRelation.organization);
           }
@@ -1920,7 +1922,7 @@ module.exports = function (User) {
 
   /**
    * Find UserPoints by id
-   * 
+   *
    * @param {Number} id
    * @param {Function} cb
    * @returns {Object}
@@ -1962,7 +1964,7 @@ module.exports = function (User) {
 
         // add "image" field if strongloop has omitted it
         payload.image = payload.image || null;
-        
+
         // cleanup organizations relation
         payload.organizations = [];
         current.userHasOrganization.forEach(function (orgRelation) {
@@ -1971,13 +1973,13 @@ module.exports = function (User) {
             payload.organizations.push(orgRelation.organization);
           }
         });
-        
+
         // cleanup badges relation
         payload.badges = [];
         current.userHasBadge.forEach(function (badgeRelation) {
           payload.badges.push(badgeRelation.badge);
         });
-        
+
         // cleanup areas relation
         payload.areas = [];
         current.userHasArea.forEach(function (areaRelation) {
@@ -2001,7 +2003,7 @@ module.exports = function (User) {
   };
 
   /**
-   * 
+   *
    * @param {String} emails
    * @param {Function} cb
    * @returns {Array}
@@ -2177,7 +2179,7 @@ module.exports = function (User) {
   };
 
   /**
-   * 
+   *
    * @param {Number} organizationId
    * @param {Function} cb
    * @returns {Object}
@@ -2223,7 +2225,7 @@ module.exports = function (User) {
 
   /**
    * Disable user
-   * 
+   *
    * @param {Number} id
    * @param {Function} cb
    * @returns {Object}
@@ -2364,13 +2366,13 @@ module.exports = function (User) {
    */
   User.refreshPoints = function(userId, cb) {
     User.findById(userId, function(err) {
-      
+
       if (err) {
         console.error(err);
         return cb({message: err.detail});
       }
 
-      var sql = 'SELECT u1.id,' + 
+      var sql = 'SELECT u1.id,' +
         '(SELECT COALESCE(count(*), 0) FROM public.trash_point WHERE user_id = u1.id) AS trash_points_created,' +
         '(SELECT COALESCE(count(*), 0) FROM public.trash_point_activity WHERE user_id = u1.id) AS trash_points_updated,' +
         '(SELECT COALESCE(count(tp.id), 0) FROM public.trash_point tp WHERE tp.id IN (SELECT trash_point_id FROM public.trash_point_activity WHERE user_id != u1.id AND status != \'cleaned\') AND user_id = u1.id) AS trash_points_with_update,' +
@@ -2409,7 +2411,7 @@ module.exports = function (User) {
 
   /**
    * Associates area to user
-   * 
+   *
    * @param {Number} userId
    * @param {Number} areaId
    * @param {Number} notification
@@ -2422,7 +2424,7 @@ module.exports = function (User) {
     var reject = cb;
 
     if (User.app.models.BaseModel.user.id === userId) {
-      if (userAreaRoleId !== Constants.USER_AREA_ROLE_MEMBER_ID) {      
+      if (userAreaRoleId !== Constants.USER_AREA_ROLE_MEMBER_ID) {
         return reject({message: 'User himself can join area only as member.', status: 403});
       }
     } else {
@@ -2542,7 +2544,7 @@ module.exports = function (User) {
 
   /**
    * Remove area to user association
-   * 
+   *
    * @param {Number} userId
    * @param {Number} areaId
    * @param {Function} cb
@@ -2663,7 +2665,7 @@ module.exports = function (User) {
 
   /**
    * Update area to user association
-   * 
+   *
    * @param {Number} userId
    * @param {Number} areaId
    * @param {Number} notification
@@ -2801,7 +2803,7 @@ module.exports = function (User) {
 
   /**
    * Get user's area
-   * 
+   *
    * @param {Number} rootAreaId Subarea identifier in user's areas - e. g. User is admin in Europe and wants to filter only managers in Czech Republic
    * @param {Number} userAreaRoleId
    * @param {Function} cb
@@ -2853,7 +2855,7 @@ module.exports = function (User) {
             if (areaTypes.indexOf(instance.type) >= ordinalNumber) {
               var columnName = areaType === 'subLocality' ? 'sub_locality' : areaType;
               var value = instance[areaType];
-              if (value) {                
+              if (value) {
                 sql += ' AND a.' + columnName + ' = ' + sanitize(value);
               }
             }
@@ -2872,7 +2874,7 @@ module.exports = function (User) {
             if (areaTypes.indexOf(rootAreaInstance.type) >= ordinalNumber) {
               var columnName = areaType === 'subLocality' ? 'sub_locality' : areaType;
               var value = rootAreaInstance[areaType];
-              if (value) {                
+              if (value) {
                 sql += ' AND a.' + columnName + ' = ' + sanitize(value);
               }
             }
@@ -2922,7 +2924,7 @@ module.exports = function (User) {
   };
 
   /**
-   * 
+   *
    * @param {Function} cb
    * @returns {Array}
    */
@@ -2944,7 +2946,7 @@ module.exports = function (User) {
   };
 
   /**
-   * 
+   *
    * @param {String} tokenFCM
    * @param {String} deviceId
    * @param {String} language
@@ -3003,7 +3005,7 @@ module.exports = function (User) {
   };
 
   /**
-   * 
+   *
    * @param {String} tokenFCM
    * @param {Function} cb
    * @returns {void}
@@ -3100,7 +3102,7 @@ module.exports = function (User) {
         { arg: 'number', type: 'string' },
         { arg: 'string', type: 'string' },
         { arg: 'boolean', type: 'number' },
-        { arg: 'object', type: 'object' }        
+        { arg: 'object', type: 'object' }
       ],
       returns: { type: 'object', root: true }
     }
@@ -3272,7 +3274,7 @@ module.exports = function (User) {
         { arg: 'points', type: 'number' },
         { arg: 'reviewed', type: 'string' },
         { arg: 'eventOrganizer', type: 'boolean' },
-        { arg: 'volunteerCleanup', type: 'boolean' },    
+        { arg: 'volunteerCleanup', type: 'boolean' },
         { arg: 'userRoleId', type: 'number' },
         { arg: 'areas', type: 'object' },
         { arg: 'organizations', type: 'object' },
@@ -3307,7 +3309,8 @@ module.exports = function (User) {
         { arg: 'points', type: 'number' },
         { arg: 'reviewed', type: 'boolean' },
         { arg: 'eventOrganizer', type: 'boolean' },
-        { arg: 'volunteerCleanup', type: 'boolean' },        
+        { arg: 'volunteerCleanup', type: 'boolean' },
+        { arg: 'trashActivityEmailNotification', type: 'boolean' },
         { arg: 'userRoleId', type: 'number' },
         { arg: 'areas', type: 'object' },
         { arg: 'organizations', type: 'object' },
@@ -3341,7 +3344,7 @@ module.exports = function (User) {
       returns: { type: 'object', root: true }
     }
   );
-  
+
   User.remoteMethod(
     'getUnreviewedUsersWithActivityCount',
     {

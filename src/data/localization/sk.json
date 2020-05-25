@@ -47,7 +47,7 @@
 	"mail.newsletter.p2": "Ak chcete zmeniť frekvenciu tejto e-mailovej notifikácie, navštívte svoj",
 	"mail.newsletter.p3": "profil",
 	"mail.newsletter.p4": "v aplikácii TrashOut.",
-	"mail.newsletter.p5": "Ďakujeme, že prispievate k tomu, aby bol svet čistejší! Nezabudnite používať mobilnú aplikáciu TrashOut na nahlasovanie a aktualizovanie nelegálnych skládok vo svojom okolí, nájdenie njabližšieho zberného miesta, či zúčastnenie sa čistiacej akcie.",
+	"mail.newsletter.p5": "Ďakujeme, že prispievate k tomu, aby bol svet čistejší! Nezabudnite používať mobilnú aplikáciu TrashOut na nahlasovanie a aktualizovanie nelegálnych skládok vo svojom okolí, nájdenie najbližšieho zberného miesta, či zúčastnenie sa čistiacej akcie.",
 	"mail.newsletter.footer": "Tento e-mail ste dostali, pretože vo svojom profile na admin.trashout.ngo ste si nastavili pravidelné notifikácie na sledovanie vybranej oblasti a súhlasili ste s podmienkami používania aplikácie TrashOut. Svoje preferencie môžete zmeniť kedykoľvek",
 	"mail.newsletter.footerLink": "tu",
 	"mail.report.subject": "Nelegálna skládka bola nahlásená.",
@@ -57,5 +57,11 @@
 	"mail.newsletter.subject": "TrashOut - informácie o skládkach v sledovanej oblasti",
 	"mail.newsletter.emptyBlock": "V sledovanej oblasti nedošlo za vybraný čas k žiadnej novej aktivite. Všetky skládky si môžete pozrieť",
 	"mail.newsletter.trashLink": "Odkaz",
-	"mail.eventCreate.subject": ""
+	"mail.eventCreate.subject": "TrashOut - informácie o vašom podujatí",
+	"mail.activity.greeting": "Vážená/ý",
+	"mail.activity.p1": "na vami sledovanom hlásení <a href=\"%s\">skládky</a> pribudla nová aktivita. Zistite, či bola skládka aktualizovaná alebo bol pridaný komentár.",
+	"mail.activity.p2": "Ďakujeme, že prispievate k tomu, aby bol svet čistejší! Nezabudnite používať mobilnú aplikáciu TrashOut na nahlasovanie a aktualizovanie nelegálnych skládok vo svojom okolí, nájdenie najbližšieho zberného miesta, či zúčastnenie sa čistiacej akcie.",
+	"mail.activity.footer": "Tento e-mail ste dostali, pretože ste súhlasili  s podmienkami používania aplikácie TrashOut. Ak chcete zmeniť svoje preferencie o pravidelných hláseniach o sledovanej oblasti, môžete ich zmeniť kedykoľvek <a href=\"%s\">tu</a>. Ak chcete vypnúť emailové notifikácie o aktualizáciach na vašich hláseniach, navštívte svoj <a href=\"%s\">profil</a> cez webovú aplikáciu TrashOut.",
+	"mail.activity.subject": "TrashOut - informácie o aktivite na sledovanej skládke",
+	"mail.activity.button": "Zobraziť skládku"
 }

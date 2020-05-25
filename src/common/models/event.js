@@ -50,7 +50,7 @@ function checkLanguage(lang) {
 }
 
 /**
- * 
+ *
  * @param {Mixed} param
  * @returns {Mixed}
  */
@@ -60,7 +60,7 @@ var checkNull = function (param) {
 
 /**
  * Returns identifiers of Images for deletation and insertation
- * 
+ *
  * @param {Object} currentImages
  * @param {Object} newImages
  * @returns {Object}
@@ -105,7 +105,7 @@ module.exports = function (Event) {
 
   /**
    * Stores parameters for parametrized queries and returns parameter number
-   * 
+   *
    * @param {type} parameter
    * @returns {String}
    */
@@ -115,7 +115,7 @@ module.exports = function (Event) {
 
   /**
    * Returns GPS source identifier by name
-   * 
+   *
    * @param {String} name
    * @returns {number}
    */
@@ -127,7 +127,7 @@ module.exports = function (Event) {
           return reject({message: err.detail, status: 403});
         }
 
-        // Check source existence    
+        // Check source existence
         if (!instance) {
           return reject({message: 'GPSSource is not valid', status: 404});
         }
@@ -139,7 +139,7 @@ module.exports = function (Event) {
 
   /**
    * Creates SQL [where] clause for SQL query in Event list
-   * 
+   *
    * @param {String} area
    * @param {String} geocells
    * @param {String} geoAreaStreet
@@ -290,7 +290,7 @@ module.exports = function (Event) {
 
   /**
    * Creates SQL query for Event count
-   * 
+   *
    * @param {String} area
    * @param {String} geocells
    * @param {String} geoAreaStreet
@@ -334,7 +334,7 @@ module.exports = function (Event) {
 
   /**
    * Creates SQL query for TrashPoint list
-   * 
+   *
    * @param {Array} attributes
    * @param {String} area
    * @param {String} geocells
@@ -478,7 +478,7 @@ module.exports = function (Event) {
       sql += '  e.contact_phone, \n';
       sql += '  e.contact_email, \n';
       sql += '  e.contact_name, \n';
-      sql += '  e.contact_occupation, \n';      
+      sql += '  e.contact_occupation, \n';
     }
 
     if (attributes.indexOf(Constants.EVENT_ATTR_CREATED) > -1) {
@@ -569,7 +569,7 @@ module.exports = function (Event) {
 
   /**
    * Check input parameter
-   * 
+   *
    * @param {Array} images
    * @param {String} name
    * @param {Object} gps
@@ -663,7 +663,7 @@ module.exports = function (Event) {
 
   /**
    * Returns count of Events that matches given conditions
-   * 
+   *
    * @param {String} area
    * @param {String} geocells
    * @param {String} geoAreaStreet
@@ -705,7 +705,7 @@ module.exports = function (Event) {
 
   /**
    * Returns array of Events matching given conditions
-   * 
+   *
    * @param {String} area
    * @param {String} geocells
    * @param {String} geoAreaStreet
@@ -877,7 +877,7 @@ module.exports = function (Event) {
 
   /**
    * Returns Event detail
-   * 
+   *
    * @param {Number} id
    * @param {Function} cb
    * @returns {Object}
@@ -943,7 +943,7 @@ module.exports = function (Event) {
           }
 
           var updateNeeded = false;
-          if (trashPoint.activities[0].status !== Constants.TRASH_STATUS_CLEANED) {        
+          if (trashPoint.activities[0].status !== Constants.TRASH_STATUS_CLEANED) {
             var date = new Date();
             updateNeeded = ((date.getTime() - trashPoint.activities[0].created.getTime()) / (24 * 60 * 60 * 1000)) > Constants.TRASH_UPDATE_NEEDED_DAYS;
           }
@@ -1030,7 +1030,7 @@ module.exports = function (Event) {
 
   /**
    * Deletes Event detail
-   * 
+   *
    * @param {Number} id
    * @param {Function} cb
    */
@@ -1055,7 +1055,7 @@ module.exports = function (Event) {
           return cb({message: 'Event does not exist', status: 404});
         }
 
-        if (instance.userId === Event.app.models.BaseModel.user.id || Event.app.models.BaseModel.user.userRole.code === Constants.USER_ROLE_SUPER_ADMIN) {
+        if (instance.userId == Event.app.models.BaseModel.user.id || Event.app.models.BaseModel.user.userRole.code === Constants.USER_ROLE_SUPER_ADMIN) {
           Event.destroyAll({id: id}, {transaction: tx}, function (err) {
 
             if (err) {
@@ -1084,7 +1084,7 @@ module.exports = function (Event) {
 
   /**
    * Updates Event
-   * 
+   *
    * @param {Number} id
    * @param {Object} images
    * @param {String} name
@@ -1127,7 +1127,7 @@ module.exports = function (Event) {
           return cb({message: 'Event does not exist', status: 404});
         }
 
-        if (instance.userId !== Event.app.models.BaseModel.user.id && Event.app.models.BaseModel.user.userRole.code !== Constants.USER_ROLE_SUPER_ADMIN && Event.app.models.BaseModel.user.userRole.code !== Constants.USER_ROLE_ADMIN) {
+        if (instance.userId != Event.app.models.BaseModel.user.id && Event.app.models.BaseModel.user.userRole.code !== Constants.USER_ROLE_SUPER_ADMIN && Event.app.models.BaseModel.user.userRole.code !== Constants.USER_ROLE_ADMIN) {
           return cb({message: 'Only admin or owner is allowed to edit event.', status: 403});
         }
 
@@ -1362,14 +1362,14 @@ module.exports = function (Event) {
 
   /**
    * Creates Event
-   * 
+   *
    * @param {Object} images
    * @param {String} name
    * @param {Object} gps
    * @param {Object} cleaningArea
    * @param {String} description
    * @param {Number} start
-   * @param {String} startWithTimeZone 
+   * @param {String} startWithTimeZone
    * @param {Number} duration
    * @param {String} bring
    * @param {String} have
@@ -1563,7 +1563,7 @@ module.exports = function (Event) {
   /**
    * If logged user is admin, then joins given users to event
    * else joins current user to event
-   * 
+   *
    * @param {Number} id
    * @param {Array} userIds
    * @param {Function} cb
@@ -1606,7 +1606,7 @@ module.exports = function (Event) {
   };
 
   /**
-   * 
+   *
    * @param {type} id
    * @param {type} cb
    * @returns {Array}
@@ -1623,7 +1623,7 @@ module.exports = function (Event) {
   };
 
   /**
-   * 
+   *
    * @param {type} id
    * @param {type} cb
    * @returns {Array}
@@ -1641,9 +1641,9 @@ module.exports = function (Event) {
 
   /**
    * Updates given user in event
-   * - confirm user in event 
+   * - confirm user in event
    * - feedback from event (guest count, trash count)
-   * 
+   *
    * @param {Number} id
    * @param {Number} userId
    * @param {Boolean} confirmed
@@ -1682,8 +1682,8 @@ module.exports = function (Event) {
   };
 
   /**
-   * Confirm user in event 
-   * 
+   * Confirm user in event
+   *
    * @param {Number} id
    * @param {Function} cb
    * @returns {Number}
@@ -1710,8 +1710,8 @@ module.exports = function (Event) {
   };
 
   /**
-   * Confirm user in event 
-   * 
+   * Confirm user in event
+   *
    * @param {Number} id
    * @param {Function} cb
    * @returns {Number}
@@ -1739,7 +1739,7 @@ module.exports = function (Event) {
 
   /**
    * Feedback from event (guest count, trash count)
-   * 
+   *
    * @param {Number} id
    * @param {Number} feedbackGuessGuestCount
    * @param {Number} feedbackGuessTrashCount
@@ -1777,7 +1777,7 @@ module.exports = function (Event) {
   };
 
   /**
-   * 
+   *
    * @param {Number} id
    * @param {Array} images
    * @param {Function} cb
@@ -1848,7 +1848,7 @@ module.exports = function (Event) {
 
   /**
    * Deletes user from event
-   * 
+   *
    * @param {Number} id
    * @param {userId} userId
    * @param {Function} cb

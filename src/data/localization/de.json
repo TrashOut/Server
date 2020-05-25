@@ -57,5 +57,11 @@
 	"mail.newsletter.subject": "TrashOut - Informationen über Speicherauszüge in dem von Ihnen überwachten Bereich",
 	"mail.newsletter.emptyBlock": "In dieser Kategorie gab es keine neuen Aktivitäten. Sie können eine Liste aller Sicherungen anzeigen",
 	"mail.newsletter.trashLink": "Link",
-	"mail.eventCreate.subject": ""
+	"mail.eventCreate.subject": "TrashOut - wichtige Informationen über das von Ihnen erstellte Ereignis",
+	"mail.activity.greeting": "sehr geehrter",
+	"mail.activity.p1": "Es gab eine neue Aktivität im <a href=\"%s\"> Bericht über den illegalen Speicherauszug </a>, dem Sie folgen. Finden Sie heraus, ob es aktualisiert wurde oder ob es einen neuen Kommentar gibt.",
+	"mail.activity.p2": "Vielen Dank, dass Sie unsere Umwelt sauberer machen! Vergessen Sie nicht, die mobile TrashOut-Anwendung zu verwenden, um illegale Dumps in Ihrer Nähe zu melden und zu aktualisieren, die nächste Sammelstelle zu finden oder an einer Reinigungsveranstaltung teilzunehmen.",
+	"mail.activity.footer": "Sie erhalten diese E-Mail, weil Sie den Allgemeinen Geschäftsbedingungen von TrashOut zugestimmt haben. Um E-Mail-Benachrichtigungen über Aktualisierungen Ihrer Berichte zu deaktivieren, besuchen Sie Ihr <a href=\"%s\"> Profil </a> über die TrashOut-Web-App. Wenn Sie die Periodizität von Berichten ändern möchten, die einen bestimmten Bereich überwachen, können Sie diese unter <a href=\"%s\"> hier </a> ändern. ",
+	"mail.activity.subject": "TrashOut - Der Bericht, dem Sie folgen, enthält eine neue Aktivität",
+	"mail.activity.button": "Zeige Bericht"
 }

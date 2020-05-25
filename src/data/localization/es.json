@@ -57,5 +57,11 @@
 	"mail.newsletter.subject": "TrashOut: información sobre vertederos en el área que supervisa\n",
 	"mail.newsletter.emptyBlock": "No hubo actividad nueva en esta categoría. Puedes ver la lista de todos los vertederos",
 	"mail.newsletter.trashLink": "enlazar",
-	"mail.eventCreate.subject": ""
+	"mail.eventCreate.subject": "TrashOut: información importante sobre el evento que ha creado",
+	"mail.activity.greeting": "querido",
+	"mail.activity.p1": "Hubo una nueva actividad en el <a href=\"%s\"> informe del vertedero ilegal </a> que sigue. Averigüe si se actualizó o si hay un nuevo comentario.",
+	"mail.activity.p2": "¡Gracias por hacer que nuestro medio ambiente sea más limpio! No olvide utilizar la aplicación móvil TrashOut para informar y actualizar los vertederos ilegales en su área, encontrar el punto de recolección más cercano o participar en un evento de limpieza.",
+	"mail.activity.footer": "Está recibiendo este correo electrónico porque ha aceptado los Términos y condiciones de TrashOut. Para desactivar las notificaciones por correo electrónico de actualizaciones en sus informes, visite su <a href=\"%s\"> perfil </a> a través de la aplicación web TrashOut. Si desea cambiar la periodicidad de los informes que supervisan un área específica, puede cambiarlos en <a href=\"%s\"> aquí </a>. ",
+	"mail.activity.subject": "TrashOut: hubo una nueva actividad en el informe que sigue",
+	"mail.activity.button": "Vista del informe"
 }
