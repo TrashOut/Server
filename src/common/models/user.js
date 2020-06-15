@@ -2969,6 +2969,7 @@ module.exports = function (User) {
 
     var filter = {
       where: {
+        deviceId: {neq: "addDevice"}, // temp debug // TODO: remove after debugging
         userId: User.app.models.BaseModel.user.id,
         tokenFCM: tokenFCM
       }
@@ -3038,6 +3039,7 @@ module.exports = function (User) {
 
     var filter = {
       where: {
+        language: {neq: "deleteDevice"}, // temp debug // TODO: remove after debugging
         userId: User.app.models.BaseModel.user.id,
         tokenFCM: tokenFCM
       }
