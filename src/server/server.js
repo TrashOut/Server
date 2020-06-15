@@ -117,29 +117,9 @@ Date.prototype.toIsoString = function () {
           ':' + pad(tzo % 60);
 };
 
-
-// Setup Sentry error tracking
-var sentryConfig = require(__dirname + '/sentry.json');
-if (sentryConfig && sentryConfig.dsn) {
-  var Sentry = require('@sentry/node');
-  var os = require("os");
-
-  // Capture console.error with Sentry
-  Sentry.init({
-    environment: process.env.NODE_ENV || '_other',
-    dsn: sentryConfig.dsn,
-    release: sentryConfig.release,
-    serverName: os.hostname()
-  });
-
-  // inject Sentry capture to error.log (not used CaptureConsole integration, because it not showing issue in code preview)
-  console.errorOriginal = console.error;
-  console.error = function (message, optionalParams) {
-    Sentry.captureException(message);
-    console.errorOriginal(message, optionalParams);
-  };
-}
-
+// Sentry initialization
+var Sentry = require('../common/helpers/sentry');
+Sentry.init();
 
 var loopback = require('loopback');
 var boot = require('loopback-boot');

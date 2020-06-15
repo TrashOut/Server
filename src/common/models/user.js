@@ -28,6 +28,7 @@ var Promise = require('bluebird');
 var Constants = require('../constants');
 var UserPoints = require('../helpers/userPoints');
 var AreaAccessControl = require('../area-access-control');
+var Sentry = require('../helpers/sentry').getInstance();
 
 var toBasicObject = function(obj) {
   return JSON.parse(JSON.stringify(obj));
@@ -2954,6 +2955,18 @@ module.exports = function (User) {
    * @returns {void}
    */
   User.addDevice = function (tokenFCM, deviceId, language, cb) {
+    // console log debug info
+    console.log('Call User.addDevice(tokenFCM:'+tokenFCM+', deviceId:'+deviceId+', language:'+language+')');
+
+    // sentry info event
+    if (Sentry) {
+      Sentry.withScope(function(scope) {
+        scope.setContext("arguments", arguments);
+        scope.setContext("logged user", User.app.models.BaseModel.user);
+        Sentry.captureMessage('Call User.addDevice()');
+      });
+    }
+
     var filter = {
       where: {
         userId: User.app.models.BaseModel.user.id,
@@ -3011,6 +3024,18 @@ module.exports = function (User) {
    * @returns {void}
    */
   User.deleteDevice = function (tokenFCM, cb) {
+    // console log debug info
+    console.log('Call User.deleteDevice(tokenFCM:'+tokenFCM+')');
+
+    // sentry info event
+    if (Sentry) {
+      Sentry.withScope(function (scope) {
+        scope.setContext("arguments", arguments);
+        scope.setContext("logged user", User.app.models.BaseModel.user);
+        Sentry.captureMessage('Call User.deleteDevice()');
+      });
+    }
+
     var filter = {
       where: {
         userId: User.app.models.BaseModel.user.id,
