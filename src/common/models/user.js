@@ -2975,45 +2975,30 @@ module.exports = function (User) {
       }
     };
 
-    // Begin transaction
-    User.beginTransaction({isolationLevel: User.Transaction.READ_COMMITTED}, function (err, tx) {
+    User.app.models.Device.findOne(filter, function (err, device) {
       if (err) {
         console.error(err);
         return cb({message: err.detail});
       }
 
-      User.app.models.Device.findOne(filter, {transaction: tx}, function (err, device) {
+      if (device) {
+        return cb({message: 'Token already exists.', status: 404});
+      }
+
+      var data = {
+        userId: User.app.models.BaseModel.user.id,
+        tokenFCM: tokenFCM,
+        deviceId: deviceId,
+        language: language
+      };
+
+      User.app.models.Device.create(data, function (err, device) {
         if (err) {
           console.error(err);
           return cb({message: err.detail});
         }
 
-        if (device) {
-          return cb({message: 'Token already exists.', status: 404});
-        }
-
-        var data = {
-          userId: User.app.models.BaseModel.user.id,
-          tokenFCM: tokenFCM,
-          deviceId: deviceId,
-          language: language
-        };
-
-        User.app.models.Device.create(data, {transaction: tx}, function (err, device) {
-          if (err) {
-            console.error(err);
-            return cb({message: err.detail});
-          }
-
-          tx.commit(function (err) {
-            if (err) {
-              console.error(err);
-              return cb({message: err.detail});
-            }
-
-            cb(null, device);
-          });
-        });
+        cb(null, device);
       });
     });
   };
@@ -3045,39 +3030,23 @@ module.exports = function (User) {
       }
     };
 
-    // Begin transaction
-    User.beginTransaction({isolationLevel: User.Transaction.READ_COMMITTED}, function (err, tx) {
+    User.app.models.Device.findOne(filter, function (err, device) {
       if (err) {
         console.error(err);
         return cb({message: err.detail});
       }
 
-      User.app.models.Device.findOne(filter, {transaction: tx}, function (err, device) {
+      if (!device) {
+        return cb({message: 'Token not found.', status: 404});
+      }
+
+      User.app.models.Device.destroyAll({tokenFCM: tokenFCM}, function (err) {
         if (err) {
           console.error(err);
           return cb({message: err.detail});
         }
 
-        if (!device) {
-          return cb({message: 'Token not found.', status: 404});
-        }
-
-        User.app.models.Device.destroyAll({tokenFCM: tokenFCM}, {transaction: tx}, function (err) {
-          if (err) {
-            console.error(err);
-            return cb({message: err.detail});
-          }
-
-          tx.commit(function (err) {
-            if (err) {
-              console.error(err);
-              return cb({message: err.detail});
-            }
-
-            cb(null);
-          });
-
-        });
+        cb(null);
       });
     });
   };
