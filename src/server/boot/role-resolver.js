@@ -49,7 +49,7 @@ module.exports = function (app) {
         if (token === 'e3VzZXJSb2xlOiAnc3VwZXJBZG1pbid9') {
           // user with role "superAdmin" - for endpoint testing purposes
           response = {
-            uid: app.settings.port === 3000 ? '3DKIlq4LyDb5jlSK5zGtxTY3IVC2' : '5MTMwZs8RwRQbF8C8dieyk9E3gO2'
+            uid: app.settings.port === 3000 ? 'pqGXagDCaRMsY0zmkTGQWe7Y59a2' : '5MTMwZs8RwRQbF8C8dieyk9E3gO2'
           };
         }
 
@@ -70,7 +70,7 @@ module.exports = function (app) {
         if (token === 'e3VzZXJSb2xlOiBhdXRoZW50aWNhdGVkfQ==') {
           // user with role "authenticated" - for endpoint testing purposes
           response = {
-            uid: app.settings.port === 3000 ? 'dDMS3DYSy5Vf0IgnApc5Lz53ogP2' : 'Hjgtc7SG4TQw74OoNsfuihKg74n2'
+            uid: app.settings.port === 3000 ? 'NZAIbmM2ssVo4s1fN42sDo0AG6b2' : 'Hjgtc7SG4TQw74OoNsfuihKg74n2'
           };
         }
 

@@ -742,6 +742,43 @@ module.exports = function (Organization) {
   };
 
   /**
+   * List users as array of user IDs
+   *
+   * @param {Number} id Organization ID
+   * @param {Function} cb
+   * @returns {Object}
+   */
+  Organization.listUserIds = function (id, cb) {
+
+    var filter = {
+      fields: {
+        userId: true
+      },
+      where: {
+        organizationId: id
+      }
+    };
+
+    Organization.app.models.UserHasOrganization.find(filter, function (err, instances) {
+      if (err) {
+        console.error(err);
+        return cb({message: err.detail});
+      }
+
+      var payload = [];
+      instances.forEach(function(instance) {
+        var temp = instance.toJSON();
+
+        var user = temp.userId;
+
+        payload.push(user);
+      });
+
+      cb(null, payload);
+    });
+  };
+
+  /**
    * List users associated with an organization
    *
    * @param {Number} id Organization ID
@@ -1141,6 +1178,17 @@ module.exports = function (Organization) {
         {arg: 'organizationRoleIds', type: 'string'},
         {arg: 'limit', type: 'number'},
         {arg: 'page', type: 'number'}
+      ],
+      returns: {type: 'object', root: true}
+    }
+  );
+
+  Organization.remoteMethod(
+    'listUserIds',
+    {
+      http: {path: '/:id/users/ids', verb: 'get'},
+      accepts: [
+        {arg: 'id', type: 'number', required: true}
       ],
       returns: {type: 'object', root: true}
     }
