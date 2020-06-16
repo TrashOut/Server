@@ -473,10 +473,11 @@ module.exports = function (TrashPoint) {
    * @param {String} trashNote
    * @param {String} trashIds
    * @param {String} userIds
+   * @param {integer} organizationId
    * @param {String} updateNeeded
    * @returns {String}
    */
-  function getTrashListFilterWhereClause(area, geocells, geoAreaStreet, geoAreaZip, geoAreaSubLocality, geoAreaLocality, geoAreaAa3, geoAreaAa2, geoAreaAa1, geoAreaCountry, geoAreaContinent, spam, unreviewed, timeBoundaryFrom, timeBoundaryTo, trashStatus, trashSize, trashType, trashAccessibility, trashNote, trashIds, userIds, updateNeeded) {
+  function getTrashListFilterWhereClause(area, geocells, geoAreaStreet, geoAreaZip, geoAreaSubLocality, geoAreaLocality, geoAreaAa3, geoAreaAa2, geoAreaAa1, geoAreaCountry, geoAreaContinent, spam, unreviewed, timeBoundaryFrom, timeBoundaryTo, trashStatus, trashSize, trashType, trashAccessibility, trashNote, trashIds, userIds, organizationId, updateNeeded) {
     var sql = '';
 
     sql += 'WHERE last_id IS NULL \n';
@@ -620,6 +621,10 @@ module.exports = function (TrashPoint) {
       sql += '  AND tpa.trash_point_id IN (SELECT DISTINCT(tpa3.trash_point_id) FROM public.trash_point_activity tpa3 WHERE tpa3.anonymous IS FALSE AND tpa3.user_id IN (' + sanitize(userIds.split(',').map(Number).filter(Boolean)) + ')) \n';
     }
 
+    if (organizationId) {
+      sql += '  AND tpa.trash_point_id IN (SELECT DISTINCT(tpa4.trash_point_id) FROM public.trash_point_activity tpa4 WHERE tpa4.anonymous IS FALSE AND tpa4.user_id IN (SELECT user_id FROM public.user_has_organization WHERE organization_id = ' + parseInt(organizationId) + ')) \n';
+    }
+
     switch (updateNeeded) {
     case 'true':
     case '1':
@@ -660,6 +665,7 @@ module.exports = function (TrashPoint) {
    * @param {String} trashNote
    * @param {String} trashIds
    * @param {String} userIds
+   * @param {integer} organizationId
    * @param {String} updateNeeded
    * @param {String} orderBy
    * @param {String} userPosition
@@ -667,7 +673,7 @@ module.exports = function (TrashPoint) {
    * @param {Number} limit
    * @returns {String}
    */
-  function getTrashListSQL(attributes, area, geocells, geoAreaStreet, geoAreaZip, geoAreaSubLocality, geoAreaLocality, geoAreaAa3, geoAreaAa2, geoAreaAa1, geoAreaCountry, geoAreaContinent, spam, unreviewed, timeBoundaryFrom, timeBoundaryTo, trashStatus, trashSize, trashType, trashAccessibility, trashNote, trashIds, userIds, updateNeeded, orderBy, userPosition, page, limit) {
+  function getTrashListSQL(attributes, area, geocells, geoAreaStreet, geoAreaZip, geoAreaSubLocality, geoAreaLocality, geoAreaAa3, geoAreaAa2, geoAreaAa1, geoAreaCountry, geoAreaContinent, spam, unreviewed, timeBoundaryFrom, timeBoundaryTo, trashStatus, trashSize, trashType, trashAccessibility, trashNote, trashIds, userIds, organizationId, updateNeeded, orderBy, userPosition, page, limit) {
 
     var sql = '';
 
@@ -832,7 +838,7 @@ module.exports = function (TrashPoint) {
 
     sql += 'JOIN public.trash_point tp ON tp.id = tpa.trash_point_id \n';
 
-    sql += getTrashListFilterWhereClause(area, geocells, geoAreaStreet, geoAreaZip, geoAreaSubLocality, geoAreaLocality, geoAreaAa3, geoAreaAa2, geoAreaAa1, geoAreaCountry, geoAreaContinent, spam, unreviewed, timeBoundaryFrom, timeBoundaryTo, trashStatus, trashSize, trashType, trashAccessibility, trashNote, trashIds, userIds, updateNeeded);
+    sql += getTrashListFilterWhereClause(area, geocells, geoAreaStreet, geoAreaZip, geoAreaSubLocality, geoAreaLocality, geoAreaAa3, geoAreaAa2, geoAreaAa1, geoAreaCountry, geoAreaContinent, spam, unreviewed, timeBoundaryFrom, timeBoundaryTo, trashStatus, trashSize, trashType, trashAccessibility, trashNote, trashIds, userIds, organizationId, updateNeeded);
 
     if (orderBy) {
       var order = [];
@@ -909,10 +915,11 @@ module.exports = function (TrashPoint) {
    * @param {String} trashNote
    * @param {String} trashIds
    * @param {String} userIds
+   * @param {integer} organizationId
    * @param {String} updateNeeded
    * @returns {String}
    */
-  function getTrashListCountSQL(area, geocells, geoAreaStreet, geoAreaZip, geoAreaSubLocality, geoAreaLocality, geoAreaAa3, geoAreaAa2, geoAreaAa1, geoAreaCountry, geoAreaContinent, spam, unreviewed, timeBoundaryFrom, timeBoundaryTo, trashStatus, trashSize, trashType, trashAccessibility, trashNote, trashIds, userIds, updateNeeded) {
+  function getTrashListCountSQL(area, geocells, geoAreaStreet, geoAreaZip, geoAreaSubLocality, geoAreaLocality, geoAreaAa3, geoAreaAa2, geoAreaAa1, geoAreaCountry, geoAreaContinent, spam, unreviewed, timeBoundaryFrom, timeBoundaryTo, trashStatus, trashSize, trashType, trashAccessibility, trashNote, trashIds, userIds, organizationId, updateNeeded) {
     var sql = 'SELECT COUNT (a.id) AS count \n';
     sql += 'FROM ( \n';
 
@@ -924,7 +931,7 @@ module.exports = function (TrashPoint) {
       sql += '  JOIN public.gps ON gps.id = tpa.gps_id \n';
     }
 
-    sql += getTrashListFilterWhereClause(area, geocells, geoAreaStreet, geoAreaZip, geoAreaSubLocality, geoAreaLocality, geoAreaAa3, geoAreaAa2, geoAreaAa1, geoAreaCountry, geoAreaContinent, spam, unreviewed, timeBoundaryFrom, timeBoundaryTo, trashStatus, trashSize, trashType, trashAccessibility, trashNote, trashIds, userIds, updateNeeded);
+    sql += getTrashListFilterWhereClause(area, geocells, geoAreaStreet, geoAreaZip, geoAreaSubLocality, geoAreaLocality, geoAreaAa3, geoAreaAa2, geoAreaAa1, geoAreaCountry, geoAreaContinent, spam, unreviewed, timeBoundaryFrom, timeBoundaryTo, trashStatus, trashSize, trashType, trashAccessibility, trashNote, trashIds, userIds, organizationId, updateNeeded);
 
     sql += ') AS a \n';
 
@@ -1434,14 +1441,15 @@ module.exports = function (TrashPoint) {
    * @param {String} trashNote
    * @param {String} trashIds
    * @param {String} userIds
+   * @param {integer} organizationId
    * @param {String} updateNeeded
    * @param {Function} cb
    * @returns {Number}
    */
-  TrashPoint.listCount = function (area, geocells, geoAreaStreet, geoAreaZip, geoAreaSubLocality, geoAreaLocality, geoAreaAa3, geoAreaAa2, geoAreaAa1, geoAreaCountry, geoAreaContinent, spam, unreviewed, timeBoundaryFrom, timeBoundaryTo, trashStatus, trashSize, trashType, trashAccessibility, trashNote, trashIds, userIds, updateNeeded, cb) {
+  TrashPoint.listCount = function (area, geocells, geoAreaStreet, geoAreaZip, geoAreaSubLocality, geoAreaLocality, geoAreaAa3, geoAreaAa2, geoAreaAa1, geoAreaCountry, geoAreaContinent, spam, unreviewed, timeBoundaryFrom, timeBoundaryTo, trashStatus, trashSize, trashType, trashAccessibility, trashNote, trashIds, userIds, organizationId, updateNeeded, cb) {
     var ds = TrashPoint.app.dataSources.trashout;
 
-    var sql = getTrashListCountSQL(area, geocells, geoAreaStreet, geoAreaZip, geoAreaSubLocality, geoAreaLocality, geoAreaAa3, geoAreaAa2, geoAreaAa1, geoAreaCountry, geoAreaContinent, spam, unreviewed, timeBoundaryFrom, timeBoundaryTo, trashStatus, trashSize, trashType, trashAccessibility, trashNote, trashIds, userIds, updateNeeded);
+    var sql = getTrashListCountSQL(area, geocells, geoAreaStreet, geoAreaZip, geoAreaSubLocality, geoAreaLocality, geoAreaAa3, geoAreaAa2, geoAreaAa1, geoAreaCountry, geoAreaContinent, spam, unreviewed, timeBoundaryFrom, timeBoundaryTo, trashStatus, trashSize, trashType, trashAccessibility, trashNote, trashIds, userIds, organizationId, updateNeeded);
 
     ds.connector.execute(sql, TrashPoint.app.models.BaseModel.sqlParameters, function (err, instance) {
       if (err) {
@@ -1478,6 +1486,7 @@ module.exports = function (TrashPoint) {
    * @param {String} trashNote
    * @param {String} trashIds
    * @param {String} userIds
+   * @param {integer} organizationId
    * @param {String} updateNeeded
    * @param {String} attributesNeeded
    * @param {String} orderBy
@@ -1487,7 +1496,7 @@ module.exports = function (TrashPoint) {
    * @param {Function} cb
    * @returns {Array}
    */
-  TrashPoint.list = function (area, geocells, geoAreaStreet, geoAreaZip, geoAreaSubLocality, geoAreaLocality, geoAreaAa3, geoAreaAa2, geoAreaAa1, geoAreaCountry, geoAreaContinent, spam, unreviewed, timeBoundaryFrom, timeBoundaryTo, trashStatus, trashSize, trashType, trashAccessibility, trashNote, trashIds, userIds, updateNeeded, attributesNeeded, orderBy, userPosition, page, limit, cb) {
+  TrashPoint.list = function (area, geocells, geoAreaStreet, geoAreaZip, geoAreaSubLocality, geoAreaLocality, geoAreaAa3, geoAreaAa2, geoAreaAa1, geoAreaCountry, geoAreaContinent, spam, unreviewed, timeBoundaryFrom, timeBoundaryTo, trashStatus, trashSize, trashType, trashAccessibility, trashNote, trashIds, userIds, organizationId, updateNeeded, attributesNeeded, orderBy, userPosition, page, limit, cb) {
     var ds = TrashPoint.app.dataSources.trashout;
 
     var attributes = [];
@@ -1503,7 +1512,7 @@ module.exports = function (TrashPoint) {
       return cb({message: 'At least one attribute in attributeNeed parameter must be set', status: 403});
     }
 
-    var sql = getTrashListSQL(attributes, area, geocells, geoAreaStreet, geoAreaZip, geoAreaSubLocality, geoAreaLocality, geoAreaAa3, geoAreaAa2, geoAreaAa1, geoAreaCountry, geoAreaContinent, spam, unreviewed, timeBoundaryFrom, timeBoundaryTo, trashStatus, trashSize, trashType, trashAccessibility, trashNote, trashIds, userIds, updateNeeded, orderBy, userPosition, page, limit);
+    var sql = getTrashListSQL(attributes, area, geocells, geoAreaStreet, geoAreaZip, geoAreaSubLocality, geoAreaLocality, geoAreaAa3, geoAreaAa2, geoAreaAa1, geoAreaCountry, geoAreaContinent, spam, unreviewed, timeBoundaryFrom, timeBoundaryTo, trashStatus, trashSize, trashType, trashAccessibility, trashNote, trashIds, userIds, organizationId, updateNeeded, orderBy, userPosition, page, limit);
 
     ds.connector.execute(sql, TrashPoint.app.models.BaseModel.sqlParameters, function (err, instances) {
       if (err) {
@@ -2591,6 +2600,7 @@ module.exports = function (TrashPoint) {
         {arg: 'trashNote', type: 'string', description: 'Text'},
         {arg: 'trashIds', type: 'string', description: 'Comma separated trash identifiers'},
         {arg: 'userIds', type: 'string', description: 'Comma separated user identifiers (users who created report or made actualization)'},
+        {arg: 'organizationId', type: 'integer', description: 'Organization ID'},
         {arg: 'updateNeeded', type: 'string'},
         {arg: 'attributesNeeded', type: 'string', description: 'Comma separated attributes which will be contained in the result. Attributes are "id", "gps", "types", "size", "note", "status", "images", "updateTime", "updateHistory"'},
         {arg: 'orderBy', type: 'string', description: 'Order by'},
@@ -2629,6 +2639,7 @@ module.exports = function (TrashPoint) {
         {arg: 'trashNote', type: 'string', description: 'Text'},
         {arg: 'trashIds', type: 'string', description: 'Comma separated trash identifiers'},
         {arg: 'userIds', type: 'string', description: 'Comma separated user identifiers (users who created report or made actualization)'},
+        {arg: 'organizationId', type: 'integer', description: 'Organization ID'},
         {arg: 'updateNeeded', type: 'string'}
       ],
       returns: {arg: 'count', type: 'number'}

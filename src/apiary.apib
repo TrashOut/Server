@@ -323,6 +323,7 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
     + trashNote (optional, string) - Text
     + trashIds (optional, string) - Comma separated trash identifiers
     + userIds (optional, string) - Comma separated user identifiers (users who created report or made actualization)
+    + organizationId (optional, integer) - Organization ID
     + attributesNeeded (required, string) - Comma separated attributes which will be contained in the result. Attributes are "id", "gpsShort", "gpsFull", "types", "size", "note", "userInfo", "anonymous", "status", "cleanedByMe", "images", "updateTime", "updateHistory", "url", "created", "accessibility", "updateNeeded", "unreviewed", "spam"
     + orderBy (optional, integer) - Comma separated ordering with prefix "-" for descending order - "gps", "id", "anonymous", "created", "note", "reviewed", "status", "size"
     + userPosition (optional, string) - Comma separated latitude and longitude of current user position. Required when attribute "orderBy=gps" is used.
@@ -603,6 +604,7 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
     + trashNote (optional, string) - Text
     + trashIds (optional, string) - Comma separated trash identifiers
     + userIds (optional, string) - Comma separated user identifiers (users who created report or made actualization)
+    + organizationId (optional, integer) - Organization ID
 
 + Response 200 (application/json)
 
