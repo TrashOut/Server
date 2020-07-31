@@ -80,7 +80,7 @@ function buildAddress(gpsArea) {
     address += (flag ? ', ' : '') + gpsArea.aa2;
     flag = true;
   }
-  
+
   if (gpsArea.aa1) {
     address += (flag ? ', ' : '') + gpsArea.aa1;
     flag = true;
@@ -124,7 +124,7 @@ module.exports = function (Cron) {
 
   /**
    * Stores parameters for parametrized queries and returns parameter number
-   * 
+   *
    * @param {type} parameter
    * @returns {String}
    */
@@ -133,7 +133,7 @@ module.exports = function (Cron) {
   }
 
   /**
-   * 
+   *
    * @param number areaId
    * @param date notificationLastSent
    * @returns string
@@ -226,7 +226,7 @@ module.exports = function (Cron) {
 
   /**
    * Retrieves users's activity and sends it via email
-   * 
+   *
    * @param {Object} user
    * @returns void
    */
@@ -242,6 +242,7 @@ module.exports = function (Cron) {
     return new Promise(function (resolve, reject) {
       ds.connector.execute(sql, Cron.app.models.BaseModel.sqlParameters, function (err, activities) {
         if (err) {
+          console.error('cron-debug', err);
           return reject(err);
         }
 
@@ -292,7 +293,7 @@ module.exports = function (Cron) {
         };
 
         var headers = {
-          to: data.user.email, 
+          to: data.user.email,
           subject: emailTranslations[checkLanguage(data.user.language)]['mail.newsletter.subject']
         };
 
@@ -303,6 +304,7 @@ module.exports = function (Cron) {
         Cron.app.models.BaseModel.sendEmail('newsletter', headers, params, data.user.language).then(function () {
           resolve();
         }).catch(function (err) {
+          console.error('cron-debug', err);
           return reject(err);
         });
 
@@ -313,7 +315,7 @@ module.exports = function (Cron) {
 
   /**
    * Sends area activity notifications to users
-   * 
+   *
    * @returns void
    */
   function sendNewsletters() {
@@ -352,6 +354,7 @@ module.exports = function (Cron) {
       var lastSentCondition = {or: []};
       ds.connector.execute(sql, Cron.app.models.BaseModel.sqlParameters, function (err, instances) {
         if (err) {
+          console.error('cron-debug', err);
           return reject(err);
         }
 
@@ -387,23 +390,28 @@ module.exports = function (Cron) {
             if (lastSentCondition.or.length) {
               Cron.app.models.UserHasArea.updateAll(lastSentCondition, {notificationLastSent: (new Date()).toISOString()}, function (err) {
                 if (err) {
+                  console.error('cron-debug', err);
                   return reject(err);
                 }
 
+                console.error('cron-debug', error);
                 reject(error);
               });
             } else {
-              reject(error);
+              console.error('cron-debug', err);
+              reject(err);
             }
           });
         }, function (err) {
           if (err) {
+            console.error('cron-debug', err);
             reject(err);
           }
 
           if (lastSentCondition.or.length) {
             Cron.app.models.UserHasArea.updateAll(lastSentCondition, {notificationLastSent: (new Date()).toISOString()}, function (err) {
               if (err) {
+                console.error('cron-debug', err);
                 return reject(err);
               }
 
@@ -419,7 +427,7 @@ module.exports = function (Cron) {
   /**
    * Sends event confirmations to users that are joined in given events
    * at least one day before the start.
-   * 
+   *
    * @returns void
    */
   function sendEventConfirmations() {
@@ -490,6 +498,7 @@ module.exports = function (Cron) {
       var lastSentCondition = {or: []};
       ds.connector.execute(sql, Cron.app.models.BaseModel.sqlParameters, function (err, instances) {
         if (err) {
+          console.error('cron-debug', err);
           return reject(err);
         }
 
@@ -530,17 +539,20 @@ module.exports = function (Cron) {
             lastSentCondition.or.push({and: [{eventId: params.event.id}, {userId: params.user.id}]});
             async.setImmediate(callback);
           }).catch(function (err) {
+            console.error('cron-debug', err);
             return reject(err);
           });
 
         }, function (err) {
           if (err) {
+            console.error('cron-debug', err);
             reject(err);
           }
 
           if (lastSentCondition.or.length) {
             Cron.app.models.UserHasEvent.updateAll(lastSentCondition, {confirmationNotificationSent: (new Date()).toISOString()}, function (err) {
               if (err) {
+                console.error('cron-debug', err);
                 return reject(err);
               }
 
@@ -553,10 +565,10 @@ module.exports = function (Cron) {
   }
 
   /**
-   * Sends event feedback emails to all the users that were joined in 
+   * Sends event feedback emails to all the users that were joined in
    * given events right after the events are over. It doesn't matter whether
    * they confirmed their attendance.
-   * 
+   *
    * @returns void
    */
   function sendEventFeedbacks() {
@@ -592,6 +604,7 @@ module.exports = function (Cron) {
       var lastSentCondition = {or: []};
       ds.connector.execute(sql, Cron.app.models.BaseModel.sqlParameters, function (err, instances) {
         if (err) {
+          console.error('cron-debug', err);
           return reject(err);
         }
 
@@ -628,17 +641,20 @@ module.exports = function (Cron) {
             lastSentCondition.or.push({and: [{eventId: params.event.id}, {userId: params.user.id}]});
             async.setImmediate(callback);
           }).catch(function (err) {
+            console.error('cron-debug', err);
             return reject(err);
           });
 
         }, function (err) {
           if (err) {
+            console.error('cron-debug', err);
             reject(err);
           }
 
           if (lastSentCondition.or.length) {
             Cron.app.models.UserHasEvent.updateAll(lastSentCondition, {feedbackNotificationSent: (new Date()).toISOString()}, function (err) {
               if (err) {
+                console.error('cron-debug', err);
                 return reject(err);
               }
 
@@ -651,7 +667,7 @@ module.exports = function (Cron) {
   }
 
   /**
-   * 
+   *
    * @param {String} hash
    * @param {Function} cb
    * @returns String
@@ -662,15 +678,15 @@ module.exports = function (Cron) {
     var eventFeedbacks = sendEventFeedbacks();
 
     Promise.all([
-      newsletters, 
-      eventConfirmations, 
+      newsletters,
+      eventConfirmations,
       eventFeedbacks
-    ]).then(function () {      
+    ]).then(function () {
 
       cb(null, hash);
 
     }).catch(function (error) {
-      console.error(error);
+      console.error('cron-debug', error);
       return cb(error);
     });
   };
