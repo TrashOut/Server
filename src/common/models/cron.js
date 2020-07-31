@@ -683,6 +683,7 @@ module.exports = function (Cron) {
       eventFeedbacks
     ]).then(function () {
 
+      console.log('cron-debug', 'Cron.daily finished');
       cb(null, hash);
 
     }).catch(function (error) {
