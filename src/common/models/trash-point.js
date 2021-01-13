@@ -330,11 +330,12 @@ module.exports = function (TrashPoint) {
    * @param {String} status
    * @param {String} note
    * @param {Boolean} anonymous
+   * @param {integer} organizationId
    * @param {Array} accessibility
    * @param {Boolean} cleanedByMe
    * @returns {Array}
    */
-  function checkParameters(method, images, gps, size, type, status, note, anonymous, accessibility, cleanedByMe) {
+  function checkParameters(method, images, gps, size, type, status, note, anonymous, organizationId, accessibility, cleanedByMe) {
     return new Promise(function (resolve, reject) {
 
       // Check whether accessibility is valid object
@@ -421,19 +422,32 @@ module.exports = function (TrashPoint) {
                 return reject({message: 'Invalid trash status', status: 404});
               }
 
-              return resolve({
-                images: images,
-                trashPointSizeId: responseTrashPointSize.id,
-                trashPointTypeIds: trashPointTypeIds,
-                accessibilityTypeIds: accessibilityTypeIds,
-                lat: gps.lat,
-                long: gps.long,
-                accuracy: gps.accuracy,
-                gpsSourceId: responseGPSSource.id,
-                note: note,
-                anonymous: anonymous,
-                status: method === 'update' ? status : null,
-                cleanedByMe: status === Constants.TRASH_STATUS_CLEANED && cleanedByMe
+              // check if user is allowed to report as this organization
+              var userId = TrashPoint.app.models.BaseModel.user.id;
+              isUserManagerOfOrganization(userId, organizationId).then(function (ok) {
+                if (!ok) {
+                  return reject({message: 'You are not allowed to report as this organization.', status: 403});
+                }
+
+                return resolve({
+                  images: images,
+                  trashPointSizeId: responseTrashPointSize.id,
+                  trashPointTypeIds: trashPointTypeIds,
+                  accessibilityTypeIds: accessibilityTypeIds,
+                  lat: gps.lat,
+                  long: gps.long,
+                  accuracy: gps.accuracy,
+                  gpsSourceId: responseGPSSource.id,
+                  note: note,
+                  anonymous: anonymous,
+                  organizationId: organizationId,
+                  status: method === 'update' ? status : null,
+                  cleanedByMe: status === Constants.TRASH_STATUS_CLEANED && cleanedByMe
+                });
+
+              }).catch(function (err) {
+                console.error(err);
+                return reject(err);
               });
 
             });
@@ -1909,13 +1923,14 @@ module.exports = function (TrashPoint) {
    * @param {Array} types
    * @param {String} note
    * @param {Boolean} anonymous
+   * @param {integer} organizationId
    * @param {Object} accessibility
    * @param {Function} cb
    * @returns {Object}
    */
-  TrashPoint.reportTrash = function (images, gps, size, types, note, anonymous, accessibility, cb) {
+  TrashPoint.reportTrash = function (images, gps, size, types, note, anonymous, organizationId, accessibility, cb) {
 
-    var check = checkParameters('insert', images, gps, size, types, null, note, anonymous, accessibility);
+    var check = checkParameters('insert', images, gps, size, types, null, note, anonymous, organizationId, accessibility);
 
     check.then(function (response) {
 
@@ -1946,7 +1961,7 @@ module.exports = function (TrashPoint) {
 
             GeoLocation.upsertGps(response.lat, response.long, response.accuracy, response.gpsSourceId).then(function (gpsId) {
 
-              TrashPoint.create({userId: TrashPoint.app.models.BaseModel.user.id}, {transaction: tx}, function (err, responseTrashPoint) {
+              TrashPoint.create({userId: TrashPoint.app.models.BaseModel.user.id, organizationId: organizationId}, {transaction: tx}, function (err, responseTrashPoint) {
 
                 if (err) {
                   console.error(err);
@@ -1958,6 +1973,7 @@ module.exports = function (TrashPoint) {
                   gpsId: gpsId,
                   trashPointId: responseTrashPoint.id,
                   userId: TrashPoint.app.models.BaseModel.user.id,
+                  organizationId: organizationId,
                   trashPointSizeId: response.trashPointSizeId,
                   note: response.note,
                   anonymous: anonymous,
@@ -2534,6 +2550,7 @@ module.exports = function (TrashPoint) {
         {arg: 'types', type: 'object'},
         {arg: 'note', type: 'string'},
         {arg: 'anonymous', type: 'boolean'},
+        {arg: 'organizationId', type: 'number'},
         {arg: 'accessibility', type: 'object'}
       ],
       returns: [
