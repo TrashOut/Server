@@ -968,14 +968,22 @@ module.exports = function (TrashPoint) {
           gps: ['source', 'continent', 'country', 'aa1', 'aa2', 'aa3', 'locality', 'subLocality', 'street', 'zip']
         },
         {
-          history: [{user: ['image']}]
+          history: [{user: ['image']}, {organization: ['image']}]
         },
         {
-          trashPoint: [{relation: 'events', scope: {
-            where: {start: {gte: (new Date()).toISOString()}},
-            order: ['created DESC'],
-            include: {gps: ['source', 'continent', 'country', 'aa1', 'aa2', 'aa3', 'locality', 'subLocality', 'street', 'zip']}
-          }}]
+          trashPoint: [
+            {
+              relation: 'events',
+              scope: {
+                where: {start: {gte: (new Date()).toISOString()}},
+                order: ['created DESC'],
+                include: {gps: ['source', 'continent', 'country', 'aa1', 'aa2', 'aa3', 'locality', 'subLocality', 'street', 'zip']}
+              }
+            },
+            {
+              organization: ['image']
+            }
+          ]
         }
       ]
     };
@@ -1030,6 +1038,7 @@ module.exports = function (TrashPoint) {
             lastName: h.anonymous ? null: h.user.lastName,
             image: h.anonymous ? null : (h.user.image || null)
           };
+          h.changed.organization = h.organization;
           h.changed.anonymous = h.user.email ? h.anonymous : true; // Check if this activity is created by Firebase anonymous user
           h.changed.activityId = h.id;
           h.changed.updateTime = h.created;
@@ -1083,6 +1092,7 @@ module.exports = function (TrashPoint) {
             lastName: current.user.lastName,
             image: current.user.image || null
           },
+          organization: current.trashPoint.organization,
           anonymous: current.user.email ? current.anonymous : true, // Check if this activity is created by Firebase anonymous user
           note: current.note,
           status: current.status,

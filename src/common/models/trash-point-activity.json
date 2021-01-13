@@ -62,6 +62,15 @@
         "nullable": "NO"
       }
     },
+    "organizationId": {
+      "type": "number",
+      "required": false,
+      "postgresql": {
+        "columnName": "organization_id",
+        "dataType": "integer",
+        "nullable": "YES"
+      }
+    },
     "gpsId": {
       "type": "number",
       "required": true,
@@ -142,6 +151,16 @@
         "columnName": "user_id",
         "dataType": "bigint",
         "nullable": "NO"
+      }
+    },
+    "organization": {
+      "type": "belongsTo",
+      "model": "Organization",
+      "foreignKey": "organizationId",
+      "postgresql": {
+        "columnName": "organization_id",
+        "dataType": "integer",
+        "nullable": "YES"
       }
     },
     "gps": {

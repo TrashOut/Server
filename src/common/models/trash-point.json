@@ -35,6 +35,15 @@
         "nullable": "NO"
       }
     },
+    "organizationId": {
+      "type": "number",
+      "required": false,
+      "postgresql": {
+        "columnName": "organization_id",
+        "dataType": "integer",
+        "nullable": "YES"
+      }
+    },
     "_oldId": {
       "type": "number",
       "required": false,
@@ -60,6 +69,16 @@
         "columnName": "user_id",
         "dataType": "bigint",
         "nullable": "NO"
+      }
+    },
+    "organization": {
+      "type": "belongsTo",
+      "model": "Organization",
+      "foreignKey": "organizationId",
+      "postgresql": {
+        "columnName": "organization_id",
+        "dataType": "integer",
+        "nullable": "YES"
       }
     },
     "events": {
