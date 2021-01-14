@@ -166,6 +166,7 @@ module.exports = function (TrashPoint) {
               gpsId: gpsId,
               trashPointId: id,
               userId: TrashPoint.app.models.BaseModel.user.id,
+              organizationId: response.organizationId,
               trashPointSizeId: response.trashPointSizeId,
               note: response.note,
               cleanedByMe: response.cleanedByMe,
@@ -979,6 +980,9 @@ module.exports = function (TrashPoint) {
           user: ['image']
         },
         {
+          organization: ['image']
+        },
+        {
           gps: ['source', 'continent', 'country', 'aa1', 'aa2', 'aa3', 'locality', 'subLocality', 'street', 'zip']
         },
         {
@@ -993,9 +997,6 @@ module.exports = function (TrashPoint) {
                 order: ['created DESC'],
                 include: {gps: ['source', 'continent', 'country', 'aa1', 'aa2', 'aa3', 'locality', 'subLocality', 'street', 'zip']}
               }
-            },
-            {
-              organization: ['image']
             }
           ]
         }
@@ -1106,7 +1107,7 @@ module.exports = function (TrashPoint) {
             lastName: current.user.lastName,
             image: current.user.image || null
           },
-          organization: current.trashPoint.organization,
+          organization: current.organization,
           anonymous: current.user.email ? current.anonymous : true, // Check if this activity is created by Firebase anonymous user
           note: current.note,
           status: current.status,
@@ -2096,14 +2097,15 @@ module.exports = function (TrashPoint) {
    * @param {String} status
    * @param {String} note
    * @param {Boolean} anonymous
+   * @param {Number} organizationId
    * @param {Object} accessibility
    * @param {Boolean} cleanedByMe
    * @param {Function} cb
    * @returns {Object}
    */
-  TrashPoint.updateTrash = function (id, images, gps, size, types, status, note, anonymous, accessibility, cleanedByMe, cb) {
+  TrashPoint.updateTrash = function (id, images, gps, size, types, status, note, anonymous, organizationId, accessibility, cleanedByMe, cb) {
 
-    checkParameters('update', images, gps, size, types, status, note, anonymous, accessibility, cleanedByMe).then(function (response) {
+    checkParameters('update', images, gps, size, types, status, note, anonymous, organizationId, accessibility, cleanedByMe).then(function (response) {
 
       performUpdate(id, response).then(function (response) {
 
@@ -2527,6 +2529,7 @@ module.exports = function (TrashPoint) {
         {arg: 'status', type: 'string', required: true},
         {arg: 'note', type: 'string'},
         {arg: 'anonymous', type: 'string'},
+        {arg: 'organizationId', type: 'number'},
         {arg: 'accessibility', type: 'object'},
         {arg: 'cleanedByMe', type: 'boolean'}
       ],
