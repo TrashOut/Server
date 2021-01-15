@@ -424,9 +424,9 @@ module.exports = function (TrashPoint) {
               }
 
               // check if user is allowed to report as this organization
-              var userId = TrashPoint.app.models.BaseModel.user.id;
-              isUserManagerOfOrganization(userId, organizationId).then(function (ok) {
-                if (!ok) {
+              var user = TrashPoint.app.models.BaseModel.user;
+              isUserManagerOfOrganization(user.id, organizationId).then(function (ok) {
+                if (!ok && user.userRoleId != 4) { // user is not manager of organization and user is not superAdmin
                   return reject({message: 'You are not allowed to report as this organization.', status: 403});
                 }
 
