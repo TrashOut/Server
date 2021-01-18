@@ -163,6 +163,17 @@
         "dataType": "bigint",
         "nullable": "YES"
       }
+    },
+    "language": {
+      "type": "string",
+      "required": true,
+      "length": 5,
+      "postgresql": {
+        "columnName": "language",
+        "dataType": "char",
+        "dataLength": 5,
+        "nullable": "NO"
+      }
     }
   },
   "validations": [],

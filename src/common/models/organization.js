@@ -261,9 +261,10 @@ module.exports = function (Organization) {
    * @param {Object} organizationType
    * @param {Object} image
    * @param {Number} parentId
+   * @param {String} language
    * @param {function} cb
    */
-  Organization.ins = function (name, description, mailSubject, mailBodyHtml, mailBodyMarkdown, contactEmail, contactPhone, contactTwitter, contactFacebook, contactGooglePlus, contactUrl, areaId, organizationType, image, parentId, cb) {
+  Organization.ins = function (name, description, mailSubject, mailBodyHtml, mailBodyMarkdown, contactEmail, contactPhone, contactTwitter, contactFacebook, contactGooglePlus, contactUrl, areaId, organizationType, image, parentId, language, cb) {
     var data = {
       name: name,
       description: description,
@@ -278,7 +279,8 @@ module.exports = function (Organization) {
       contactUrl: contactUrl,
       parentId: parentId,
       areaId: areaId,
-      organizationTypeId: organizationType ? organizationType.id : 1
+      organizationTypeId: organizationType ? organizationType.id : 1,
+      language: language
     };
 
     // Begin transaction
@@ -365,9 +367,10 @@ module.exports = function (Organization) {
    * @param {Object} organizationType
    * @param {Object} image
    * @param {Object} parentId
+   * @param {String} language
    * @param {function} cb
    */
-  Organization.upd = function (id, name, description, mailSubject, mailBodyHtml, mailBodyMarkdown, contactEmail, contactPhone, contactTwitter, contactFacebook, contactGooglePlus, contactUrl, areaId, organizationType, image, parentId, cb) {
+  Organization.upd = function (id, name, description, mailSubject, mailBodyHtml, mailBodyMarkdown, contactEmail, contactPhone, contactTwitter, contactFacebook, contactGooglePlus, contactUrl, areaId, organizationType, image, parentId, language, cb) {
     Organization.beginTransaction({isolationLevel: Organization.Transaction.READ_COMMITTED}, function (err, tx) {
       if (err) {
         console.error(err);
@@ -412,7 +415,8 @@ module.exports = function (Organization) {
           contactUrl: contactUrl,
           parentId: parentId,
           areaId: areaId,
-          organizationTypeId: organizationType ? organizationType.id : 1
+          organizationTypeId: organizationType ? organizationType.id : 1,
+          language: language,
         };
 
         if (image) {
@@ -1087,7 +1091,8 @@ module.exports = function (Organization) {
         {arg: 'areaId', type: 'number'},
         {arg: 'organizationType', type: 'object'},
         {arg: 'image', type: 'object'},
-        {arg: 'parentId', type: 'integer'}
+        {arg: 'parentId', type: 'integer'},
+        {arg: 'language', type: 'string' }
       ],
       returns: {type: 'object', root: true}
     }
@@ -1113,7 +1118,8 @@ module.exports = function (Organization) {
         {arg: 'areaId', type: 'number'},
         {arg: 'organizationType', type: 'object'},
         {arg: 'image', type: 'object'},
-        {arg: 'parentId', type: 'integer'}
+        {arg: 'parentId', type: 'integer'},
+        {arg: 'language', type: 'string' }
       ],
       returns: {type: 'object', root: true}
     }
