@@ -229,7 +229,10 @@ module.exports = function (Organization) {
       include: [
         'organizationType',
         'area',
-        'image'
+        'image',
+        {
+          organizationHasArea: 'area'
+        }
       ]
     };
 
