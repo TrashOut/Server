@@ -390,18 +390,8 @@ module.exports = function (Organization) {
           return cb({message: "Organization not found by ID " + id, status: 404});
         }
 
-        if (Organization.app.models.BaseModel.user.userRole.code !== Constants.USER_ROLE_SUPER_ADMIN) {
-          // if user is not superAdmin, check whether is manager of this organization
-          var isManager = false;
-          Organization.app.models.BaseModel.user.userHasOrganization.forEach(function (orgRelation) {
-            if (orgRelation.organizationId == organization.id && orgRelation.organizationRoleId == Constants.USER_ORGANIZATION_ROLE_MANAGER) {
-              isManager = true;
-            }
-          });
-
-          if (!isManager) {
-            return cb({message: "Only superAdmin or manager can update this organization.", status: 403});
-          }
+        if (!Organization.canManageOrganization(organization.id)) {
+          return cb({message: "Only superAdmin or manager can update this organization.", status: 403});
         }
 
         var orgData = {
@@ -500,18 +490,8 @@ module.exports = function (Organization) {
           return cb({message: "Organization not found by ID " + id, status: 404});
         }
 
-        if (Organization.app.models.BaseModel.user.userRole.code !== Constants.USER_ROLE_SUPER_ADMIN) {
-          // if user is not superAdmin, check whether is manager of this organization
-          var isManager = false;
-          Organization.app.models.BaseModel.user.userHasOrganization.forEach(function (orgRelation) {
-            if (orgRelation.organizationId == organization.id && orgRelation.organizationRoleId == Constants.USER_ORGANIZATION_ROLE_MANAGER) {
-              isManager = true;
-            }
-          });
-
-          if (!isManager) {
-            return cb({message: "Only superAdmin or manager can delete this organization.", status: 403});
-          }
+        if (!Organization.canManageOrganization(organization.id)) {
+          return cb({message: "Only superAdmin or manager can delete this organization.", status: 403});
         }
 
         Organization.deleteAll({id: organization.id}, {transaction: tx}, function (err) {
@@ -628,18 +608,8 @@ module.exports = function (Organization) {
           return cb({message: "Organization not found by ID " + id, status: 404});
         }
 
-        if (Organization.app.models.BaseModel.user.userRole.code !== Constants.USER_ROLE_SUPER_ADMIN) {
-          // if user is not superAdmin, check whether is manager of this organization
-          var isManager = false;
-          Organization.app.models.BaseModel.user.userHasOrganization.forEach(function (orgRelation) {
-            if (orgRelation.organizationId == organization.id && orgRelation.organizationRoleId == Constants.USER_ORGANIZATION_ROLE_MANAGER) {
-              isManager = true;
-            }
-          });
-
-          if (!isManager) {
-            return cb({message: "Only superAdmin or manager of this organization can add other managers/members.", status: 403});
-          }
+        if (!Organization.canManageOrganization(organization.id)) {
+          return cb({message: "Only superAdmin or manager of this organization can add other managers/members.", status: 403});
         }
 
         var data = {
@@ -1006,6 +976,27 @@ module.exports = function (Organization) {
   };
 
   /**
+   * Check if logged user can manage the organization
+   *
+   * @param {Number} organizationId
+   * @return {boolean}
+   */
+  Organization.canManageOrganization = function (organizationId) {
+    if (Organization.app.models.BaseModel.user.userRole.code === Constants.USER_ROLE_SUPER_ADMIN) {
+      return true;
+    } else {
+      // if user is not superAdmin, check whether is manager of this organization
+      var isManager = false;
+      Organization.app.models.BaseModel.user.userHasOrganization.forEach(function (orgRelation) {
+        if (orgRelation.organizationId == organizationId && orgRelation.organizationRoleId == Constants.USER_ORGANIZATION_ROLE_MANAGER) {
+          isManager = true;
+        }
+      });
+      return isManager;
+    }
+  };
+
+  /**
    * Associates area to organization
    *
    * @param {Number} id
@@ -1014,18 +1005,8 @@ module.exports = function (Organization) {
    * @param {Function} cb
    */
   Organization.addArea = function (id, areaId, notificationFrequency, cb) {
-    if (Organization.app.models.BaseModel.user.userRole.code !== Constants.USER_ROLE_SUPER_ADMIN) {
-      // if user is not superAdmin, check whether is manager of this organization
-      var isManager = false;
-      Organization.app.models.BaseModel.user.userHasOrganization.forEach(function (orgRelation) {
-        if (orgRelation.organizationId == id && orgRelation.organizationRoleId == Constants.USER_ORGANIZATION_ROLE_MANAGER) {
-          isManager = true;
-        }
-      });
-
-      if (!isManager) {
-        return cb({message: "Only superAdmin or manager can set notifications for this organization.", status: 403});
-      }
+    if (!Organization.canManageOrganization(id)) {
+      return cb({message: "Only superAdmin or manager can set notifications for this organization.", status: 403});
     }
 
     // Check whether this relation already exists
@@ -1058,6 +1039,31 @@ module.exports = function (Organization) {
     });
 
   };
+
+  /**
+   * Remove area to organization association
+   *
+   * @param {Number} organizationId
+   * @param {Number} areaId
+   * @param {Function} cb
+   */
+  Organization.removeArea = function (organizationId, areaId, cb) {
+    if (!Organization.canManageOrganization(organizationId)) {
+      return cb({message: "Only superAdmin or manager can remove notifications for this organization.", status: 403});
+    }
+
+    // Remove relation
+    Organization.app.models.OrganizationHasArea.deleteAll({organizationId: organizationId, areaId: areaId}, function (err) {
+      if (err) {
+        console.error(err);
+        return cb({message: err.detail});
+      }
+
+      cb(null, {success: true});
+    });
+
+  };
+
 
 
   Organization.disableRemoteMethod('create', true); // Removes (POST) /organization
@@ -1303,6 +1309,18 @@ module.exports = function (Organization) {
         { arg: 'id', type: 'number', required: true },
         { arg: 'areaId', type: 'number', required: true },
         { arg: 'notificationFrequency', type: 'number' }
+      ],
+      returns: { type: 'object', root: true }
+    }
+  );
+
+  Organization.remoteMethod(
+    'removeArea',
+    {
+      http: { path: '/:organizationId/area/:areaId', verb: 'delete' },
+      accepts: [
+        { arg: 'organizationId', type: 'number', required: true },
+        { arg: 'areaId', type: 'number', required: true }
       ],
       returns: { type: 'object', root: true }
     }
