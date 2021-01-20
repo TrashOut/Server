@@ -114,6 +114,10 @@
     "dataSource": "trashout",
     "public": true
   },
+  "OrganizationHasArea": {
+    "dataSource": "trashout",
+    "public": false
+  },
   "OrganizationType": {
     "dataSource": "trashout",
     "public": true

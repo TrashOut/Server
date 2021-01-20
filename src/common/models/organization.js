@@ -1002,6 +1002,60 @@ module.exports = function (Organization) {
     });
   };
 
+  /**
+   * Associates area to organization
+   *
+   * @param {Number} id
+   * @param {Number} areaId
+   * @param {Number} notificationFrequency
+   * @param {Function} cb
+   */
+  Organization.addArea = function (id, areaId, notificationFrequency, cb) {
+    if (Organization.app.models.BaseModel.user.userRole.code !== Constants.USER_ROLE_SUPER_ADMIN) {
+      // if user is not superAdmin, check whether is manager of this organization
+      var isManager = false;
+      Organization.app.models.BaseModel.user.userHasOrganization.forEach(function (orgRelation) {
+        if (orgRelation.organizationId == id && orgRelation.organizationRoleId == Constants.USER_ORGANIZATION_ROLE_MANAGER) {
+          isManager = true;
+        }
+      });
+
+      if (!isManager) {
+        return cb({message: "Only superAdmin or manager can set notifications for this organization.", status: 403});
+      }
+    }
+
+    // Check whether this relation already exists
+    Organization.app.models.OrganizationHasArea.count({organizationId: id, areaId: areaId}, function (err, existing) {
+      if (err) {
+        console.error(err);
+        return cb({message: err.detail});
+      }
+
+      if (existing > 0) {
+        return cb({message: 'This relation already exists.', status: 400});
+      }
+
+      var relation = {
+        organizationId: id,
+        areaId: areaId,
+        notificationFrequency: notificationFrequency
+      };
+
+      // Create new relation
+      Organization.app.models.OrganizationHasArea.create(relation, function (err, instance) {
+        if (err) {
+          console.error(err);
+          return cb({message: err.detail});
+        }
+
+        cb(null, instance);
+      });
+
+    });
+
+  };
+
 
   Organization.disableRemoteMethod('create', true); // Removes (POST) /organization
   Organization.disableRemoteMethod('find', true); // Removes (GET) /organization
@@ -1226,7 +1280,6 @@ module.exports = function (Organization) {
     }
   );
 
-
   Organization.remoteMethod(
     'stats',
     {
@@ -1236,6 +1289,19 @@ module.exports = function (Organization) {
         {arg: 'organizationRoleIds', type: 'string'}
       ],
       returns: {arg: 'stats', type: 'number'}
+    }
+  );
+
+  Organization.remoteMethod(
+    'addArea',
+    {
+      http: { path: '/:id/area', verb: 'post' },
+      accepts: [
+        { arg: 'id', type: 'number', required: true },
+        { arg: 'areaId', type: 'number', required: true },
+        { arg: 'notificationFrequency', type: 'number' }
+      ],
+      returns: { type: 'object', root: true }
     }
   );
 

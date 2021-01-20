@@ -217,6 +217,10 @@
         "dataType": "bigint",
         "nullable": "YES"
       }
+    },
+    "organizationHasArea": {
+      "type": "hasMany",
+      "model": "OrganizationHasArea"
     }
   },
   "acls": [
