@@ -225,17 +225,21 @@ module.exports = function (Cron) {
   }
 
   /**
-   * Retrieves users's activity and sends it via email
+   * Retrieves data and sends the newsletter email
    *
-   * @param {Object} user
+   * @param {string} email
+   * @param {string} name
+   * @param {string} language
+   * @param {Object} area
+   * @param {string} notificationLastSent
    * @returns void
    */
-  function sendNewsletterToUser(data) {
+  function sendNewsletterEmail(email, name, language, area, notificationLastSent) {
     var ds = Cron.app.dataSources.trashout;
 
 
     Cron.app.models.BaseModel.initSqlParameters();
-    var sql = getNewActivitiesSQL(data.area.id, data.user.notificationLastSent);
+    var sql = getNewActivitiesSQL(area.id, notificationLastSent);
 
     Cron.app.models.BaseModel.sqlParameters;
 
@@ -283,25 +287,25 @@ module.exports = function (Cron) {
         });
 
         var params = {
-          user: data.user,
+          name: name,
           trashes: {
             created: created,
             updated: updated,
             cleaned: cleaned
           },
-          area: buildAddress(data.area) || data.area.id
+          area: buildAddress(area) || area.id
         };
 
         var headers = {
-          to: data.user.email,
-          subject: emailTranslations[checkLanguage(data.user.language)]['mail.newsletter.subject']
+          to: email,
+          subject: emailTranslations[checkLanguage(language)]['mail.newsletter.subject']
         };
 
         if (!headers.to) {
           return resolve();
         }
 
-        Cron.app.models.BaseModel.sendEmail('newsletter', headers, params, data.user.language).then(function () {
+        Cron.app.models.BaseModel.sendEmail('newsletter', headers, params, language).then(function () {
           resolve();
         }).catch(function (err) {
           console.error('cron-debug', err);
@@ -318,7 +322,7 @@ module.exports = function (Cron) {
    *
    * @returns void
    */
-  function sendNewsletters() {
+  function sendNewslettersToUsers() {
     var ds = Cron.app.dataSources.trashout;
 
     return new Promise(function (resolve, reject) {
@@ -359,32 +363,22 @@ module.exports = function (Cron) {
         }
 
         async.eachSeries(instances, function (instance, callback) {
-          var temp = {
-            user: {
-              id: instance.id,
-              firstName: instance.first_name,
-              lastName: instance.last_name,
-              language: instance.language,
-              email: instance.email,
-              notificationLastSent: instance.notification_last_sent
-            },
-            area: {
-              id: instance.area_id,
-              continent: instance.continent,
-              country: instance.country,
-              aa1: instance.aa1,
-              aa2: instance.aa2,
-              aa3: instance.aa3,
-              locality: instance.locality,
-              subLocality: instance.sub_locality,
-              street: instance.street,
-              zip: instance.zip
-            }
+          var area = {
+            id: instance.area_id,
+            continent: instance.continent,
+            country: instance.country,
+            aa1: instance.aa1,
+            aa2: instance.aa2,
+            aa3: instance.aa3,
+            locality: instance.locality,
+            subLocality: instance.sub_locality,
+            street: instance.street,
+            zip: instance.zip
           };
 
           // Send newsletter to each user
-          sendNewsletterToUser(temp).then(function () {
-            lastSentCondition.or.push({and: [{areaId: temp.area.id}, {userId: temp.user.id}]});
+          sendNewsletterEmail(instance.email, instance.first_name, instance.language, area, instance.notification_last_sent).then(function () {
+            lastSentCondition.or.push({and: [{areaId: area.id}, {userId: instance.id}]});
             async.setImmediate(callback);
           }).catch(function (error) {
             if (lastSentCondition.or.length) {
@@ -673,12 +667,12 @@ module.exports = function (Cron) {
    * @returns String
    */
   Cron.daily = function (hash, cb) {
-    var newsletters = sendNewsletters();
+    var newslettersToUsers = sendNewslettersToUsers();
     var eventConfirmations = sendEventConfirmations();
     var eventFeedbacks = sendEventFeedbacks();
 
     Promise.all([
-      newsletters,
+      newslettersToUsers,
       eventConfirmations,
       eventFeedbacks
     ]).then(function () {
