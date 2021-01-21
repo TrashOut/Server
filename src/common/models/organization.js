@@ -1064,6 +1064,31 @@ module.exports = function (Organization) {
 
   };
 
+  /**
+   * Update area to organization association
+   *
+   * @param {Number} organizationId
+   * @param {Number} areaId
+   * @param {Number} notificationFrequency
+   * @param {Function} cb
+   */
+  Organization.updateArea = function (organizationId, areaId, notificationFrequency, cb) {
+    if (!Organization.canManageOrganization(organizationId)) {
+      return cb({message: "Only superAdmin or manager can update notifications for this organization.", status: 403});
+    }
+
+    // Update relation
+    Organization.app.models.OrganizationHasArea.updateAll({organizationId: organizationId, areaId: areaId}, { notificationFrequency: notificationFrequency }, function (err, instance) {
+      if (err) {
+        console.error(err);
+        return cb({message: err.detail});
+      }
+
+      cb(null, instance);
+    });
+
+  };
+
 
 
   Organization.disableRemoteMethod('create', true); // Removes (POST) /organization
@@ -1309,6 +1334,19 @@ module.exports = function (Organization) {
         { arg: 'id', type: 'number', required: true },
         { arg: 'areaId', type: 'number', required: true },
         { arg: 'notificationFrequency', type: 'number' }
+      ],
+      returns: { type: 'object', root: true }
+    }
+  );
+
+  Organization.remoteMethod(
+    'updateArea',
+    {
+      http: { path: '/:id/area/:areaId', verb: 'put' },
+      accepts: [
+        { arg: 'id', type: 'number', required: true },
+        { arg: 'areaId', type: 'number', required: true },
+        { arg: 'notificationFrequency', type: 'string' }
       ],
       returns: { type: 'object', root: true }
     }
