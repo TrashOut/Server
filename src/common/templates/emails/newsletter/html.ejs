@@ -188,7 +188,7 @@
 
               <td valign="top" class="mcnTextContent" style="padding-top: 0;padding-right: 18px;padding-bottom: 9px;padding-left: 18px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;word-break: break-word;color: #202020;font-family: Helvetica;font-size: 16px;line-height: 150%;text-align: left;">
 
-                <span style="font-family:roboto,helvetica neue,helvetica,arial,sans-serif"><%- translations['mail.newsletter.p2'] %> <a href="<%- baseUrl %>/my-profile/" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #2BAADF;font-weight: normal;text-decoration: underline;"><%- translations['mail.newsletter.p3'] %></a> <%- translations['mail.newsletter.p4'] %><br>
+                <span style="font-family:roboto,helvetica neue,helvetica,arial,sans-serif"><%- translations['mail.newsletter.p2'] %> <a href="<%- baseUrl + (organizationId ? '/organizations/detail/' + organizationId : '/my-profile/') %>" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #2BAADF;font-weight: normal;text-decoration: underline;"><%- translations['mail.newsletter.p3'] %></a> <%- translations['mail.newsletter.p4'] %><br>
                   <br>
                   <span style="color:#8cc947"><%- translations['mail.newsletter.p5'] %></span>
                 </span>

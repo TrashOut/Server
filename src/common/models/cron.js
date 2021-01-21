@@ -232,9 +232,10 @@ module.exports = function (Cron) {
    * @param {string} language
    * @param {Object} area
    * @param {string} notificationLastSent
+   * @param {number} organizationId
    * @returns void
    */
-  function sendNewsletterEmail(email, name, language, area, notificationLastSent) {
+  function sendNewsletterEmail(email, name, language, area, notificationLastSent, organizationId) {
     var ds = Cron.app.dataSources.trashout;
 
 
@@ -287,6 +288,7 @@ module.exports = function (Cron) {
         });
 
         var params = {
+          organizationId: organizationId,
           name: name,
           trashes: {
             created: created,
@@ -322,7 +324,7 @@ module.exports = function (Cron) {
    *
    * @returns void
    */
-  function sendNewslettersToUsers() {
+  function sendNewsletterToUsers() {
     var ds = Cron.app.dataSources.trashout;
 
     return new Promise(function (resolve, reject) {
@@ -404,6 +406,106 @@ module.exports = function (Cron) {
 
           if (lastSentCondition.or.length) {
             Cron.app.models.UserHasArea.updateAll(lastSentCondition, {notificationLastSent: (new Date()).toISOString()}, function (err) {
+              if (err) {
+                console.error('cron-debug', err);
+                return reject(err);
+              }
+
+              resolve();
+            });
+          }
+        });
+      });
+
+    });
+  }
+
+  /**
+   * Sends area activity notifications to organizations
+   *
+   * @returns void
+   */
+  function sendNewsletterToOrganizations() {
+    var ds = Cron.app.dataSources.trashout;
+
+    return new Promise(function (resolve, reject) {
+
+      // Select organizations from database
+      var sql = '';
+      sql += 'SELECT \n';
+      sql += '  o.id, \n';
+      sql += '  o.name, \n';
+      sql += '  o.contact_email, \n';
+      sql += '  o.language, \n';
+
+      sql += '  oha.notification_last_sent, \n';
+      sql += '  oha.area_id, \n';
+
+      sql += '  a.continent, \n';
+      sql += '  a.country, \n';
+      sql += '  a.aa1, \n';
+      sql += '  a.aa2, \n';
+      sql += '  a.aa3, \n';
+      sql += '  a.locality, \n';
+      sql += '  a.sub_locality, \n';
+      sql += '  a.street, \n';
+      sql += '  a.zip \n';
+
+      sql += 'FROM public.organization_has_area oha \n';
+      sql += 'JOIN public.organization o ON o.id = oha.organization_id \n';
+      sql += 'JOIN public.area a ON a.id = oha.area_id \n';
+
+      sql += 'WHERE ( (NOW() - oha.notification_last_sent) > (oha.notification_frequency * INTERVAL \'1 seconds\') AND oha.notification_frequency > 0 ) OR (oha.notification_last_sent IS NULL AND oha.notification_frequency > 0) ORDER BY oha.notification_last_sent NULLS LAST';
+
+      var lastSentCondition = {or: []};
+      ds.connector.execute(sql, Cron.app.models.BaseModel.sqlParameters, function (err, instances) {
+        if (err) {
+          console.error('cron-debug', err);
+          return reject(err);
+        }
+
+        async.eachSeries(instances, function (instance, callback) {
+          var area = {
+            id: instance.area_id,
+            continent: instance.continent,
+            country: instance.country,
+            aa1: instance.aa1,
+            aa2: instance.aa2,
+            aa3: instance.aa3,
+            locality: instance.locality,
+            subLocality: instance.sub_locality,
+            street: instance.street,
+            zip: instance.zip
+          };
+
+          // Send newsletter to each organization
+          sendNewsletterEmail(instance.contact_email, instance.name, instance.language, area, instance.notification_last_sent, instance.id).then(function () {
+            lastSentCondition.or.push({and: [{areaId: area.id}, {organizationId: instance.id}]});
+            async.setImmediate(callback);
+          }).catch(function (error) {
+            if (lastSentCondition.or.length) {
+              Cron.app.models.OrganizationHasArea.updateAll(lastSentCondition, {notificationLastSent: (new Date()).toISOString()}, function (err) {
+                if (err) {
+                  console.error('cron-debug', err);
+                  return reject(err);
+                }
+
+                console.error('cron-debug', error);
+                reject(error);
+              });
+            } else {
+              console.error('cron-debug', err);
+              reject(err);
+            }
+          });
+        }, function (err) {
+          if (err) {
+            console.error('cron-debug', err);
+            reject(err);
+          }
+
+          if (lastSentCondition.or.length) {
+            Cron.app.models.OrganizationHasArea.updateAll(lastSentCondition, {notificationLastSent: (new Date()).toISOString()}, function (err) {
               if (err) {
                 console.error('cron-debug', err);
                 return reject(err);
@@ -667,12 +769,14 @@ module.exports = function (Cron) {
    * @returns String
    */
   Cron.daily = function (hash, cb) {
-    var newslettersToUsers = sendNewslettersToUsers();
+    var newsletterToUsers = sendNewsletterToUsers();
+    var newsletterToOrganizations = sendNewsletterToOrganizations();
     var eventConfirmations = sendEventConfirmations();
     var eventFeedbacks = sendEventFeedbacks();
 
     Promise.all([
-      newslettersToUsers,
+      newsletterToUsers,
+      newsletterToOrganizations,
       eventConfirmations,
       eventFeedbacks
     ]).then(function () {
