@@ -242,7 +242,7 @@
       "principalType": "ROLE",
       "principalId": "common",
       "permission": "ALLOW",
-      "property": ["list", "listCount", "detail", "listUsers", "listUsersCount", "activities", "ins", "upd", "del", "removeUser", "addUser", "sendInvitations", "stats"]
+      "property": ["list", "listCount", "detail", "listUsers", "listUsersCount", "activities", "ins", "upd", "del", "removeUser", "addUser", "sendInvitations", "stats", "addArea", "updateArea", "removeArea"]
     }
   ],
   "methods": {}
