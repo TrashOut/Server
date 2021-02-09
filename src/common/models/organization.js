@@ -261,13 +261,13 @@ module.exports = function (Organization) {
    * @param {String} contactGooglePlus
    * @param {String} contactUrl
    * @param {Object} areaId
-   * @param {Object} organizationType
+   * @param {Number} organizationTypeId
    * @param {Object} image
    * @param {Number} parentId
    * @param {String} language
    * @param {function} cb
    */
-  Organization.ins = function (name, description, mailSubject, mailBodyHtml, mailBodyMarkdown, contactEmail, contactPhone, contactTwitter, contactFacebook, contactGooglePlus, contactUrl, areaId, organizationType, image, parentId, language, cb) {
+  Organization.ins = function (name, description, mailSubject, mailBodyHtml, mailBodyMarkdown, contactEmail, contactPhone, contactTwitter, contactFacebook, contactGooglePlus, contactUrl, areaId, organizationTypeId, image, parentId, language, cb) {
     var data = {
       name: name,
       description: description,
@@ -282,7 +282,7 @@ module.exports = function (Organization) {
       contactUrl: contactUrl,
       parentId: parentId,
       areaId: areaId,
-      organizationTypeId: organizationType ? organizationType.id : 1,
+      organizationTypeId: organizationTypeId ? organizationTypeId : 1,
       language: language
     };
 
@@ -367,13 +367,13 @@ module.exports = function (Organization) {
    * @param {String} contactGooglePlus
    * @param {String} contactUrl
    * @param {Object} areaId
-   * @param {Object} organizationType
+   * @param {Number} organizationTypeId
    * @param {Object} image
    * @param {Object} parentId
    * @param {String} language
    * @param {function} cb
    */
-  Organization.upd = function (id, name, description, mailSubject, mailBodyHtml, mailBodyMarkdown, contactEmail, contactPhone, contactTwitter, contactFacebook, contactGooglePlus, contactUrl, areaId, organizationType, image, parentId, language, cb) {
+  Organization.upd = function (id, name, description, mailSubject, mailBodyHtml, mailBodyMarkdown, contactEmail, contactPhone, contactTwitter, contactFacebook, contactGooglePlus, contactUrl, areaId, organizationTypeId, image, parentId, language, cb) {
     Organization.beginTransaction({isolationLevel: Organization.Transaction.READ_COMMITTED}, function (err, tx) {
       if (err) {
         console.error(err);
@@ -408,7 +408,7 @@ module.exports = function (Organization) {
           contactUrl: contactUrl,
           parentId: parentId,
           areaId: areaId,
-          organizationTypeId: organizationType ? organizationType.id : 1,
+          organizationTypeId: organizationTypeId ? organizationTypeId : 1,
           language: language,
         };
 
@@ -1177,7 +1177,7 @@ module.exports = function (Organization) {
         {arg: 'contactGooglePlus', type: 'string'},
         {arg: 'contactUrl', type: 'string'},
         {arg: 'areaId', type: 'number'},
-        {arg: 'organizationType', type: 'object'},
+        {arg: 'organizationTypeId', type: 'number'},
         {arg: 'image', type: 'object'},
         {arg: 'parentId', type: 'integer'},
         {arg: 'language', type: 'string' }
@@ -1204,7 +1204,7 @@ module.exports = function (Organization) {
         {arg: 'contactGooglePlus', type: 'string'},
         {arg: 'contactUrl', type: 'string'},
         {arg: 'areaId', type: 'number'},
-        {arg: 'organizationType', type: 'object'},
+        {arg: 'organizationTypeId', type: 'number'},
         {arg: 'image', type: 'object'},
         {arg: 'parentId', type: 'integer'},
         {arg: 'language', type: 'string' }
