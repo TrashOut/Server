@@ -1334,7 +1334,7 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
                         "contactUrl": null,
                         "_oldId": null,
                         "parentId": null,
-                        "organizationTypeId": "1",
+                        "type": "other",
                         "imageId": null,
                         "gpsId": "2",
                         "id": 2
@@ -1687,7 +1687,7 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
             {
                 "name": "Green Peace",
                 "description": "Treehugging freaks",
-                "organizationTypeId": 1,
+                "type": 'other',
                 "gpsId": 1,
                 "created": "2016-05-16T12:34:56.000Z",
                 "mailSubject": "Subject updated",
@@ -1714,7 +1714,7 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
         {
             "name": "Green Peace",
             "description": "Treehugging freaks",
-            "organizationTypeId": 1,
+            "type": 'other',
             "gpsId": 1,
             "mailSubject": "Subject updated",
             "mailBody": "<html><head><title>Title of the document2</title></head><body>The content of the document......</body></html>",
@@ -1875,7 +1875,7 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
 
 
 
-## Organizations Collection [/organization/{?name,description,organizationTypeId,gpsId,mailSubject,mailBody,contactEmail,contactPhone,contactTwitter,contactFacebook,contactUrl,imageId,parentId,sort,page,limit}]
+## Organizations Collection [/organization/{?name,description,type,gpsId,mailSubject,mailBody,contactEmail,contactPhone,contactTwitter,contactFacebook,contactUrl,imageId,parentId,sort,page,limit}]
 
 ### Get Organization List [GET]
 
@@ -1883,7 +1883,7 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
 
     + name (optional, string)
     + description (optional, string)
-    + organizationTypeId (optional, integer)
+    + type (optional, string)
     + gpsId (optional, integer)
     + mailSubject (optional, string)
     + mailBody (optional, string)
@@ -1913,7 +1913,7 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
                 "contactUrl": "http://org-one.com",
                 "_oldId": null,
                 "parentId": null,
-                "organizationTypeId": "2",
+                "type": "other",
                 "imageId": "1",
                 "gpsId": "1",
                 "id": 1
@@ -1930,7 +1930,7 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
                 "contactUrl": "http://org-two.com",
                 "_oldId": null,
                 "parentId": "1",
-                "organizationTypeId": "1",
+                "type": "shool",
                 "imageId": "3",
                 "gpsId": "2",
                 "id": 2
@@ -1950,7 +1950,7 @@ TrashOut is an environmental project aiming to locate illegal dumps all around t
         {
             + name (optional, string)
             + description (optional, string)
-            + organizationTypeId (optional, integer)
+            + type (optional, string)
             + gpsId (optional, integer)
             + mailSubject (optional, string)
             + mailBody (optional, string)
