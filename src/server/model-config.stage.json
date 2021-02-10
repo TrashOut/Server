@@ -118,10 +118,6 @@
     "dataSource": "trashout",
     "public": false
   },
-  "OrganizationType": {
-    "dataSource": "trashout",
-    "public": true
-  },
   "Badge": {
     "dataSource": "trashout",
     "public": true

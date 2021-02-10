@@ -51,7 +51,6 @@ module.exports = function (Organization) {
     var filter = {
       where: {},
       include: [
-        'organizationType',
         'area',
         'image'
       ],
@@ -114,7 +113,7 @@ module.exports = function (Organization) {
    * @param {String} contactGooglePlus
    * @param {String} contactUrl
    * @param {Number} areaId
-   * @param {Number} organizationTypeId
+   * @param {String} type
    * @param {Number} parentId
    * @param {String} orderBy
    * @param {Number} page
@@ -124,12 +123,12 @@ module.exports = function (Organization) {
    */
   Organization.list = function (name, description, mailSubject, mailBodyHtml, mailBodyMarkdown, contactEmail,
                                 contactPhone, contactTwitter, contactFacebook, contactGooglePlus, contactUrl,
-                                areaId, organizationTypeId, parentId,
+                                areaId, type, parentId,
                                 orderBy, page, limit, cb) {
     var filter = Organization.createFilter({
       name: name,
       description: description,
-      organizationTypeId: organizationTypeId,
+      type: type,
       mailSubject: mailSubject,
       mailBodyHtml: mailBodyHtml,
       mailBodyMarkdown: mailBodyMarkdown,
@@ -159,8 +158,6 @@ module.exports = function (Organization) {
         delete item.imageId;
         item.area = item.area || null;
         delete item.areaId;
-        item.organizationType = item.organizationType || null;
-        delete item.organizationTypeId;
         output.push(item);
       });
 
@@ -183,16 +180,16 @@ module.exports = function (Organization) {
    * @param {String} contactGooglePlus
    * @param {String} contactUrl
    * @param {Number} areaId
-   * @param {Number} organizationTypeId
+   * @param {Strng} type
    * @param {Number} parentId
    * @param {Function} cb
    * @returns {Array}
    */
-  Organization.listCount = function (name, description, mailSubject, mailBodyHtml, mailBodyMarkdown, contactEmail, contactPhone, contactTwitter, contactFacebook, contactGooglePlus, contactUrl, areaId, organizationTypeId, parentId, cb) {
+  Organization.listCount = function (name, description, mailSubject, mailBodyHtml, mailBodyMarkdown, contactEmail, contactPhone, contactTwitter, contactFacebook, contactGooglePlus, contactUrl, areaId, type, parentId, cb) {
     var filter = Organization.createFilter({
       name: name,
       description: description,
-      organizationTypeId: organizationTypeId,
+      type: type,
       mailSubject: mailSubject,
       mailBodyHtml: mailBodyHtml,
       mailBodyMarkdown: mailBodyMarkdown,
@@ -227,7 +224,6 @@ module.exports = function (Organization) {
         id: id
       },
       include: [
-        'organizationType',
         'area',
         'image',
         {
@@ -261,13 +257,13 @@ module.exports = function (Organization) {
    * @param {String} contactGooglePlus
    * @param {String} contactUrl
    * @param {Object} areaId
-   * @param {Number} organizationTypeId
+   * @param {String} type
    * @param {Object} image
    * @param {Number} parentId
    * @param {String} language
    * @param {function} cb
    */
-  Organization.ins = function (name, description, mailSubject, mailBodyHtml, mailBodyMarkdown, contactEmail, contactPhone, contactTwitter, contactFacebook, contactGooglePlus, contactUrl, areaId, organizationTypeId, image, parentId, language, cb) {
+  Organization.ins = function (name, description, mailSubject, mailBodyHtml, mailBodyMarkdown, contactEmail, contactPhone, contactTwitter, contactFacebook, contactGooglePlus, contactUrl, areaId, type, image, parentId, language, cb) {
     var data = {
       name: name,
       description: description,
@@ -282,7 +278,7 @@ module.exports = function (Organization) {
       contactUrl: contactUrl,
       parentId: parentId,
       areaId: areaId,
-      organizationTypeId: organizationTypeId ? organizationTypeId : 1,
+      type: type ? type : 'other',
       language: language
     };
 
@@ -367,13 +363,13 @@ module.exports = function (Organization) {
    * @param {String} contactGooglePlus
    * @param {String} contactUrl
    * @param {Object} areaId
-   * @param {Number} organizationTypeId
+   * @param {String} type
    * @param {Object} image
    * @param {Object} parentId
    * @param {String} language
    * @param {function} cb
    */
-  Organization.upd = function (id, name, description, mailSubject, mailBodyHtml, mailBodyMarkdown, contactEmail, contactPhone, contactTwitter, contactFacebook, contactGooglePlus, contactUrl, areaId, organizationTypeId, image, parentId, language, cb) {
+  Organization.upd = function (id, name, description, mailSubject, mailBodyHtml, mailBodyMarkdown, contactEmail, contactPhone, contactTwitter, contactFacebook, contactGooglePlus, contactUrl, areaId, type, image, parentId, language, cb) {
     Organization.beginTransaction({isolationLevel: Organization.Transaction.READ_COMMITTED}, function (err, tx) {
       if (err) {
         console.error(err);
@@ -408,7 +404,7 @@ module.exports = function (Organization) {
           contactUrl: contactUrl,
           parentId: parentId,
           areaId: areaId,
-          organizationTypeId: organizationTypeId ? organizationTypeId : 1,
+          type: type ? type : 'other',
           language: language,
         };
 
@@ -1126,7 +1122,7 @@ module.exports = function (Organization) {
         {arg: 'contactGooglePlus', type: 'string'},
         {arg: 'contactUrl', type: 'string'},
         {arg: 'areaId', type: 'integer'},
-        {arg: 'organizationTypeId', type: 'integer'},
+        {arg: 'type', type: 'string'},
         {arg: 'parentId', type: 'integer'},
         {arg: 'orderBy', type: 'string'},
         {arg: 'page', type: 'integer'},
@@ -1153,7 +1149,7 @@ module.exports = function (Organization) {
         {arg: 'contactGooglePlus', type: 'string'},
         {arg: 'contactUrl', type: 'string'},
         {arg: 'areaId', type: 'integer'},
-        {arg: 'organizationTypeId', type: 'integer'},
+        {arg: 'type', type: 'string'},
         {arg: 'parentId', type: 'integer'}
       ],
       returns: {arg: 'count', type: 'number'}
@@ -1177,7 +1173,7 @@ module.exports = function (Organization) {
         {arg: 'contactGooglePlus', type: 'string'},
         {arg: 'contactUrl', type: 'string'},
         {arg: 'areaId', type: 'number'},
-        {arg: 'organizationTypeId', type: 'number'},
+        {arg: 'type', type: 'string'},
         {arg: 'image', type: 'object'},
         {arg: 'parentId', type: 'integer'},
         {arg: 'language', type: 'string' }
@@ -1204,7 +1200,7 @@ module.exports = function (Organization) {
         {arg: 'contactGooglePlus', type: 'string'},
         {arg: 'contactUrl', type: 'string'},
         {arg: 'areaId', type: 'number'},
-        {arg: 'organizationTypeId', type: 'number'},
+        {arg: 'type', type: 'string'},
         {arg: 'image', type: 'object'},
         {arg: 'parentId', type: 'integer'},
         {arg: 'language', type: 'string' }

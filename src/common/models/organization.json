@@ -137,13 +137,13 @@
         "nullable": "YES"
       }
     },
-    "organizationTypeId": {
-      "type": "number",
+    "type": {
+      "type": "string",
       "required": true,
       "postgresql": {
-        "columnName": "organization_type_id",
-        "dataType": "bigint",
-        "nullable": "YES"
+        "columnName": "type",
+        "dataType": "organization_type",
+        "nullable": "NO"
       }
     },
     "imageId": {
@@ -178,16 +178,6 @@
   },
   "validations": [],
   "relations": {
-    "organizationType": {
-      "type": "belongsTo",
-      "model": "OrganizationType",
-      "foreignKey": "organizationTypeId",
-      "postgresql": {
-        "columnName": "organization_type_id",
-        "dataType": "bigint",
-        "nullable": "NO"
-      }
-    },
     "parentOrganization": {
       "type": "belongsTo",
       "model": "Organization",
