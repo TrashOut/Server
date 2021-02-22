@@ -707,6 +707,13 @@ module.exports = function (Organization) {
         var user = temp.user;
         user.organizationRoleId = temp.organizationRoleId;
 
+        if (Organization.app.models.BaseModel.user.userRole.code !== Constants.USER_ROLE_SUPER_ADMIN) {
+          // hide some personal information - because GDPR
+          delete user.email;
+          delete user.birthdate;
+          delete user.phoneNumber;
+        }
+
         payload.push(user);
       });
 
