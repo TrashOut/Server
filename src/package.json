@@ -26,7 +26,7 @@
     "loopback": "^2.22.0",
     "loopback-boot": "^2.6.5",
     "loopback-component-explorer": "^2.4.0",
-    "loopback-connector-postgresql": "^2.6.3",
+    "loopback-connector-postgresql": "^5.5.1",
     "loopback-connector-redis": "^0.1.0",
     "loopback-datasource-juggler": "^2.39.0",
     "md5": "^2.2.1",
