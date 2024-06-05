@@ -29,6 +29,7 @@ var Constants = require('../constants');
 var UserPoints = require('../helpers/userPoints');
 var AreaAccessControl = require('../area-access-control');
 var Sentry = require('../helpers/sentry').getInstance();
+var firebaseFactory = require('../../server/boot/firebaseFactory.js');
 
 var toBasicObject = function(obj) {
   return JSON.parse(JSON.stringify(obj));
@@ -596,11 +597,17 @@ module.exports = function (User) {
         return cb({ message: 'User not found.', status: 404 });
       }
 
+      // get firebase user ID
+      var firebaseUserId = instance.uid;
+
       User.destroyAll({ id: id }, function (err) {
         if (err) {
           console.error(err);
           return cb({ message: err.detail });
         }
+
+        // delete firebase user
+        firebaseFactory.deleteUser(firebaseUserId);
 
         cb({ status: 204 });
       });

@@ -71,3 +71,5 @@ nbproject/
 
 # datasources configs
 /src/server/datasources.json
+
+.vscode

@@ -34,7 +34,7 @@ switch (process.env.NODE_ENV) {
   case 'production':
   case 'stage':
     serviceAccount = require(__dirname + '/../../server/firebase.service-account-credentials.' + process.env.NODE_ENV + '.json');
-    fcmAccount = require(__dirname + '/../../server/firebase.admin-sdk-credentials.' + process.env.NODE_ENV + '.json');    
+    fcmAccount = require(__dirname + '/../../server/firebase.admin-sdk-credentials.' + process.env.NODE_ENV + '.json');
     break;
   default:
     serviceAccount = require(__dirname + '/../../server/firebase.service-account-credentials.json');
@@ -42,7 +42,7 @@ switch (process.env.NODE_ENV) {
 }
 
 module.exports = {
-  firebase: null,
+  firebase: null, // firebase service account
   fcm: null,
   create: function (account) {
     var databaseURL = '';
@@ -103,6 +103,16 @@ module.exports = {
       callback(userRecord.toJSON());
     }).catch(function(error) {
       console.warn("Error updating firebase identity:", error);
+    });
+  },
+  deleteUser: function(uid, callback) {
+    // get (or init) Firebase service account
+    var firebase = this.firebase = this.firebase || this.create('serviceAccount');
+
+    firebase.auth().deleteUser(uid).then(function() {
+      callback();
+    }).catch(function(error) {
+      console.warn("Error deleting firebase identity:", error);
     });
   },
   sendMessage(message, callback) {
